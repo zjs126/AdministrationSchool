@@ -22,10 +22,10 @@ mybatis:
 #阿里云OSS
 aliyun:
   oss:
-    endpoint: https://oss-cn-beijing.aliyuncs.com
-    accessKeyId: LTAI5t6ZL8rrrNAwTGSryYdh
-    accessKeySecret: bGkmhLrNlKvZ2q8Yf0DjUoDUzFeUpN
-    bucketName: web-tail01
+    endpoint: 
+    accessKeyId: 
+    accessKeySecret:
+    bucketName :
 # spring事务管理日志
 logging:
   level:
