@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper.StudentMapper">
+    <update id="update">
+        update student
+        <set>
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            <if test="major != null and major != ''">
+                major=#{major},
+            </if>
+            <if test="college != null and college != ''">
+                college=#{college},
+            </if>
+            <if test="university != null and university != ''">
+                university=#{university},
+            </if>
+            <if test="className != null">
+                class=#{className},
+            </if>
+            <if test="grand != null">
+                grand=#{grand},
+            </if>
+        </set>
+        where stu_id=#{stuId}
+    </update>
+</mapper>
