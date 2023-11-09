@@ -38,4 +38,9 @@ public interface StudentService {
      * @param sc 课程id
      */
     void selectCourse(SC sc);
+
+    /**
+     * 根据id返回课表
+     */
+    ArrayList<Course> getMyCourses(Integer id);
 }

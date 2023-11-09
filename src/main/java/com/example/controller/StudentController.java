@@ -92,12 +92,24 @@ public class StudentController {
      * 选择课，更新课表
      * @param courseId 课程id
      */
-    @GetMapping("")
+    @GetMapping("/selectCourse")
     public Result selectCourse(@RequestBody Integer courseId){
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         SC sc=new SC(id,courseId);
         studentService.selectCourse(sc);
         return Result.success();
+    }
+
+    /**
+     * 根据id返回课表
+     */
+    @GetMapping("/getMyCourses")
+    public Result getMyCourses(){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        ArrayList<Course> courses;
+        courses=studentService.getMyCourses(id);
+        return Result.success(courses);
     }
 }

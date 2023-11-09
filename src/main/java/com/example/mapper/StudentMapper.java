@@ -40,6 +40,15 @@ public interface StudentMapper {
     @Select("Select * from course")
     ArrayList<Course> getCourses();
 
+    /**
+     * 向选课表中插入选择的课
+     */
     @Insert("insert into selection(stu_id, course_id) values (#{stuID},#{courseID})")
     void selectCourse(SC sc);
+
+    /**
+     *从选课表中先查出选的课程id,再根据id查课程
+     */
+    @Select("select * from course where course_id in (select course_id from selection where stu_id=#{id})")
+    ArrayList<Course> getMyCourses(Integer id);
 }

@@ -45,6 +45,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void selectCourse(SC sc) {
         studentMapper.selectCourse(sc);
-        return;
     }
+
+    @Override
+    public ArrayList<Course> getMyCourses(Integer id) {
+        return studentMapper.getMyCourses(id);
+    }
+
+
 }
