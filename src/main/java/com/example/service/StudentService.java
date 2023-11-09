@@ -2,6 +2,7 @@ package com.example.service;
 
 
 import com.example.pojo.Course;
+import com.example.pojo.SC;
 import com.example.pojo.Student;
 
 import java.util.ArrayList;
@@ -31,4 +32,10 @@ public interface StudentService {
      * 查找选课表
      */
     ArrayList<Course> getCourses();
+
+    /**
+     * 选择课，更新课表
+     * @param sc 课程id
+     */
+    void selectCourse(SC sc);
 }

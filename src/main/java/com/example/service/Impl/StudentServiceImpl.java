@@ -2,6 +2,7 @@ package com.example.service.Impl;
 
 import com.example.mapper.StudentMapper;
 import com.example.pojo.Course;
+import com.example.pojo.SC;
 import com.example.pojo.Student;
 import com.example.service.StudentService;
 import com.example.utils.BCryptPasswordUtils;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Map;
+
 
 @Service
 @Slf4j
@@ -39,5 +40,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ArrayList<Course> getCourses() {
         return studentMapper.getCourses();
+    }
+
+    @Override
+    public void selectCourse(SC sc) {
+        studentMapper.selectCourse(sc);
+        return;
     }
 }

@@ -1,7 +1,9 @@
 package com.example.mapper;
 
 import com.example.pojo.Course;
+import com.example.pojo.SC;
 import com.example.pojo.Student;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -32,6 +34,12 @@ public interface StudentMapper {
      */
     void update(Student student);
 
+    /**
+     * 查找所有选课课程
+     */
     @Select("Select * from course")
     ArrayList<Course> getCourses();
+
+    @Insert("insert into selection(stu_id, course_id) values (#{stuID},#{courseID})")
+    void selectCourse(SC sc);
 }

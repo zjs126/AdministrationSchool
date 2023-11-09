@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.pojo.Course;
 import com.example.pojo.Result;
+import com.example.pojo.SC;
 import com.example.pojo.Student;
 import com.example.service.StudentService;
 import com.example.utils.BCryptPasswordUtils;
@@ -82,8 +83,21 @@ public class StudentController {
     @GetMapping("/getCourses")
     public Result<ArrayList<Course>> getCourses(){
         log.info("学生获取选课列表");
-        ArrayList<Course> courses=new ArrayList<>();
+        ArrayList<Course> courses;
         courses=studentService.getCourses();
         return Result.success(courses);
+    }
+
+    /**
+     * 选择课，更新课表
+     * @param courseId 课程id
+     */
+    @GetMapping("")
+    public Result selectCourse(@RequestBody Integer courseId){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        SC sc=new SC(id,courseId);
+        studentService.selectCourse(sc);
+        return Result.success();
     }
 }
