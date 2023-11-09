@@ -116,7 +116,10 @@ public class StudentController {
         Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
         SC sc = new SC(id, courseId,university);
-        studentService.selectCourse(sc);
+        int i=studentService.selectCourse(sc);
+        if(i==0){
+            return  Result.error(500,"时间冲突");
+        }
         return Result.success();
     }
 

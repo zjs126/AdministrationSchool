@@ -58,4 +58,11 @@ public interface StudentMapper {
      */
     @Delete("delete from selection where course_id=#{courseID} and university=#{university} and stu_id=#{id}")
     void deleteCourse(Integer courseID,Integer id, String university);
+
+
+    /**
+     * 根据id,university查询一门课的信息
+     */
+    @Select("select * from course where course_id=#{id} and university=#{university}")
+    Course getOneCourse(Integer id, String university);
 }

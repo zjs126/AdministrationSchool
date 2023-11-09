@@ -37,7 +37,7 @@ public interface StudentService {
      * 选择课，更新课表
      * @param sc 课程id
      */
-    void selectCourse(SC sc);
+    int selectCourse(SC sc);
 
     /**
      * 根据id返回课表
@@ -48,4 +48,9 @@ public interface StudentService {
      * 根据id退课
      */
     void deleteCourse(Integer courseID,Integer id, String university);
+
+    /**
+     * 根据id,university查询一门课的信息
+     */
+    Course getOneCourse(Integer id,String university);
 }
