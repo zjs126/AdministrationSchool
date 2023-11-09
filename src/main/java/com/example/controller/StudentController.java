@@ -98,8 +98,10 @@ public class StudentController {
     @GetMapping("/getCourses")
     public Result<ArrayList<Course>> getCourses() {
         log.info("学生获取选课列表");
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
         ArrayList<Course> courses;
-        courses = studentService.getCourses();
+        courses = studentService.getCourses(university);
         return Result.success(courses);
     }
 
@@ -112,7 +114,8 @@ public class StudentController {
     public Result selectCourse(@RequestBody Integer courseId) {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
-        SC sc = new SC(id, courseId);
+        String university = (String) map.get("university");
+        SC sc = new SC(id, courseId,university);
         studentService.selectCourse(sc);
         return Result.success();
     }
@@ -124,8 +127,9 @@ public class StudentController {
     public Result getMyCourses() {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
+        String university = (String) map.get("university");
         ArrayList<Course> courses;
-        courses = studentService.getMyCourses(id);
+        courses = studentService.getMyCourses(id,university);
         return Result.success(courses);
     }
 
@@ -138,7 +142,8 @@ public class StudentController {
     public Result deleteCourse(@RequestBody Integer courseId) {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
-        studentService.deleteCourse(id);
+        String university = (String) map.get("university");
+        studentService.deleteCourse(courseId,id,university);
         return Result.success();
     }
 }

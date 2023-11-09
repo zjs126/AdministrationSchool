@@ -11,9 +11,10 @@ public class SC {
     private Integer stuID;
     private Integer courseID;
     private Integer score;
-
-    public SC(Integer id, Integer courseId) {
+    private String university;
+    public SC(Integer id, Integer courseId,String university) {
         this.courseID=courseId;
         this.stuID=id;
+        this.university=university;
     }
 }

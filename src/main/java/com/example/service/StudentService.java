@@ -31,7 +31,7 @@ public interface StudentService {
     /**
      * 查找选课表
      */
-    ArrayList<Course> getCourses();
+    ArrayList<Course> getCourses(String university);
 
     /**
      * 选择课，更新课表
@@ -42,10 +42,10 @@ public interface StudentService {
     /**
      * 根据id返回课表
      */
-    ArrayList<Course> getMyCourses(Integer id);
+    ArrayList<Course> getMyCourses(Integer id, String university);
 
     /**
      * 根据id退课
      */
-    void deleteCourse(Integer id);
+    void deleteCourse(Integer courseID,Integer id, String university);
 }

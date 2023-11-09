@@ -38,8 +38,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ArrayList<Course> getCourses() {
-        return studentMapper.getCourses();
+    public ArrayList<Course> getCourses(String university) {
+        return studentMapper.getCourses(university);
     }
 
     @Override
@@ -48,12 +48,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ArrayList<Course> getMyCourses(Integer id) {
-        return studentMapper.getMyCourses(id);
+    public ArrayList<Course> getMyCourses(Integer id, String university) {
+        return studentMapper.getMyCourses(id,university);
     }
 
     @Override
-    public void deleteCourse(Integer id) {
-        studentMapper.deleteCourse(id);
+    public void deleteCourse(Integer courseID,Integer id,String university) {
+        studentMapper.deleteCourse(courseID,id,university);
     }
 }

@@ -21,4 +21,5 @@ public class Course {
     private String type;//课程类型
     private String description;//课程描述
     private Integer state;//'1为开设'
+    private String university;
 }
