@@ -3,10 +3,7 @@ package com.example.mapper;
 import com.example.pojo.Course;
 import com.example.pojo.SC;
 import com.example.pojo.Student;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 
@@ -52,4 +49,10 @@ public interface StudentMapper {
      */
     @Select("select * from course where course_id in (select course_id from selection where stu_id=#{id})")
     ArrayList<Course> getMyCourses(Integer id);
+
+    /**
+     *根据id删选的课程
+     */
+    @Delete("delete from selection where course_id=#{id}")
+    void deleteCourse(Integer id);
 }

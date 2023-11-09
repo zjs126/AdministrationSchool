@@ -52,5 +52,8 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.getMyCourses(id);
     }
 
-
+    @Override
+    public void deleteCourse(Integer id) {
+        studentMapper.deleteCourse(id);
+    }
 }

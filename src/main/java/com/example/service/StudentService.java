@@ -43,4 +43,9 @@ public interface StudentService {
      * 根据id返回课表
      */
     ArrayList<Course> getMyCourses(Integer id);
+
+    /**
+     * 根据id退课
+     */
+    void deleteCourse(Integer id);
 }
