@@ -43,7 +43,8 @@ public class TeacherController {
         //原密码是否正确
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
-        Teacher teacher = teacherService.findTeacherByStaffId(id);
+        String university = (String) map.get("university");
+        Teacher teacher = teacherService.findTeacherByStaffId(id, university);
         if(!BCryptPasswordUtils.matchPassword(oldPwd, teacher.getPassword())){
             log.info("原密码填写错误");
             return Result.error(401,"原密码填写错误");
@@ -54,7 +55,7 @@ public class TeacherController {
             return Result.error(401,"两次填写的密码不一样");
         }
         //2. 调用service完成密码更新
-        teacherService.updatePassword(id, newPwd);
+        teacherService.updatePassword(id, newPwd, university);
 
         //删除redis中对应的token
         redisCache.deleteObject(token);

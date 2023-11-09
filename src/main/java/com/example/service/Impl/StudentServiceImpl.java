@@ -21,15 +21,15 @@ public class StudentServiceImpl implements StudentService {
     private StudentMapper studentMapper;
 
     @Override
-    public void updatePassword(Integer stuId, String password) {
+    public void updatePassword(Integer stuId, String password, String university) {
         log.info("对学生要修改的密码进行进行哈希处理");
         String encode = BCryptPasswordUtils.encodePassword(password);
-        studentMapper.updatePassword(stuId, encode);
+        studentMapper.updatePassword(stuId, encode, university);
     }
 
     @Override
-    public Student findStudentByStuId(Integer stuId) {
-        return studentMapper.findStudentByStuId(stuId);
+    public Student findStudentByStuId(Integer stuId, String university) {
+        return studentMapper.findStudentByStuId(stuId, university);
     }
 
     @Override

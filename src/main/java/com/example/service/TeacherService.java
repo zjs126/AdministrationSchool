@@ -8,14 +8,14 @@ public interface TeacherService {
      * @param staffId 教职工编号
      * @return 教职工信息
      */
-    Teacher findTeacherByStaffId(Integer staffId);
+    Teacher findTeacherByStaffId(Integer staffId, String university);
 
     /**
      * 更新密码
      * @param id 教职工编号
      * @param newPwd 新密码
      */
-    void updatePassword(Integer id, String newPwd);
+    void updatePassword(Integer id, String newPwd, String university);
 
     void update(Teacher teacher);
 }

@@ -23,7 +23,7 @@ public interface UserMapper {
      * @param user 用户信息
      * @return 密码
      */
-    @Select("select password from student where stu_id=#{id}")
+    @Select("select password from student where stu_id=#{id} and university=#{university}")
     String loginStudent(User user);
 
     /**
@@ -31,7 +31,7 @@ public interface UserMapper {
      * @param user 用户信息
      * @return 密码
      */
-    @Select("select password from teacher where staff_id=#{id}")
+    @Select("select password from teacher where staff_id=#{id} and university=#{university}")
     String loginTeacher(User user);
 
     /**

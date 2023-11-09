@@ -14,13 +14,10 @@
             <if test="permission != null">
                 permission=#{permission},
             </if>
-            <if test="university != null and university != ''">
-                university=#{university},
-            </if>
             <if test="college != null and college != ''">
                 college=#{college}
             </if>
         </set>
-        where staff_id=#{staffId}
+        where staff_id=#{staffId} and university=#{university}
     </update>
 </mapper>

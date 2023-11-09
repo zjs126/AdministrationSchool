@@ -13,14 +13,14 @@ public interface StudentService {
      * @param stuId 学号
      * @param password 新密码
      */
-    void updatePassword(Integer stuId, String password);
+    void updatePassword(Integer stuId, String password, String university);
 
     /**
      * 通过id找学生信息
      * @param stuId 学生id
      * @return 返回学生信息
      */
-    Student findStudentByStuId(Integer stuId);
+    Student findStudentByStuId(Integer stuId, String university);
 
     /**
      * 更新学生账号信息

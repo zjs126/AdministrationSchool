@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.pojo.Course;
+import com.example.pojo.PageBean;
 import com.example.pojo.Result;
 import com.example.pojo.SC;
 import com.example.pojo.Student;
@@ -10,10 +11,12 @@ import com.example.utils.RedisCache;
 import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -46,7 +49,8 @@ public class StudentController {
         //原密码是否正确
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
-        Student student = studentService.findStudentByStuId(id);
+        String university = (String) map.get("university");
+        Student student = studentService.findStudentByStuId(id, university);
         if(!BCryptPasswordUtils.matchPassword(oldPwd, student.getPassword())) {
             log.info("原密码填写错误");
             return Result.error(401, "原密码填写错误");
@@ -58,7 +62,7 @@ public class StudentController {
             return Result.error(401,"两次填写的密码不一样");
         }
         //2. 调用service完成密码更新
-        studentService.updatePassword(id, newPwd);
+        studentService.updatePassword(id, newPwd, university);
 
         //删除redis中对应的token
         redisCache.deleteObject(token);
@@ -76,6 +80,15 @@ public class StudentController {
         studentService.update(student);
         return Result.success();
     }
+
+//    @GetMapping
+//    public Result page(@RequestParam(defaultValue = "1") Integer page,
+//                       @RequestParam(defaultValue = "10") Integer pageSize,
+//                       Integer stuId, String name, String major, ) {
+//        log.info("分页查询：参数：{},{},{},{},{},{}", page, pageSize);
+//        PageBean pageBean = studentService.page(page, pageSize);
+//        return Result.success(pageBean);
+//    }
 
     /**
      * 获取课程信息列表

@@ -16,4 +16,6 @@ public class User {
     @NotEmpty
     @Pattern(regexp = "^\\S{1,18}$")
     private String password;
+    @NotEmpty
+    private String university;
 }

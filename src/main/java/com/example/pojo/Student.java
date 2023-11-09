@@ -16,6 +16,7 @@ public class Student {
     private String name; //姓名
     private String major; //专业
     private String college; //学院
+    @NotEmpty
     private String university; //学校
     private Integer className; //班级
     @JsonIgnore //让springmvc把当前对象转换成json字符串的时候，忽略password，最终的json字符串中就没password这个属性了

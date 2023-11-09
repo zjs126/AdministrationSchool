@@ -13,9 +13,6 @@
             <if test="college != null and college != ''">
                 college=#{college},
             </if>
-            <if test="university != null and university != ''">
-                university=#{university},
-            </if>
             <if test="className != null">
                 class=#{className},
             </if>
@@ -23,6 +20,6 @@
                 grand=#{grand},
             </if>
         </set>
-        where stu_id=#{stuId}
+        where stu_id=#{stuId} and university=#{university}
     </update>
 </mapper>

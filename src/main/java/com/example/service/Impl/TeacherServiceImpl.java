@@ -16,15 +16,15 @@ public class TeacherServiceImpl implements TeacherService {
     private TeacherMapper teacherMapper;
 
     @Override
-    public Teacher findTeacherByStaffId(Integer staffId) {
-        return teacherMapper.findTeacherById(staffId);
+    public Teacher findTeacherByStaffId(Integer staffId, String university) {
+        return teacherMapper.findTeacherById(staffId, university);
     }
 
     @Override
-    public void updatePassword(Integer staffId, String password) {
+    public void updatePassword(Integer staffId, String password, String university) {
         log.info("对教职工要修改的密码进行进行哈希处理");
         String encode = BCryptPasswordUtils.encodePassword(password);
-        teacherMapper.updatePassword(staffId, encode);
+        teacherMapper.updatePassword(staffId, encode, university);
     }
 
     @Override

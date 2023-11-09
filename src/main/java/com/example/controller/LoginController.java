@@ -44,8 +44,9 @@ public class LoginController {
 
         log.info("学生注册信息：{}",student);
         Integer stuId = student.getStuId();
+        String university = student.getUniversity();
         //查询用户
-        Student user = studentService.findStudentByStuId(stuId);
+        Student user = studentService.findStudentByStuId(stuId, university);
         if(user == null){
             userService.register(student); //注册
             log.info("学生注册成功");
@@ -64,8 +65,9 @@ public class LoginController {
     public Result<Teacher> register(@RequestBody @Validated Teacher teacher) {
         log.info("教职工注册信息：{}",teacher);
         Integer staffId = teacher.getStaffId();
+        String university = teacher.getUniversity();
         //查询用户
-        Teacher user = teacherService.findTeacherByStaffId(staffId);
+        Teacher user = teacherService.findTeacherByStaffId(staffId, university);
         if(user == null){
             userService.registerTeacher(teacher);
             log.info("教职工注册成功");
@@ -90,6 +92,7 @@ public class LoginController {
             log.info("登录成功");
             Map<String, Object> claim = new HashMap<>();
             claim.put("id", user.getId());
+            claim.put("university", user.getUniversity());
             String jwt = JwtUtils.generateJwt(claim);
 
             //把token存储到redis中
