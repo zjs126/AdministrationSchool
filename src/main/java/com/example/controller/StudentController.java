@@ -118,7 +118,7 @@ public class StudentController {
         SC sc = new SC(id, courseId,university);
         int i=studentService.selectCourse(sc);
         if(i==0){
-            return  Result.error(500,"时间冲突");
+            return  Result.error("时间冲突");
         }
         return Result.success();
     }
