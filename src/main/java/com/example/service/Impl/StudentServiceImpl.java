@@ -1,6 +1,7 @@
 package com.example.service.Impl;
 
 import com.example.mapper.StudentMapper;
+import com.example.pojo.Course;
 import com.example.pojo.Student;
 import com.example.service.StudentService;
 import com.example.utils.BCryptPasswordUtils;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Service
@@ -32,5 +34,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void update(Student student) {
         studentMapper.update(student);
+    }
+
+    @Override
+    public ArrayList<Course> getCourses() {
+        return studentMapper.getCourses();
     }
 }

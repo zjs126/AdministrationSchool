@@ -1,9 +1,12 @@
 package com.example.mapper;
 
+import com.example.pojo.Course;
 import com.example.pojo.Student;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.ArrayList;
 
 @Mapper
 public interface StudentMapper {
@@ -28,4 +31,7 @@ public interface StudentMapper {
      * @param student 更新的学生信息
      */
     void update(Student student);
+
+    @Select("Select * from course")
+    ArrayList<Course> getCourses();
 }

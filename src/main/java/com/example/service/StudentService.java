@@ -1,7 +1,10 @@
 package com.example.service;
 
 
+import com.example.pojo.Course;
 import com.example.pojo.Student;
+
+import java.util.ArrayList;
 
 public interface StudentService {
     /**
@@ -24,4 +27,8 @@ public interface StudentService {
      */
     void update(Student student);
 
+    /**
+     * 查找选课表
+     */
+    ArrayList<Course> getCourses();
 }

@@ -41,6 +41,7 @@ public class LoginController {
      */
     @PostMapping("/stuRegister")
     public Result<Student> register(@RequestBody @Validated Student student){
+
         log.info("学生注册信息：{}",student);
         Integer stuId = student.getStuId();
         //查询用户
@@ -82,7 +83,6 @@ public class LoginController {
     @PostMapping("/login")
     public Result<String> login(@RequestBody @Validated User user){
         log.info("用户登录：{}", user);
-
         Integer code = userService.login(user);
 
         //登录成功，生成令牌，下发令牌

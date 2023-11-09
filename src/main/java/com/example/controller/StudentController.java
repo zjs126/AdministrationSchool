@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.pojo.Course;
 import com.example.pojo.Result;
 import com.example.pojo.Student;
 import com.example.service.StudentService;
@@ -12,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -44,10 +46,11 @@ public class StudentController {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         Student student = studentService.findStudentByStuId(id);
-        if(!BCryptPasswordUtils.matchPassword(oldPwd, student.getPassword())){
+        if(!BCryptPasswordUtils.matchPassword(oldPwd, student.getPassword())) {
             log.info("原密码填写错误");
-            return Result.error(401,"原密码填写错误");
+            return Result.error(401, "原密码填写错误");
         }
+
         //newPwd和rePwd是否相同
         if(!newPwd.equals(rePwd)){
             log.info("两次填写的密码不一样");
@@ -67,9 +70,20 @@ public class StudentController {
      * @param student 要更新的学生信息
      */
     @PutMapping("/update")
-    public Result<Student> update(@RequestBody @Validated Student student){
-        log.info("学生更新信息：{}",student);
+    public Result<Student> update(@RequestBody @Validated Student student) {
+        log.info("学生更新信息：{}", student);
         studentService.update(student);
         return Result.success();
+    }
+
+    /**
+     * 获取课程信息列表
+     */
+    @GetMapping("/getCourses")
+    public Result<ArrayList<Course>> getCourses(){
+        log.info("学生获取选课列表");
+        ArrayList<Course> courses=new ArrayList<>();
+        courses=studentService.getCourses();
+        return Result.success(courses);
     }
 }
