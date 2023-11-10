@@ -6,6 +6,7 @@ import com.example.pojo.Student;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper
 public interface StudentMapper {
@@ -65,4 +66,6 @@ public interface StudentMapper {
      */
     @Select("select * from course where course_id=#{id} and university=#{university}")
     Course getOneCourse(Integer id, String university);
+
+    List<Student> pageList(Integer stuId, String name, String major, String college, String university, Integer className, Integer grand);
 }

@@ -2,15 +2,19 @@ package com.example.service.Impl;
 
 import com.example.mapper.StudentMapper;
 import com.example.pojo.Course;
+import com.example.pojo.PageBean;
 import com.example.pojo.SC;
 import com.example.pojo.Student;
 import com.example.service.StudentService;
 import com.example.utils.BCryptPasswordUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -73,5 +77,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Course getOneCourse(Integer id, String university) {
         return studentMapper.getOneCourse(id,university);
+    }
+
+    @Override
+    public PageBean page(Integer page, Integer pageSize, Integer stuId, String name, String major, String college, String university, Integer className, Integer grand) {
+        //设置分页参数
+        PageHelper.startPage(page,pageSize);
+        PageHelper.startPage(page,pageSize);
+
+        //执行查询
+        List<Student> empList = studentMapper.pageList(stuId, name, major, college, university, className, grand);
+        Page<Student> p = (Page<Student>) empList;
+
+        //封装pageBean对象
+        PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
+        return pageBean;
     }
 }

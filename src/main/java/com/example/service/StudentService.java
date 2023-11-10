@@ -2,6 +2,7 @@ package com.example.service;
 
 
 import com.example.pojo.Course;
+import com.example.pojo.PageBean;
 import com.example.pojo.SC;
 import com.example.pojo.Student;
 
@@ -53,4 +54,6 @@ public interface StudentService {
      * 根据id,university查询一门课的信息
      */
     Course getOneCourse(Integer id,String university);
+
+    PageBean page(Integer page, Integer pageSize, Integer stuId, String name, String major, String college, String university, Integer className, Integer grand);
 }

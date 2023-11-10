@@ -51,10 +51,11 @@
             <optional>true</optional>
         </dependency>
 
+        <!--分页查询插件-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.4.2</version>
+            <version>1.4.7</version>
         </dependency>
 
         <!--springboot单元测试-->

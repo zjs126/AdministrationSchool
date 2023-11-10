@@ -83,14 +83,19 @@ public class StudentController {
         return Result.success();
     }
 
-//    @GetMapping
-//    public Result page(@RequestParam(defaultValue = "1") Integer page,
-//                       @RequestParam(defaultValue = "10") Integer pageSize,
-//                       Integer stuId, String name, String major, ) {
-//        log.info("分页查询：参数：{},{},{},{},{},{}", page, pageSize);
-//        PageBean pageBean = studentService.page(page, pageSize);
-//        return Result.success(pageBean);
-//    }
+    @GetMapping
+    public Result page(@RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer pageSize,
+                       Integer stuId, String name, String major, String college, String university,
+                       Integer className, Integer grand) {
+        log.info("分页查询：参数：{},{},{},{},{},{},{},{},{}", page, pageSize, stuId, name, major, college, university, className, grand);
+        Map<String, Object> map = ThreadLocalUtil.get();
+        if(university == null){
+            university = (String) map.get("university");
+        }
+        PageBean pageBean = studentService.page(page, pageSize, stuId, name, major, college, university, className, grand);
+        return Result.success(pageBean);
+    }
 
     /**
      * 获取课程信息列表
