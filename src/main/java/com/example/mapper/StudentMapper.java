@@ -67,5 +67,16 @@ public interface StudentMapper {
     @Select("select * from course where course_id=#{id} and university=#{university}")
     Course getOneCourse(Integer id, String university);
 
+    /**
+     * 学生信息分页条件查询
+     * @param stuId 学生学号
+     * @param name 学生名字
+     * @param major 专业
+     * @param college 学院
+     * @param university 学校（管理员专有）
+     * @param className 班级
+     * @param grand 年级
+     * @return 学生信息列表
+     */
     List<Student> pageList(Integer stuId, String name, String major, String college, String university, Integer className, Integer grand);
 }

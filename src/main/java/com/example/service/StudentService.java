@@ -55,5 +55,18 @@ public interface StudentService {
      */
     Course getOneCourse(Integer id,String university);
 
+    /**
+     * 学生信息分页条件查询
+     * @param page 第几页
+     * @param pageSize 每页展示数量
+     * @param stuId 学生学号
+     * @param name 学生名字
+     * @param major 专业
+     * @param college 学院
+     * @param university 学校
+     * @param className 班级
+     * @param grand 年级
+     * @return 学生信息列表
+     */
     PageBean page(Integer page, Integer pageSize, Integer stuId, String name, String major, String college, String university, Integer className, Integer grand);
 }

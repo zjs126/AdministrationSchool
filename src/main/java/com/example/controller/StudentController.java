@@ -32,7 +32,6 @@ public class StudentController {
 
     /**
      * 更新学生账号密码
-     *
      * @param params 新旧密码
      * @param token  jwt令牌
      */
@@ -83,16 +82,26 @@ public class StudentController {
         return Result.success();
     }
 
+    /**
+     * 学生信息分页条件查询
+     * @param page 第几页
+     * @param pageSize 每页展示数量
+     * @param stuId 学生学号
+     * @param name 学生名字
+     * @param major 专业
+     * @param college 学院
+     * @param className 班级
+     * @param grand 年级
+     * @return 学生信息列表
+     */
     @GetMapping
-    public Result page(@RequestParam(defaultValue = "1") Integer page,
+    public Result<PageBean> page(@RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer pageSize,
-                       Integer stuId, String name, String major, String college, String university,
+                       Integer stuId, String name, String major, String college,
                        Integer className, Integer grand) {
-        log.info("分页查询：参数：{},{},{},{},{},{},{},{},{}", page, pageSize, stuId, name, major, college, university, className, grand);
+        log.info("分页查询：参数：{},{},{},{},{},{},{},{}", page, pageSize, stuId, name, major, college, className, grand);
         Map<String, Object> map = ThreadLocalUtil.get();
-        if(university == null){
-            university = (String) map.get("university");
-        }
+        String university = (String) map.get("university");
         PageBean pageBean = studentService.page(page, pageSize, stuId, name, major, college, university, className, grand);
         return Result.success(pageBean);
     }
@@ -112,7 +121,6 @@ public class StudentController {
 
     /**
      * 选择课，更新课表
-     *
      * @param courseId 课程id
      */
     @GetMapping("/selectCourse")
@@ -143,7 +151,6 @@ public class StudentController {
 
     /**
      * 退课
-     *
      * @param courseId 课程id
      */
     @DeleteMapping("/deleteCourse")

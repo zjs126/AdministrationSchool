@@ -83,7 +83,6 @@ public class StudentServiceImpl implements StudentService {
     public PageBean page(Integer page, Integer pageSize, Integer stuId, String name, String major, String college, String university, Integer className, Integer grand) {
         //设置分页参数
         PageHelper.startPage(page,pageSize);
-        PageHelper.startPage(page,pageSize);
 
         //执行查询
         List<Student> empList = studentMapper.pageList(stuId, name, major, college, university, className, grand);

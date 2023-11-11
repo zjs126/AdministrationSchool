@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 @Mapper
 public interface TeacherMapper {
     /**
@@ -28,4 +30,7 @@ public interface TeacherMapper {
      * @param teacher 更新的教职工信息
      */
     void update(Teacher teacher);
+
+    @Select("select staff_id from teacher where name like concat('%',#{teacherName},'%') and university=#{university}")
+    List<Integer> findTeacherByNameIds(String teacherName, String university);
 }
