@@ -21,16 +21,27 @@ public class CourseServiceImpl implements CourseService {
     private TeacherMapper teacherMapper;
 
     @Override
-    public PageBean page(Integer page, Integer pageSize, String courseName, List<Integer> teacherIds, Integer time, Integer date, String type, String university) {
+    public PageBean page(Integer page, Integer pageSize, String courseName, List<Integer> teacherIds, Integer time,
+                         Integer date, String type, String university, String college) {
         //设置分页参数
         PageHelper.startPage(page,pageSize);
 
         //执行查询
-        List<Course> courseList = courseMapper.pageList(courseName, teacherIds, time, date, type, university);
+        List<Course> courseList = courseMapper.pageList(courseName, teacherIds, time, date, type, university, college);
         Page<Course> p = (Page<Course>) courseList;
 
         //封装pageBean对象
         PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
         return pageBean;
+    }
+
+    @Override
+    public void addCourse(Course course) {
+        courseMapper.addCourse(course);
+    }
+
+    @Override
+    public Course findCourseById(Integer courseId, String university) {
+        return courseMapper.findCourseById(courseId, university);
     }
 }

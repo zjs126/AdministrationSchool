@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 课程表实体类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,4 +25,5 @@ public class Course {
     private String description;//课程描述
     private Integer state;//'1为开设'
     private String university;
+    private String college; //开课学院
 }

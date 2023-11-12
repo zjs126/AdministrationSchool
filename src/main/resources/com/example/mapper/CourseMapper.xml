@@ -3,7 +3,7 @@
 <mapper namespace="com.example.mapper.CourseMapper">
 
     <sql id="commonSelect">
-        select course_id, course_name, teacher_id, classroom, time, date, type, description, state
+        select course_id, course_name, teacher_id, classroom, time, date, type, description, state, college
         from course
     </sql>
 
@@ -24,6 +24,9 @@
             </if>
             <if test="university != null and university != ''">
                 and university=#{university}
+            </if>
+            <if test="college != null and college != ''">
+                and college like concat('%',#{college},'%')
             </if>
             <if test="teacherIds != null and !teacherIds.isEmpty()">
                 and teacher_id in

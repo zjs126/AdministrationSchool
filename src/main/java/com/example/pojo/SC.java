@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 学生课表封转类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

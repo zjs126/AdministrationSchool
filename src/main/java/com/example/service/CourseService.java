@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.pojo.Course;
 import com.example.pojo.PageBean;
 
 import java.util.List;
@@ -16,5 +17,14 @@ public interface CourseService{
      * @param university 学校
      * @return 课程列表信息
      */
-    PageBean page(Integer page, Integer pageSize, String courseName, List<Integer> teacherIds, Integer time, Integer date, String type, String university);
+    PageBean page(Integer page, Integer pageSize, String courseName, List<Integer> teacherIds, Integer time,
+                  Integer date, String type, String university, String college);
+
+    /**
+     * 导入课程（教秘的功能）
+     * @param course 课程信息
+     */
+    void addCourse(Course course);
+
+    Course findCourseById(Integer courseId, String university);
 }

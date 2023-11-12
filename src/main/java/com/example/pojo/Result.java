@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * 返回结果封装类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
