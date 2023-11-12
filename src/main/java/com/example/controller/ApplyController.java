@@ -9,4 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/apply")
 public class ApplyController {
 
+    //学生申请
+
+
+    //学生查看自己的申请
+
+    //老师搜索申请
+
+    //老师审批
 }
