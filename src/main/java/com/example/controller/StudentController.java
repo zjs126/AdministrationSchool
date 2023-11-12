@@ -106,18 +106,19 @@ public class StudentController {
         return Result.success(pageBean);
     }
 
-    /**
-     * 获取课程信息列表
-     */
-    @GetMapping("/getCourses")
-    public Result<ArrayList<Course>> getCourses() {
-        log.info("学生获取选课列表");
-        Map<String, Object> map = ThreadLocalUtil.get();
-        String university = (String) map.get("university");
-        ArrayList<Course> courses;
-        courses = studentService.getCourses(university);
-        return Result.success(courses);
-    }
+//     使用CourseController中的方法查询课程
+//    /**
+//     * 获取课程信息列表
+//     */
+//    @GetMapping("/getCourses")
+//    public Result<ArrayList<Course>> getCourses() {
+//        log.info("学生获取选课列表");
+//        Map<String, Object> map = ThreadLocalUtil.get();
+//        String university = (String) map.get("university");
+//        ArrayList<Course> courses;
+//        courses = studentService.getCourses(university);
+//        return Result.success(courses);
+//    }
 
     /**
      * 选择课，更新课表
