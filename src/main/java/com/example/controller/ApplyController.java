@@ -1,6 +1,9 @@
 package com.example.controller;
 
+import com.example.service.ApplyService;
+import com.example.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/apply")
 public class ApplyController {
 
-    //学生申请
+    @Autowired
+    private ApplyService applyService;
 
+    //学生申请
 
     //学生查看自己的申请
 
