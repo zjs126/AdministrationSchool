@@ -5,7 +5,7 @@ CREATE TABLE `student` (
 `college` varchar(50) NOT NULL COMMENT '学院',
 `university` varchar(50) NOT NULL COMMENT '学校',
 `class` int(5) NULL,
-`password` varchar(20) NOT NULL DEFAULT 123456,
+`password` varchar(255) NOT NULL DEFAULT 123456,
 `grand` int(4) NULL,
 PRIMARY KEY (`stu_id`, `university`) 
 );
@@ -28,7 +28,7 @@ CREATE TABLE `teacher` (
 `name` varchar(255) NOT NULL,
 `class` int(5) NULL COMMENT '管理的班级号',
 `permission` int(2) NOT NULL COMMENT '权限 1为教师 2为教秘 3为任课老师 4为班主任 5为辅导员 6为管理员',
-`password` int(11) NOT NULL DEFAULT 123456,
+`password` varchar(255) NOT NULL DEFAULT 123456,
 `university` varchar(50) NOT NULL,
 `college` varchar(50) NOT NULL,
 PRIMARY KEY (`staff_id`, `university`) 
@@ -37,7 +37,7 @@ CREATE TABLE `selection` (
 `stu_id` int(11) NOT NULL,
 `course_id` int(11) NOT NULL,
 `score` int(3) NULL,
-`year` int(4) NOT NULL COMMENT '学年',
+`year` varchar(63) NOT NULL COMMENT '学年',
 `trimesters` int(2) NOT NULL COMMENT '学期',
 `university` varchar(50) NOT NULL,
 PRIMARY KEY (`stu_id`, `course_id`) 
@@ -56,7 +56,7 @@ CREATE TABLE `apply` (
 `administrator` int NULL COMMENT '审核人id',
 `reason` varchar(255) NULL,
 `university` varchar(50) NOT NULL,
-`year` int(4) NOT NULL,
+`year` varchar(63) NOT NULL,
 `trimesters` int(2) NOT NULL,
 `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
 `update_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,

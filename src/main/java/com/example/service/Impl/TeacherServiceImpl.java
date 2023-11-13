@@ -1,13 +1,18 @@
 package com.example.service.Impl;
 
+import com.example.mapper.StudentMapper;
 import com.example.mapper.TeacherMapper;
+import com.example.pojo.Student;
 import com.example.pojo.Teacher;
 import com.example.service.TeacherService;
 import com.example.utils.BCryptPasswordUtils;
+import com.example.utils.ExcelRead;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +21,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     private TeacherMapper teacherMapper;
+    @Autowired
+    private StudentMapper studentMapper;
 
     @Override
     public Teacher findTeacherByStaffId(Integer staffId, String university) {
@@ -37,6 +44,17 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<Integer> findTeacherByNameIds(String teacherName, String university) {
         return teacherMapper.findTeacherByNameIds(teacherName, university);
+    }
+
+    @Override
+    public void addByExcel(InputStream inputStream) {
+        ArrayList<Student> excel;
+        //方法封装成utils
+        ExcelRead excelRead=new ExcelRead();
+        excel= excelRead.Read(inputStream);
+        for(Student student:excel){
+            studentMapper.addStudent(student);
+        }
     }
 
 }

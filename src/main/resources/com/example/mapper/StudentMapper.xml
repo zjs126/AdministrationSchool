@@ -6,7 +6,7 @@
         select stu_id, name, major, college, university, class, grand
         from student
     </sql>
-    
+
     <update id="update">
         update student
         <set>
@@ -28,6 +28,8 @@
         </set>
         where stu_id=#{stuId} and university=#{university}
     </update>
+
+
     <select id="pageList" resultType="com.example.pojo.Student">
         <include refid="commonSelect" />
         <where>
@@ -52,4 +54,6 @@
         </where>
         order by stu_id desc
     </select>
+
+
 </mapper>

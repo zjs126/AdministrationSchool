@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.pojo.Teacher;
 
+import java.io.InputStream;
 import java.util.List;
 
 public interface TeacherService {
@@ -32,4 +33,10 @@ public interface TeacherService {
      * @return 教职工id列表
      */
     List<Integer> findTeacherByNameIds(String teacherName, String university);
+
+    /**
+     * 通过发送excel文件，批量导入学生信
+     * @param inputStream 输入流
+     */
+    void addByExcel(InputStream inputStream);
 }

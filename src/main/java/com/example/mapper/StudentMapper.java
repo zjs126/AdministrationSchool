@@ -79,4 +79,11 @@ public interface StudentMapper {
      * @return 学生信息列表
      */
     List<Student> pageList(Integer stuId, String name, String major, String college, String university, Integer className, Integer grand);
+
+    /**
+     * 通过文件批量导入学生信息
+     * @param student
+     */
+    @Insert("insert into student(stu_id, name, major, college, university, grand) values (#{stuId},#{name},#{major},#{college},#{university},#{grand})")
+    void addStudent(Student student);
 }
