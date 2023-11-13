@@ -4,7 +4,6 @@ import com.example.pojo.Course;
 import com.example.pojo.PageBean;
 import com.example.pojo.Result;
 import com.example.service.CourseService;
-import com.example.service.StudentService;
 import com.example.service.TeacherService;
 import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +46,6 @@ public class CourseController {
         if (teacherName != null){
             teacherIds = teacherService.findTeacherByNameIds(teacherName, university);
         }
-
         PageBean pageBean = courseService.page(page, pageSize, courseName, teacherIds, time, date, type, university, college);
         return Result.success(pageBean);
     }

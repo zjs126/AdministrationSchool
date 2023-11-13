@@ -32,6 +32,15 @@ public interface CourseMapper {
             "values(#{courseId},#{courseName},#{teacherId},#{classroom},#{time},#{date},#{type},#{description},#{state},#{university},#{college})")
     void addCourse(Course course);
 
+    /**
+     * 通过课程id找到课表信息（主要寻找是否存在某某课程）
+     * @param courseId 课程编号
+     * @param university 学校
+     * @return
+     */
     @Select("select * from course where course_id=#{courseId} and university=#{university}")
     Course findCourseById(Integer courseId, String university);
+
+    @Select("select course_id from course where course_name like concat('%',#{courseName},'%')and university=#{university}")
+    List<Integer> findCourseByNameIds(String courseName, String university);
 }

@@ -78,6 +78,8 @@ public class StudentController {
      */
     @PutMapping("/update")
     public Result<Student> update(@RequestBody @Validated Student student) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        student.setUniversity((String) map.get("university"));
         log.info("学生更新信息：{}", student);
         studentService.update(student);
         return Result.success();

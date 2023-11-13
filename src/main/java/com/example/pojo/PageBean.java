@@ -15,4 +15,5 @@ import java.util.List;
 public class PageBean {
     private Long total; //总记录数
     private List rows; //当前页数据列表
+    private Long pageCount; //总页数
 }

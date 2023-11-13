@@ -71,7 +71,9 @@ public class TeacherController {
 
     @PostMapping("/update")
     public Result update(@RequestBody @Validated Teacher teacher) {
-        log.info("教职工更新信息");
+        Map<String, Object> map = ThreadLocalUtil.get();
+        teacher.setUniversity((String) map.get("university"));
+        log.info("教职工更新信息:{}", teacher);
         teacherService.update(teacher);
         return Result.success();
     }

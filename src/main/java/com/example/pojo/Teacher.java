@@ -19,7 +19,6 @@ public class Teacher {
     private Integer className;
     private Integer permission;
     private String password;
-    @NotEmpty
     private String university; //学校
     private String college; //学院
 }

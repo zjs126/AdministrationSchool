@@ -27,4 +27,6 @@ public interface CourseService{
     void addCourse(Course course);
 
     Course findCourseById(Integer courseId, String university);
+
+    List<Integer> findTeacherByNameIds(String courseName, String university);
 }

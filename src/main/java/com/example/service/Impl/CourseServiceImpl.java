@@ -30,8 +30,11 @@ public class CourseServiceImpl implements CourseService {
         List<Course> courseList = courseMapper.pageList(courseName, teacherIds, time, date, type, university, college);
         Page<Course> p = (Page<Course>) courseList;
 
+        //计算总页数
+        Long pageCount = p.getTotal() / pageSize + 1;
+
         //封装pageBean对象
-        PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
+        PageBean pageBean = new PageBean(p.getTotal(), p.getResult(), pageCount);
         return pageBean;
     }
 
@@ -43,5 +46,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course findCourseById(Integer courseId, String university) {
         return courseMapper.findCourseById(courseId, university);
+    }
+
+    @Override
+    public List<Integer> findTeacherByNameIds(String courseName, String university) {
+        return courseMapper.findCourseByNameIds(courseName, university);
     }
 }

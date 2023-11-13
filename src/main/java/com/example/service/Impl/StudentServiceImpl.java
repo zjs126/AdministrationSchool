@@ -88,8 +88,11 @@ public class StudentServiceImpl implements StudentService {
         List<Student> empList = studentMapper.pageList(stuId, name, major, college, university, className, grand);
         Page<Student> p = (Page<Student>) empList;
 
+        //计算总页数
+        Long pageCount = p.getTotal() / pageSize + 1;
+
         //封装pageBean对象
-        PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
+        PageBean pageBean = new PageBean(p.getTotal(), p.getResult(), pageCount);
         return pageBean;
     }
 }
