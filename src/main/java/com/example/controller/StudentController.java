@@ -32,6 +32,7 @@ public class StudentController {
 
     /**
      * 更新学生账号密码
+     *
      * @param params 新旧密码
      * @param token  jwt令牌
      */
@@ -84,21 +85,22 @@ public class StudentController {
 
     /**
      * 学生信息分页条件查询
-     * @param page 第几页
-     * @param pageSize 每页展示数量
-     * @param stuId 学生学号
-     * @param name 学生名字
-     * @param major 专业
-     * @param college 学院
+     *
+     * @param page      第几页
+     * @param pageSize  每页展示数量
+     * @param stuId     学生学号
+     * @param name      学生名字
+     * @param major     专业
+     * @param college   学院
      * @param className 班级
-     * @param grand 年级
+     * @param grand     年级
      * @return 学生信息列表
      */
     @GetMapping
     public Result<PageBean> page(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer pageSize,
-                       Integer stuId, String name, String major, String college,
-                       Integer className, Integer grand) {
+                                 @RequestParam(defaultValue = "10") Integer pageSize,
+                                 Integer stuId, String name, String major, String college,
+                                 Integer className, Integer grand) {
         log.info("分页查询：参数：{},{},{},{},{},{},{},{}", page, pageSize, stuId, name, major, college, className, grand);
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
@@ -122,6 +124,7 @@ public class StudentController {
 
     /**
      * 选择课，更新课表
+     *
      * @param courseId 课程id
      */
     @GetMapping("/selectCourse")
@@ -129,10 +132,10 @@ public class StudentController {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
-        SC sc = new SC(id, courseId,university);
-        int i=studentService.selectCourse(sc);
-        if(i==0){
-            return  Result.error("时间冲突");
+        SC sc = new SC(id, courseId, university);
+        int i = studentService.selectCourse(sc);
+        if (i == 0) {
+            return Result.error("时间冲突");
         }
         return Result.success();
     }
@@ -146,12 +149,13 @@ public class StudentController {
         Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
         ArrayList<Course> courses;
-        courses = studentService.getMyCourses(id,university);
+        courses = studentService.getMyCourses(id, university);
         return Result.success(courses);
     }
 
     /**
      * 退课
+     *
      * @param courseId 课程id
      */
     @DeleteMapping("/deleteCourse")
@@ -159,7 +163,7 @@ public class StudentController {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
-        studentService.deleteCourse(courseId,id,university);
+        studentService.deleteCourse(courseId, id, university);
         return Result.success();
     }
 }

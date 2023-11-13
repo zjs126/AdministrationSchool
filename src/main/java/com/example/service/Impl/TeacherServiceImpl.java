@@ -57,4 +57,20 @@ public class TeacherServiceImpl implements TeacherService {
         }
     }
 
+    @Override
+    public void addByExcel2(InputStream inputStream) {
+        ArrayList<Teacher> excel;
+        //方法封装成utils
+        ExcelRead excelRead=new ExcelRead();
+        excel= excelRead.Read2(inputStream);
+        for(Teacher teacher:excel){
+            teacherMapper.addTeacher(teacher);
+        }
+    }
+
+    @Override
+    public int GetPermission(Integer id, String university) {
+        return teacherMapper.GetPermission(id,university);
+    }
+
 }

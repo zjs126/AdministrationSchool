@@ -20,7 +20,7 @@ public class ClassroomController {
 
     //新增教室的方法
     @PostMapping("/add")
-    public Result addClassroom(@RequestBody Classroom classroom){
+    public Result addClassroom(@RequestBody Classroom classroom) {
 
         return Result.success();
     }

@@ -76,13 +76,17 @@ public class TeacherController {
         return Result.success();
     }
 
+
     /**
      * 通过发送excel文件，批量导入学生信
      *
-     * @param excel 文件
+     * @param excel
+     * @return
+     * @throws IOException
      */
-    @PostMapping("/excel")
+    @PostMapping("/StuExcel")
     public Result addByExcel(@RequestParam("file") MultipartFile excel) throws IOException {
+
         log.info("学生信息excel");
 
         if (excel == null || excel.isEmpty()) {
@@ -90,9 +94,53 @@ public class TeacherController {
             throw new RuntimeException("获取excl文件异常");
         }
 
+        //判断是否是管理员权限
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        String university = (String) map.get("university");
+        int permission=teacherService.GetPermission(id,university);
+        if (permission!=6){
+            return Result.error("权限不够");
+        }
+
         try {
             InputStream inputStream = excel.getInputStream();
             teacherService.addByExcel(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("文件上传异常！！！");
+        }
+        return Result.success();
+    }
+
+
+    /**
+     * 老师信息的批量导入
+     * @param excel
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("/TeaExcel")
+    public Result addByExcel2(@RequestParam("file") MultipartFile excel) throws IOException {
+        log.info("老师信息excel");
+
+        if (excel == null || excel.isEmpty()) {
+            log.info("获取excl文件异常");
+            throw new RuntimeException("获取excl文件异常");
+        }
+
+        //判断是否是管理员权限
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        String university = (String) map.get("university");
+        int permission=teacherService.GetPermission(id,university);
+        if (permission!=6){
+            return Result.error("权限不够");
+        }
+
+        try {
+            InputStream inputStream = excel.getInputStream();
+            teacherService.addByExcel2(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("文件上传异常！！！");

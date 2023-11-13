@@ -35,8 +35,22 @@ public interface TeacherService {
     List<Integer> findTeacherByNameIds(String teacherName, String university);
 
     /**
-     * 通过发送excel文件，批量导入学生信
+     * 通过发送excel文件，批量导入学生信息
      * @param inputStream 输入流
      */
     void addByExcel(InputStream inputStream);
+
+    /**
+     * 通过发送excel文件，批量导入老师信息
+     * @param inputStream
+     */
+    void addByExcel2(InputStream inputStream);
+
+    /**
+     * 根据id和学校获取权限
+     * @param id
+     * @param university
+     * @return
+     */
+    int GetPermission(Integer id, String university);
 }
