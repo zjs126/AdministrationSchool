@@ -29,18 +29,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer login(User user) {
-        String stuPassword = userMapper.loginStudent(user);
-        String staffPassword = userMapper.loginTeacher(user);
+        int userType=user.getUserType();
+        String Password = null;
+        if(userType==1){
+            Password = userMapper.loginStudent(user);
+        }else if(userType==2){
+            Password = userMapper.loginTeacher(user);
+        }else if(userType==3){
+            Password = userMapper.loginAdministrator(user);
+        }
 
-        if (stuPassword == null && staffPassword == null) {
+        if (Password == null) {
             return 0; //用户未找到
         } else {
             //用户提供的未加密密码
             String userPassword = user.getPassword();
-            //数据库中存储的加密密码
-            String encodePassword = Objects.requireNonNullElse(staffPassword, stuPassword);
 
-            if (BCryptPasswordUtils.matchPassword(userPassword, encodePassword)) {
+            if (BCryptPasswordUtils.matchPassword(userPassword, Password)) {
                 return 1; //密码匹配
             } else {
                 return 2; //密码不匹配

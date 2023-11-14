@@ -41,4 +41,7 @@ public interface UserMapper {
     @Insert("insert into teacher(staff_id, name, class, permission, password, university, college) " +
             "values (#{staffId},#{name},#{className},#{permission},#{password},#{university},#{college})")
     void registerTeacher(Teacher teacher);
+
+    @Select("select password from teacher where staff_id=#{id} and university=#{university} and permission in (2,6)")
+    String loginAdministrator(User user);
 }
