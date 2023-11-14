@@ -29,7 +29,6 @@
         where stu_id=#{stuId} and university=#{university}
     </update>
 
-
     <select id="pageList" resultType="com.example.pojo.Student">
         <include refid="commonSelect" />
         <where>
