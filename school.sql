@@ -137,4 +137,3 @@ ALTER TABLE `course` ADD CONSTRAINT `classroom` FOREIGN KEY (`classroom`) REFERE
 ALTER TABLE `course` ADD CONSTRAINT `staff_id` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`staff_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `selection` ADD CONSTRAINT `course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `selection` ADD CONSTRAINT `stu_id` FOREIGN KEY (`stu_id`) REFERENCES `student` (`stu_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
