@@ -108,12 +108,12 @@ public class StudentController {
         String university = (String) map.get("university");
         Integer userType = (Integer) map.get("userType");
 
-        Teacher teacher = teacherService.findTeacherByStaffId(id, university);
-
         //判断用户是否为学生
         if (userType == 1) {
             return Result.error("学生用户权限不够");
         }
+
+        Teacher teacher = teacherService.findTeacherByStaffId(id, university);
 
         Integer classNumber = teacherService.findClassNumber(id, university);
         log.info("班级或年级号:{}", classNumber);
@@ -196,6 +196,8 @@ public class StudentController {
         Integer i = studentService.selectCourse(sc);
         if (i == 0) {
             return Result.error("时间冲突");
+        } else if (i == -1) {
+            return Result.error("课程无剩余容量");
         }
         return Result.success();
     }

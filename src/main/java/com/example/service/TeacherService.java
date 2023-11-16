@@ -74,4 +74,5 @@ public interface TeacherService {
     Integer checkScored(Integer stuId, String university, Integer courseId);
 
     Integer findClassNumber(Integer id, String university);
+
 }

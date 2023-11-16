@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.pojo.Course;
 import com.example.pojo.Result;
 import com.example.service.AdminService;
 import com.example.utils.ThreadLocalUtil;
@@ -59,6 +60,7 @@ public class AdminController {
      */
     @PostMapping("/addClassToStu")
     public Result addClassToStu(@RequestBody Map<String,Object> info){
+        log.info("给学生加课");
         Integer stuId =(Integer) info.get("stuId");
         Integer courseId=(Integer) info.get("courseId");
         String university=(String) info.get("university");
@@ -66,13 +68,38 @@ public class AdminController {
         //从ThreadLocal中获取信息
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer userType = (Integer) map.get("userType");
-        Integer permission=(Integer) map.get("permission");
 
         if(userType !=4){
             return Result.error("此操作需要教秘以上权限");
         }
 
-        adminService.addClassToStu(stuId,courseId,university);
+        int bool=adminService.addClassToStu(stuId,courseId,university);
+        if(bool==0){
+            return Result.error("时间冲突");
+        }
+        return Result.success();
+    }
+
+    /**
+     * 修改课程信息：时间 教室等
+     * @param course
+     * @return
+     */
+    @PostMapping("/resetClass")
+    public Result resetClass(@RequestBody Course course){
+        log.info("修改课程信息");
+
+        //从ThreadLocal中获取信息
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer userType = (Integer) map.get("userType");
+
+        //判断用户是否为管理员
+        if (userType != 4){
+            return Result.error("此操作需要管理员/教秘权限");
+        }
+
+        adminService.resetClass(course);
+
         return Result.success();
     }
 }

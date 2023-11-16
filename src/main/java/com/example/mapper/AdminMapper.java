@@ -1,5 +1,6 @@
 package com.example.mapper;
 
+import com.example.pojo.Course;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
@@ -25,4 +26,10 @@ public interface AdminMapper {
      */
     @Insert("insert into selection (stu_id, course_id,university) values(#{stuId},#{courseId},#{university}) ")
     void addClassToStu(Integer stuId, Integer courseId, String university);
+
+    /**
+     * 修改课程信息：时间 教室等
+     * @param course
+     */
+    void resetClass(Course course);
 }

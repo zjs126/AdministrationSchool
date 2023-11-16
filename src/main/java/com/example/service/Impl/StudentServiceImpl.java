@@ -54,6 +54,11 @@ public class StudentServiceImpl implements StudentService {
 
         ArrayList<Course> hasChoosed = getMyCourses(stuID, university);
         Course thisCourse = getOneCourse(courseID, university);
+
+        int number=studentMapper.findSelected(courseID,university);//查询选课的数量，对比课程容量
+        if(number==thisCourse.getVolume()){
+            return -1;
+        }
         for (Course course : hasChoosed) {
             //遍历已经选的课程，对比选课时间，有冲突返回0
             if (course.getDate().equals(thisCourse.getDate()) && course.getTime().equals(thisCourse.getTime())) {

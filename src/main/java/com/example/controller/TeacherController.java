@@ -195,4 +195,5 @@ public class TeacherController {
         teacherService.scoring(stuId, university, courseId,  ordinary, ending, score);
         return Result.success();
     }
+
 }
