@@ -5,10 +5,7 @@ import com.example.service.AdminService;
 import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -46,12 +43,36 @@ public class AdminController {
         String university = (String) map.get("university");
 
         //判断用户是否为管理员
-        if (userType != 3){
+        if (userType != 4){
             return Result.error("此操作需要管理员权限");
         }
 
         adminService.resetScore(stuId, courseId, university);
 
+        return Result.success();
+    }
+
+    /**
+     * 教秘给学生加课
+     * @param info
+     * @return
+     */
+    @PostMapping("/addClassToStu")
+    public Result addClassToStu(@RequestBody Map<String,Object> info){
+        Integer stuId =(Integer) info.get("stuId");
+        Integer courseId=(Integer) info.get("courseId");
+        String university=(String) info.get("university");
+
+        //从ThreadLocal中获取信息
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer userType = (Integer) map.get("userType");
+        Integer permission=(Integer) map.get("permission");
+
+        if(userType !=4){
+            return Result.error("此操作需要教秘以上权限");
+        }
+
+        adminService.addClassToStu(stuId,courseId,university);
         return Result.success();
     }
 }

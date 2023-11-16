@@ -15,4 +15,9 @@ public class AdminServiceImpl implements AdminService {
     public void resetScore(Integer stuId, Integer courseId, String university) {
         adminMapper.resetScore(stuId, courseId, university);
     }
+
+    @Override
+    public void addClassToStu(Integer stuId, Integer courseId, String university) {
+        adminMapper.addClassToStu(stuId,courseId,university);
+    }
 }
