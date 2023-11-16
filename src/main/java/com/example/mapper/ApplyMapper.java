@@ -10,7 +10,7 @@ import java.util.List;
 public interface ApplyMapper {
 
     /**
-     * 寻找是否存在相同的缓考申请表
+     * 寻找是否存在相同地缓考申请表
      * @param stuId 学号
      * @param courseId 课程编号
      * @param university 大学
@@ -31,20 +31,23 @@ public interface ApplyMapper {
 
     /**
      * 分页查询缓考申请表
-     * @param begin 申请表创建时间范围（开始时间）
-     * @param end 申请表创建时间范围（结束时间）
-     * @param year 学年
+     *
+     * @param begin      申请表创建时间范围（开始时间）
+     * @param end        申请表创建时间范围（结束时间）
+     * @param year       学年
      * @param trimesters 学期
-     * @param courseIds 课程编号集合
+     * @param courseIds  课程编号集合
      * @param university 大学
+     * @param stuId      学号
+     * @param staffId
      * @return 页面封装数据
      */
-    List<Apply> pageList(LocalDateTime begin, LocalDateTime end, String year, Integer trimesters, List<Integer> courseIds, String university);
+    List<Apply> pageList(LocalDateTime begin, LocalDateTime end, String year, Integer trimesters, List<Integer> courseIds,
+                         String university, Integer stuId, Integer staffId);
 
     /**
      * 更新缓考申请表
      * @param apply 申请表信息
-     * @return 更新后的申请表信息
      */
     @Update("update apply set reason=#{reason}, administrator=#{administrator}, update_time=#{updateTime} " +
             "where stu_id=#{stuId} and course_id=#{courseId} and university=#{university} and year=#{year}")
@@ -59,4 +62,26 @@ public interface ApplyMapper {
      */
     @Delete("delete from apply where course_id=#{courseId} and stu_id=#{stuId} and year=#{year} and university=#{university}")
     void deleteApply(Integer courseId, String year, Integer stuId, String university);
+
+    /**
+     * 撤销或重新提交缓考申请表
+     * @param courseId 课程编号
+     * @param year 学年
+     * @param stuId 学号
+     * @param university 学校
+     * @param submit 提交信号
+     */
+    @Update("update apply set submit=#{submit} where stu_id=#{stuId} and course_id=#{courseId} and year=#{year} and university=#{university}")
+    void changeSubmit(Integer courseId, String year, Integer submit, Integer stuId, String university);
+
+    /**
+     * 审核缓考申请表
+     * @param courseId 课程编号
+     * @param year 学年
+     * @param stuId 学号
+     * @param university 学校
+     * @param situation 审核信号量
+     */
+    @Update("update apply set situation=#{situation} where stu_id=#{stuId} and course_id=#{courseId} and year=#{year} and university=#{university}")
+    void audit(Integer courseId, String year, Integer situation, String university, Integer stuId);
 }

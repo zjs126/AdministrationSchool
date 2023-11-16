@@ -53,7 +53,7 @@ public class LoginController {
             return Result.success();
         } else {
             log.info("学生已存在，注册失败");
-            return Result.error(401,"用户已存在");
+            return Result.error("用户已存在");
         }
     }
 
@@ -74,7 +74,7 @@ public class LoginController {
             return Result.success();
         } else {
             log.info("教职工已存在，注册失败");
-            return Result.error(401, "用户已存在");
+            return Result.error("用户已存在");
         }
     }
 
@@ -83,7 +83,7 @@ public class LoginController {
      * @param user 用户登录信息
      */
     @PostMapping("/login")
-    public Result<String> login(@RequestBody @Validated User user){
+    public Result<String> login(@RequestBody User user){
         log.info("用户登录：{}", user);
         Integer code = userService.login(user);
 
@@ -93,6 +93,7 @@ public class LoginController {
             Map<String, Object> claim = new HashMap<>();
             claim.put("id", user.getId());
             claim.put("university", user.getUniversity());
+            claim.put("userType", user.getUserType());
             String jwt = JwtUtils.generateJwt(claim);
 
             //把token存储到redis中
@@ -101,10 +102,10 @@ public class LoginController {
         } else if (code == 2) {
             //登录失败，返回错误信息
             log.info("登录失败");
-            return Result.error(401,"用户名或密码出错！");
+            return Result.error("用户名或密码出错！");
         } else {
             log.info("用户不存在");
-            return Result.error(401,"用户不存在");
+            return Result.error("用户不存在");
         }
     }
 }

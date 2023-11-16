@@ -21,5 +21,5 @@ public class User {
     private String password;
     @NotEmpty
     private String university;
-    private Integer userType;// 1为学生，2为老师及其他，3为教秘和管理员
+    private Integer userType;// 1为学生，2为老师及班主任，3为教秘，4是辅导员，5是管理员
 }

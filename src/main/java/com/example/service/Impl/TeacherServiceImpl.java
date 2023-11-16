@@ -2,6 +2,7 @@ package com.example.service.Impl;
 
 import com.example.mapper.StudentMapper;
 import com.example.mapper.TeacherMapper;
+import com.example.pojo.SC;
 import com.example.pojo.Student;
 import com.example.pojo.Teacher;
 import com.example.service.TeacherService;
@@ -71,6 +72,21 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public int GetPermission(Integer id, String university) {
         return teacherMapper.GetPermission(id,university);
+    }
+
+    @Override
+    public void scoring(Integer stuId, String university, Integer courseId, Integer ordinary, Integer ending, Integer score) {
+        teacherMapper.scoring(stuId, university, courseId,  ordinary, ending, score);
+    }
+
+    @Override
+    public Integer checkScored(Integer stuId, String university, Integer courseId) {
+        return teacherMapper.checkScored(stuId, university, courseId);
+    }
+
+    @Override
+    public Integer findClassNumber(Integer id, String university) {
+        return teacherMapper.findClassNumber(id, university);
     }
 
 }

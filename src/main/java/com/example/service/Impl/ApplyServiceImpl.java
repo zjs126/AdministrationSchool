@@ -36,12 +36,12 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public PageBean page(Integer page, Integer pageSize, LocalDateTime begin, LocalDateTime end, String year,
-                         Integer trimesters, List<Integer> courseIds, String university) {
+                         Integer trimesters, List<Integer> courseIds, String university, Integer stuId, Integer staffId) {
         //设置分页参数
         PageHelper.startPage(page,pageSize);
 
         //执行查询
-        List<Apply> courseList = applyMapper.pageList(begin, end, year, trimesters, courseIds, university);
+        List<Apply> courseList = applyMapper.pageList(begin, end, year, trimesters, courseIds, university, stuId, staffId);
         for (Apply apply : courseList) {
             Integer courseId = apply.getCourseId();
             apply.setCourseName(courseMapper.findCourseById(courseId, university).getCourseName());
@@ -66,4 +66,15 @@ public class ApplyServiceImpl implements ApplyService {
     public void deleteApply(Integer courseId, String year, Integer stuId, String university) {
         applyMapper.deleteApply(courseId, year, stuId, university);
     }
+
+    @Override
+    public void changeSubmit(Integer courseId, String year, Integer submit, Integer stuId, String university) {
+        applyMapper.changeSubmit(courseId, year, submit, stuId, university);
+    }
+
+    @Override
+    public void audit(Integer courseId, String year, Integer situation, String university, Integer stuId) {
+        applyMapper.audit(courseId, year, situation, university, stuId);
+    }
+
 }

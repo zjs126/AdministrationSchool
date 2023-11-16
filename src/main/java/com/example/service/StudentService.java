@@ -38,7 +38,7 @@ public interface StudentService {
      * 选择课，更新课表
      * @param sc 课程id
      */
-    int selectCourse(SC sc);
+    Integer selectCourse(SC sc);
 
     /**
      * 根据id返回课表

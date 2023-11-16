@@ -3,7 +3,6 @@ package com.example.service;
 import com.example.pojo.Apply;
 import com.example.pojo.PageBean;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,17 +26,20 @@ public interface ApplyService {
 
     /**
      * 分页查询缓考申请表
-     * @param page 页码
-     * @param pageSize 每页数据量
-     * @param begin 申请表创建时间范围（开始时间）
-     * @param end 申请表创建时间范围（结束时间）
-     * @param year 学年
+     *
+     * @param page       页码
+     * @param pageSize   每页数据量
+     * @param begin      申请表创建时间范围（开始时间）
+     * @param end        申请表创建时间范围（结束时间）
+     * @param year       学年
      * @param trimesters 学期
-     * @param courseIds 课程编号集合
+     * @param courseIds  课程编号集合
      * @param university 大学
+     * @param staffId
      * @return 页面封装数据
      */
-    PageBean page(Integer page, Integer pageSize, LocalDateTime begin, LocalDateTime end, String year, Integer trimesters, List<Integer> courseIds, String university);
+    PageBean page(Integer page, Integer pageSize, LocalDateTime begin, LocalDateTime end, String year, Integer trimesters,
+                  List<Integer> courseIds, String university, Integer stuId, Integer staffId);
 
     /**
      * 更新缓考申请表
@@ -54,4 +56,24 @@ public interface ApplyService {
      * @param university 学校
      */
     void deleteApply(Integer courseId, String year, Integer stuId, String university);
+
+    /**
+     * 撤销或重新缓考申请表
+     * @param courseId 课程编号
+     * @param year 学年
+     * @param stuId 学号
+     * @param university 学校
+     * @param submit 提交信号
+     */
+    void changeSubmit(Integer courseId, String year, Integer submit, Integer stuId, String university);
+
+    /**
+     * 审核缓考申请表
+     * @param courseId 课程编号
+     * @param year 学年
+     * @param stuId 学号
+     * @param university 学校
+     * @param situation 审核信号量
+     */
+    void audit(Integer courseId, String year, Integer situation, String university, Integer stuId);
 }
