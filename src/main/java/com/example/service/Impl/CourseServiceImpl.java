@@ -1,7 +1,7 @@
 package com.example.service.Impl;
 
 import com.example.mapper.CourseMapper;
-import com.example.mapper.TeacherMapper;
+import com.example.mapper.StudentMapper;
 import com.example.pojo.Course;
 import com.example.pojo.PageBean;
 import com.example.service.CourseService;
@@ -18,7 +18,7 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseMapper courseMapper;
     @Autowired
-    private TeacherMapper teacherMapper;
+    private StudentMapper studentMapper;
 
     @Override
     public PageBean page(Integer page, Integer pageSize, String courseName, List<Integer> teacherIds, Integer time,
@@ -28,6 +28,11 @@ public class CourseServiceImpl implements CourseService {
 
         //执行查询
         List<Course> courseList = courseMapper.pageList(courseName, teacherIds, time, date, type, university, college);
+        for (Course course : courseList) {
+            Integer courseId = course.getCourseId();
+            Integer selected = studentMapper.findSelected(courseId, university);
+            course.setSelected(selected);
+        }
         Page<Course> p = (Page<Course>) courseList;
 
         //计算总页数

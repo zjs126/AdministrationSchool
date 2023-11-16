@@ -47,16 +47,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public int selectCourse(SC sc) {
-        Integer courseID=sc.getCourseID();
-        Integer stuID=sc.getStuID();
-        String university=sc.getUniversity();
+    public Integer selectCourse(SC sc) {
+        Integer courseID = sc.getCourseID();
+        Integer stuID = sc.getStuID();
+        String university = sc.getUniversity();
 
-        ArrayList<Course> hasChoosed=getMyCourses(stuID,university);
-        Course thisCourse = getOneCourse(courseID,university);
-        for(Course course:hasChoosed){
+        ArrayList<Course> hasChoosed = getMyCourses(stuID, university);
+        Course thisCourse = getOneCourse(courseID, university);
+        for (Course course : hasChoosed) {
             //遍历已经选的课程，对比选课时间，有冲突返回0
-            if(course.getDate().equals(thisCourse.getDate())&&course.getTime().equals(thisCourse.getTime())){
+            if (course.getDate().equals(thisCourse.getDate()) && course.getTime().equals(thisCourse.getTime())) {
                 return 0;
             }
         }
@@ -66,23 +66,23 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ArrayList<Course> getMyCourses(Integer id, String university) {
-        return studentMapper.getMyCourses(id,university);
+        return studentMapper.getMyCourses(id, university);
     }
 
     @Override
-    public void deleteCourse(Integer courseID,Integer id,String university) {
-        studentMapper.deleteCourse(courseID,id,university);
+    public void deleteCourse(Integer courseID, Integer id, String university) {
+        studentMapper.deleteCourse(courseID, id, university);
     }
 
     @Override
     public Course getOneCourse(Integer id, String university) {
-        return studentMapper.getOneCourse(id,university);
+        return studentMapper.getOneCourse(id, university);
     }
 
     @Override
     public PageBean page(Integer page, Integer pageSize, Integer stuId, String name, String major, String college, String university, Integer className, Integer grand) {
         //设置分页参数
-        PageHelper.startPage(page,pageSize);
+        PageHelper.startPage(page, pageSize);
 
         //执行查询
         List<Student> empList = studentMapper.pageList(stuId, name, major, college, university, className, grand);

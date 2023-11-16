@@ -86,4 +86,7 @@ public interface StudentMapper {
      */
     @Insert("insert into student(stu_id, name, major, college, university, grand) values (#{stuId},#{name},#{major},#{college},#{university},#{grand})")
     void addStudent(Student student);
+
+    @Select("select COUNT(*) from selection where university=#{university} and course_id=#{courseId}")
+    Integer findSelected(Integer courseId, String university);
 }

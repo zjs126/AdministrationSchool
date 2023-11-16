@@ -1,11 +1,8 @@
 package com.example.controller;
 
-import com.example.pojo.Course;
-import com.example.pojo.PageBean;
-import com.example.pojo.Result;
-import com.example.pojo.SC;
-import com.example.pojo.Student;
+import com.example.pojo.*;
 import com.example.service.StudentService;
+import com.example.service.TeacherService;
 import com.example.utils.BCryptPasswordUtils;
 import com.example.utils.RedisCache;
 import com.example.utils.ThreadLocalUtil;
@@ -28,6 +25,8 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @Autowired
+    private TeacherService teacherService;
+    @Autowired
     private RedisCache redisCache;
 
     /**
@@ -44,7 +43,7 @@ public class StudentController {
         String newPwd = params.get("newPwd");
 
         if (!StringUtils.hasLength(oldPwd) || !StringUtils.hasLength(rePwd) || !StringUtils.hasLength(newPwd)) {
-            return Result.error(401, "缺少必要参数");
+            return Result.error("缺少必要参数");
         }
 
         //原密码是否正确
@@ -54,13 +53,13 @@ public class StudentController {
         Student student = studentService.findStudentByStuId(id, university);
         if (!BCryptPasswordUtils.matchPassword(oldPwd, student.getPassword())) {
             log.info("原密码填写错误");
-            return Result.error(401, "原密码填写错误");
+            return Result.error("原密码填写错误");
         }
 
         //newPwd和rePwd是否相同
         if (!newPwd.equals(rePwd)) {
             log.info("两次填写的密码不一样");
-            return Result.error(401, "两次填写的密码不一样");
+            return Result.error("两次填写的密码不一样");
         }
         //2. 调用service完成密码更新
         studentService.updatePassword(id, newPwd, university);
@@ -105,7 +104,58 @@ public class StudentController {
                                  Integer className, Integer grand) {
         log.info("分页查询：参数：{},{},{},{},{},{},{},{}", page, pageSize, stuId, name, major, college, className, grand);
         Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
+        Integer userType = (Integer) map.get("userType");
+
+        Teacher teacher = teacherService.findTeacherByStaffId(id, university);
+
+        //判断用户是否为学生
+        if (userType == 1) {
+            return Result.error("学生用户权限不够");
+        }
+
+        Integer classNumber = teacherService.findClassNumber(id, university);
+        log.info("班级或年级号:{}", classNumber);
+
+        //用户为班主任（固定班级）
+        if (userType == 2) {
+            //验证是否真为班主任
+            if (teacher.getPermission() == 1) {
+                return Result.error("暂无班级信息");
+            }
+
+            log.info("班主任查询学生信息");
+            //年级参数清空，防止额外参数注入
+            grand = null;
+
+            //寻找班主任管理的班级号
+            className = classNumber;
+            college = teacher.getCollege();
+        }
+
+        //用户为辅导员（固定年级，年级下的班级任选）
+        if (userType == 3) {
+            //验证是否真为辅导员
+            if (teacher.getPermission() != 3) {
+                return Result.error("不是辅导员");
+            }
+
+            log.info("辅导员查询学生信息");
+            //寻找辅导员管理的年级
+            grand = classNumber;
+            college = teacher.getCollege();
+        }
+
+        //用户为教秘（固定学院,学院下的年级和班级任选）
+        if (userType == 4 && teacher.getPermission() == 2) {
+            log.info("教秘查询学生信息");
+            //寻找教秘管理的学院
+            college = teacher.getCollege();
+        } else if (userType == 4 && teacher.getPermission() == 5) {
+            log.info("管理员查询学生信息");
+        }
+
         PageBean pageBean = studentService.page(page, pageSize, stuId, name, major, college, university, className, grand);
         return Result.success(pageBean);
     }
@@ -127,15 +177,23 @@ public class StudentController {
     /**
      * 选择课，更新课表
      *
-     * @param courseId 课程id
+     * @param request - courseId 课程编号
      */
-    @GetMapping("/selectCourse")
-    public Result selectCourse(@RequestBody Integer courseId) {
+    @PostMapping("/selectCourse")
+    public Result selectCourse(@RequestBody Map<String, Object> request) {
+
+        //从request中获取courseId
+        Integer courseId = (Integer) request.get("courseId");
+        log.info("选课id传进：{}", courseId);
+
+        //从线程获取用户id和学校
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
+
+        //对选课信息操作
         SC sc = new SC(id, courseId, university);
-        int i = studentService.selectCourse(sc);
+        Integer i = studentService.selectCourse(sc);
         if (i == 0) {
             return Result.error("时间冲突");
         }

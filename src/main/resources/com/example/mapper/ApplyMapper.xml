@@ -28,6 +28,12 @@
                     #{courseId}
                 </foreach>
             </if>
+            <if test="stuId != null">
+                and stu_id=#{stuId}
+            </if>
+            <if test="staffId != null">
+                and administrator=#{staffId}
+            </if>
         </where>
         order by course_id desc
     </select>

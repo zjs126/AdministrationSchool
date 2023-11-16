@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.pojo.Result;
+import com.example.pojo.SC;
 import com.example.pojo.Teacher;
 import com.example.service.TeacherService;
 import com.example.utils.BCryptPasswordUtils;
@@ -43,7 +44,7 @@ public class TeacherController {
         String newPwd = params.get("newPwd");
 
         if (!StringUtils.hasLength(oldPwd) || !StringUtils.hasLength(rePwd) || !StringUtils.hasLength(newPwd)) {
-            return Result.error(401, "缺少必要参数");
+            return Result.error("缺少必要参数");
         }
 
         //原密码是否正确
@@ -53,12 +54,12 @@ public class TeacherController {
         Teacher teacher = teacherService.findTeacherByStaffId(id, university);
         if (!BCryptPasswordUtils.matchPassword(oldPwd, teacher.getPassword())) {
             log.info("原密码填写错误");
-            return Result.error(401, "原密码填写错误");
+            return Result.error("原密码填写错误");
         }
         //newPwd和rePwd是否相同
         if (!newPwd.equals(rePwd)) {
             log.info("两次填写的密码不一样");
-            return Result.error(401, "两次填写的密码不一样");
+            return Result.error("两次填写的密码不一样");
         }
         //2. 调用service完成密码更新
         teacherService.updatePassword(id, newPwd, university);
@@ -69,6 +70,10 @@ public class TeacherController {
         return Result.success();
     }
 
+    /**
+     * 更新教职工信息
+     * @param teacher 教职工信息
+     */
     @PostMapping("/update")
     public Result update(@RequestBody @Validated Teacher teacher) {
         Map<String, Object> map = ThreadLocalUtil.get();
@@ -82,9 +87,7 @@ public class TeacherController {
     /**
      * 通过发送excel文件，批量导入学生信
      *
-     * @param excel
-     * @return
-     * @throws IOException
+     * @param excel 表格信息
      */
     @PostMapping("/StuExcel")
     public Result addByExcel(@RequestParam("file") MultipartFile excel) throws IOException {
@@ -118,9 +121,7 @@ public class TeacherController {
 
     /**
      * 老师信息的批量导入
-     * @param excel
-     * @return
-     * @throws IOException
+     * @param excel 表格信息
      */
     @PostMapping("/TeaExcel")
     public Result addByExcel2(@RequestParam("file") MultipartFile excel) throws IOException {
@@ -147,6 +148,51 @@ public class TeacherController {
             e.printStackTrace();
             throw new RuntimeException("文件上传异常！！！");
         }
+        return Result.success();
+    }
+
+    /**
+     * 老师打分
+     * @param request 请求参数体
+     * -stuId 学号
+     * -university 学校
+     * -courseId 课程编号
+     * -ordinary 平时分
+     * -ending 期末分
+     * -score 总成绩
+     */
+    @PatchMapping("/scoring")
+    public Result scoring(@RequestBody Map<String, Object> request){
+
+        //从request中获取分数信息
+        Integer ordinary = (Integer) request.get("ordinary");
+        Integer ending = (Integer) request.get("ending");
+        Integer score = (Integer) request.get("score");
+        Integer courseId = (Integer) request.get("courseId");
+        Integer stuId = (Integer) request.get("stuId");
+
+        //验证参数是否有空
+        if (ordinary == null || ending == null || score == null || courseId == null){
+            return Result.error("必须参数有空");
+        }
+
+        //从ThreadLocal线程获取信息
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        Integer userType = (Integer) map.get("userType");
+
+        //判断用户身份是否为老师
+        if (userType == 1){
+            return Result.error("学生用户没有权限");
+        }
+
+        //检查是否已经打过分
+        Integer status = teacherService.checkScored(stuId, university, courseId);
+        if (status == 1){
+            return Result.error("已经打过分，无法重复打分");
+        }
+
+        teacherService.scoring(stuId, university, courseId,  ordinary, ending, score);
         return Result.success();
     }
 }

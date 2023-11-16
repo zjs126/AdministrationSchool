@@ -64,9 +64,10 @@ public class CourseController {
         if (cou == null){
             courseService.addCourse(course);
         } else{
-            return Result.error(401, "课程信息已存在");
+            return Result.error("课程信息已存在");
         }
         return Result.success();
     }
+
 
 }

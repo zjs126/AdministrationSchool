@@ -53,4 +53,25 @@ public interface TeacherService {
      * @return
      */
     int GetPermission(Integer id, String university);
+
+    /**
+     * 老师打分
+     * @param stuId 学号
+     * @param university 学校
+     * @param courseId 课程编号
+     * @param ordinary 平时分
+     * @param ending 期末分
+     * @param score 总成绩
+     */
+    void scoring(Integer stuId, String university, Integer courseId, Integer ordinary, Integer ending, Integer score);
+
+    /**
+     * 检查是否已经打过分
+     * @param stuId 学号
+     * @param university 学校
+     * @param courseId 课程编号
+     */
+    Integer checkScored(Integer stuId, String university, Integer courseId);
+
+    Integer findClassNumber(Integer id, String university);
 }

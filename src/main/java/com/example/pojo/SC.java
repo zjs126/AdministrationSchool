@@ -13,11 +13,14 @@ import lombok.NoArgsConstructor;
 public class SC {
     private Integer stuID;
     private Integer courseID;
-    private Integer score;
+    private Integer score;      //总成绩
     private String university;
-    public SC(Integer id, Integer courseId,String university) {
-        this.courseID=courseId;
-        this.stuID=id;
-        this.university=university;
+    private Integer ordinary;   //平时成绩
+    private Integer ending;     //期末成绩
+
+    public SC(Integer id, Integer courseId, String university) {
+        this.courseID = courseId;
+        this.stuID = id;
+        this.university = university;
     }
 }

@@ -18,7 +18,7 @@ public class Course {
     @Pattern(regexp = "^\\S{1,10}$")
     private String courseName;
     private Integer teacherId;
-    private Integer classroom;
+    private String classroom;
     private Integer time;//'1为早八 2为早十 3为下二 4为下四'
     private Integer date;//'周一到周五'
     private String type;//课程类型
@@ -26,4 +26,7 @@ public class Course {
     private Integer state;//'1为开设'
     private String university;
     private String college; //开课学院
+    private Integer credit; //学分
+    private Integer volume; //课程容量
+    private Integer selected; //已选课人数
 }

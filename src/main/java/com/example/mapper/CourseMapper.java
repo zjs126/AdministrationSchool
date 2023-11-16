@@ -28,8 +28,8 @@ public interface CourseMapper {
      * 导入课程（教秘的功能）
      * @param course 课程信息
      */
-    @Insert("insert into course(course_id, course_name, teacher_id, classroom, time, date, type, description, state, university, college)" +
-            "values(#{courseId},#{courseName},#{teacherId},#{classroom},#{time},#{date},#{type},#{description},#{state},#{university},#{college})")
+    @Insert("insert into course(course_id, course_name, teacher_id, classroom, time, date, type, description, state, university, college, credit, volume)" +
+            "values(#{courseId},#{courseName},#{teacherId},#{classroom},#{time},#{date},#{type},#{description},#{state},#{university},#{college}, #{credit}, #{volume})")
     void addCourse(Course course);
 
     /**
