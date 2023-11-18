@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Enumeration;
 import java.util.Map;
 
 @Slf4j
@@ -26,17 +27,20 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override //目标资源方法执行前运行，返回true，放行；返回false，不放行
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        response.setHeader("Access-Control-Allow-Origin", "*"); // 设置允许跨域的来源，这里设置为所有来源
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH"); // 设置允许的请求方法
-        response.setHeader("Access-Control-Allow-Headers", "*"); // 设置允许的请求头
-        response.setHeader("Access-Control-Max-Age", "3600"); // 设置预检请求的有效期，单位为秒
+        if (request.getMethod().equals("OPTIONS")) { // 如果是预检请求
+            String headers = request.getHeader("Access-Control-Request-Headers"); // 获取请求头信息
+            if (headers != null && headers.contains("token")) { // 检查请求头信息是否包含 Authorization
+                response.setHeader("Access-Control-Allow-Headers", "token"); // 在响应中包含 Access-Control-Allow-Headers 头部信息，允许实际请求中包含 Authorization 请求头
+                return true;
+            }
+        }
 
         // 1.获取请求的url
         String url = request.getRequestURL().toString();
         log.info("请求的url：{}", url);
 
         // 2.判断请求的url中是否包含login，如果包含，说明是登录操作，放行
-        if (url.contains("login")) {
+        if (url.contains("login") && !url.contains("/login/status")) {
             log.info("登录操作，放行...");
             return true;
         } else if(url.contains("student/register")){
@@ -46,6 +50,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         // 3.获取请求头中的令牌（token）
         String token = request.getHeader("token");
+//        String token = request.getParameter("token");
+        log.info("token:{}", token);
 
         //获取redis中的token
         Object redisToken = redisCache.getCacheObject(token);
@@ -53,7 +59,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         // 4.判断令牌是否存在，如果不存在，返回错误结果（未登录）
         if (!StringUtils.hasLength(token) || redisToken == null) {
             log.info("请求头token为空或失效了，返回未登录的信息");
-            Result error = Result.error(401,"NOT_LOGIN");
+            Result error = Result.error("NOT_LOGIN");
             // 手动转换 对象--JSON --------> 阿里巴巴fastJSON
             String notLogin = JSONObject.toJSONString(error);
             response.getWriter().write(notLogin);

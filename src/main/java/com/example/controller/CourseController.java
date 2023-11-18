@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.pojo.Course;
 import com.example.pojo.PageBean;
 import com.example.pojo.Result;
+import com.example.pojo.Schedule;
 import com.example.service.CourseService;
 import com.example.service.TeacherService;
 import com.example.utils.ThreadLocalUtil;
@@ -69,5 +70,13 @@ public class CourseController {
         return Result.success();
     }
 
-
+    @GetMapping("/teacher")
+    public Result<List<Course>> findTeacherCourse(){
+        log.info("老师查看自己的课程");
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        Integer teacherId = (Integer) map.get("id");
+        List<Course> course = courseService.findTeacherCourse(university, teacherId);
+        return Result.success(course);
+    }
 }

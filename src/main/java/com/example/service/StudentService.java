@@ -1,12 +1,10 @@
 package com.example.service;
 
 
-import com.example.pojo.Course;
-import com.example.pojo.PageBean;
-import com.example.pojo.SC;
-import com.example.pojo.Student;
+import com.example.pojo.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface StudentService {
     /**
@@ -69,4 +67,17 @@ public interface StudentService {
      * @return 学生信息列表
      */
     PageBean page(Integer page, Integer pageSize, Integer stuId, String name, String major, String college, String university, Integer className, Integer grand);
+
+    Integer findClassNumber(Integer stuId, String university);
+
+
+    List<Score> findScore(Integer stuId, String university);
+
+    /**
+     * 学生获取课表信息
+     * @param stuId 学号
+     * @param university 学校
+     * @return 课表信息
+     */
+    List<Schedule> scheduleResult(Integer stuId, String university);
 }

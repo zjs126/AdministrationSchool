@@ -1,5 +1,8 @@
 package com.example.mapper;
 
+import com.example.pojo.SC;
+import com.example.pojo.Schedule;
+import com.example.pojo.Score;
 import com.example.pojo.Teacher;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -46,25 +49,41 @@ public interface TeacherMapper {
 
     /**
      * 老师打分
-     * @param stuId 学号
+     *
+     * @param stuId      学号
      * @param university 学校
-     * @param courseId 课程编号
-     * @param ordinary 平时分
-     * @param ending 期末分
-     * @param score 总成绩
+     * @param courseId   课程编号
+     * @param ordinary   平时分
+     * @param ending     期末分
+     * @param score      总成绩
      */
     @Update("update selection set ordinary=#{ordinary}, ending=#{ending}, score=#{score}, status=1 where stu_id=#{stuId} and university=#{university} and course_id=#{courseId}")
     void scoring(Integer stuId, String university, Integer courseId, Integer ordinary, Integer ending, Integer score);
 
     /**
      * 检查是否已经打过分
-     * @param stuId 学号
+     *
+     * @param stuId      学号
      * @param university 学校
-     * @param courseId 课程编号
+     * @param courseId   课程编号
      */
     @Select("select status from selection where stu_id=#{stuId} and university=#{university} and course_id=#{courseId}")
     Integer checkScored(Integer stuId, String university, Integer courseId);
 
     @Select("select class from teacher where staff_id=#{id} and university=#{university}")
     Integer findClassNumber(Integer id, String university);
+
+    List<Score> findSelectedStudent(List<Integer> courseIds, List<Integer> stuIds, String university);
+
+    @Select("select * from selection where course_id=#{courseId} and stu_id=#{stuId} and university=#{university}")
+    SC scoreInfo(Integer courseId, Integer stuId, String university);
+
+    /**
+     * 老师查询自己课程表
+     * @param teacherId 老师编号
+     * @param university 学校
+     * @return 课程表信息
+     */
+    @Select("select course_name, classroom, date, time from course where teacher_id=#{teacherId} and university=#{university}")
+    List<Schedule> scheduleResult(Integer teacherId, String university);
 }

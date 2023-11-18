@@ -1,5 +1,8 @@
 package com.example.service;
 
+import com.example.pojo.PageBean;
+import com.example.pojo.SC;
+import com.example.pojo.Schedule;
 import com.example.pojo.Teacher;
 
 import java.io.InputStream;
@@ -73,6 +76,41 @@ public interface TeacherService {
      */
     Integer checkScored(Integer stuId, String university, Integer courseId);
 
+    /**
+     * 找到班主任管理的班级号
+     * @param id 班主任编号
+     * @param university 学校
+     * @return 班级号
+     */
     Integer findClassNumber(Integer id, String university);
 
+    /**
+     * 老师查询自己课程学生成绩信息
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @param courseName 课程名称
+     * @param studentName 学生名称
+     * @param staffId 老师编号
+     * @param university 学校
+     * @return 封装分页信息
+     */
+    PageBean findSelectedStudent(Integer page, Integer pageSize, String courseName, String studentName, Integer staffId, String university);
+
+    /**
+     * 根据学号和课程编号返回成绩信息
+     *
+     * @param courseId   课程编号
+     * @param stuId      学号
+     * @param university 学校
+     * @return
+     */
+    SC scoreInfo(Integer courseId, Integer stuId, String university);
+
+    /**
+     * 老师查询自己课程表
+     * @param teacherId 老师编号
+     * @param university 学校
+     * @return 课程表信息
+     */
+    List<Schedule> scheduleResult(Integer teacherId, String university);
 }

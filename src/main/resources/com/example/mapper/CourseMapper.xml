@@ -3,7 +3,7 @@
 <mapper namespace="com.example.mapper.CourseMapper">
 
     <sql id="commonSelect">
-        select course_id, course_name, teacher_id, classroom, time, date, type, description, state, college
+        select course_id, course_name, teacher_id, classroom, time, date, type, description, state, college, credit, volume
         from course
     </sql>
 

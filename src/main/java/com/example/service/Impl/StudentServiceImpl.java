@@ -1,12 +1,12 @@
 package com.example.service.Impl;
 
+import com.example.mapper.CourseMapper;
 import com.example.mapper.StudentMapper;
-import com.example.pojo.Course;
-import com.example.pojo.PageBean;
-import com.example.pojo.SC;
-import com.example.pojo.Student;
+import com.example.mapper.TeacherMapper;
+import com.example.pojo.*;
 import com.example.service.StudentService;
 import com.example.utils.BCryptPasswordUtils;
+import com.example.utils.ScheduleUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +23,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private TeacherMapper teacherMapper;
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Override
     public void updatePassword(Integer stuId, String password, String university) {
@@ -48,8 +52,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer selectCourse(SC sc) {
-        Integer courseID = sc.getCourseID();
-        Integer stuID = sc.getStuID();
+        Integer courseID = sc.getCourseId();
+        Integer stuID = sc.getStuId();
         String university = sc.getUniversity();
 
         ArrayList<Course> hasChoosed = getMyCourses(stuID, university);
@@ -94,10 +98,45 @@ public class StudentServiceImpl implements StudentService {
         Page<Student> p = (Page<Student>) empList;
 
         //计算总页数
-        Long pageCount = p.getTotal() / pageSize + 1;
+        Integer pageCount = (int)p.getTotal() % pageSize == 0 ? (int)p.getTotal() / pageSize : (int)p.getTotal() / pageSize + 1;
 
         //封装pageBean对象
-        PageBean pageBean = new PageBean(p.getTotal(), p.getResult(), pageCount);
+        PageBean pageBean = new PageBean((int)p.getTotal(), p.getResult(), pageCount);
         return pageBean;
     }
+
+    @Override
+    public Integer findClassNumber(Integer stuId, String university) {
+        return studentMapper.findClassNumber(stuId, university);
+    }
+
+    @Override
+    public List<Score> findScore(Integer stuId, String university) {
+        List<Score> scores = studentMapper.findScore(stuId, university);
+        for (Score score : scores) {
+            Course course = courseMapper.findCourseById(score.getCourseId(), university);
+            String teacherName = teacherMapper.findTeacherById(course.getTeacherId(), university).getName();
+
+            score.setCourseName(course.getCourseName());
+            score.setTeacherName(teacherName);
+            score.setCredit(course.getCredit());
+        }
+        return scores;
+    }
+
+    @Override
+    public List<Schedule> scheduleResult(Integer stuId, String university) {
+        ArrayList<Course> myCourses = studentMapper.getMyCourses(stuId, university);
+        List<Schedule> schedules = new ArrayList<Schedule>();
+        for (Course myCourse : myCourses) {
+            Schedule schedule = new Schedule();
+            schedule.setClassroom(myCourse.getClassroom());
+            schedule.setCourseName(myCourse.getCourseName());
+            schedule.setSchedule(ScheduleUtils.scheduleTable(myCourse.getDate(), myCourse.getTime()));
+            schedule.setTeacherName(teacherMapper.findTeacherById(myCourse.getTeacherId(), university).getName());
+            schedules.add(schedule);
+        }
+        return schedules;
+    }
+
 }

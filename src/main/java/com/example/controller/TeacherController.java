@@ -1,8 +1,6 @@
 package com.example.controller;
 
-import com.example.pojo.Result;
-import com.example.pojo.SC;
-import com.example.pojo.Teacher;
+import com.example.pojo.*;
 import com.example.service.TeacherService;
 import com.example.utils.BCryptPasswordUtils;
 import com.example.utils.RedisCache;
@@ -18,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -196,4 +195,39 @@ public class TeacherController {
         return Result.success();
     }
 
+    /**
+     * 获取选自己课学生记录
+     * @return
+     */
+    @GetMapping("/grade")
+    public Result<PageBean> grade(@RequestParam(defaultValue = "1") Integer page,
+                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                  String courseName, String studentName){
+        log.info("老师获取选自己课程学生的信息,参数：{}，{}，{}，{}", page, pageSize, courseName, studentName);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer staffId = (Integer) map.get("id");
+        String university = (String) map.get("university");
+
+        PageBean pageBean = teacherService.findSelectedStudent(page, pageSize, courseName, studentName, staffId, university);
+        return Result.success(pageBean);
+    }
+
+    @GetMapping("scoreInfo/{courseId}/{stuId}")
+    public Result<SC> scoreInfo(@PathVariable Integer courseId, @PathVariable Integer stuId){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        SC sc = teacherService.scoreInfo(courseId, stuId, university);
+        return Result.success(sc);
+    }
+
+    @GetMapping("/schedule")
+    public Result<List<Schedule>> scheduleResult(){
+        log.info("老师获取课表信息");
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        Integer teacherId = (Integer) map.get("id");
+        List<Schedule> schedules = teacherService.scheduleResult(teacherId, university);
+        return Result.success(schedules);
+    }
 }

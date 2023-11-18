@@ -1,18 +1,17 @@
 package com.example.controller;
 
 
-import com.example.pojo.Result;
-import com.example.pojo.Student;
-import com.example.pojo.Teacher;
-import com.example.pojo.User;
+import com.example.pojo.*;
 import com.example.service.StudentService;
 import com.example.service.TeacherService;
 import com.example.service.UserService;
 import com.example.utils.JwtUtils;
 import com.example.utils.RedisCache;
+import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -83,7 +82,7 @@ public class LoginController {
      * @param user 用户登录信息
      */
     @PostMapping("/login")
-    public Result<String> login(@RequestBody User user){
+    public Result<LoginResponse> login(@RequestBody User user){
         log.info("用户登录：{}", user);
         Integer code = userService.login(user);
 
@@ -98,7 +97,26 @@ public class LoginController {
 
             //把token存储到redis中
             redisCache.setCacheObject(jwt, jwt,12, TimeUnit.HOURS);
-            return Result.success(jwt);
+
+            //创建登录响应实体
+            Student student;
+            Teacher teacher;
+            LoginResponse loginResponse = new LoginResponse();
+            if (user.getUserType() == 1){
+                student = studentService.findStudentByStuId(user.getId(), user.getUniversity());
+                loginResponse.setUsername(student.getName());
+                loginResponse.setPermission(0);
+            } else {
+                teacher = teacherService.findTeacherByStaffId(user.getId(), user.getUniversity());
+                loginResponse.setUsername(teacher.getName());
+                loginResponse.setPermission(teacher.getPermission());
+            }
+            loginResponse.setUserType(user.getUserType());
+            loginResponse.setLoggedIn(true);
+            loginResponse.setUserId(user.getId());
+            loginResponse.setToken(jwt);
+
+            return Result.success(loginResponse);
         } else if (code == 2) {
             //登录失败，返回错误信息
             log.info("登录失败");
@@ -107,5 +125,45 @@ public class LoginController {
             log.info("用户不存在");
             return Result.error("用户不存在");
         }
+    }
+
+    @GetMapping("/login/status")
+    public Result<LoginResponse> getLoginStatus(){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        String university = (String) map.get("university");
+        Integer userType = (Integer) map.get("userType");
+
+        //创建登录响应实体
+        Student student;
+        Teacher teacher;
+        LoginResponse loginResponse = new LoginResponse();
+        if (userType == 1){
+            student = studentService.findStudentByStuId(id, university);
+            loginResponse.setUsername(student.getName());
+            loginResponse.setPermission(0);
+        } else {
+            teacher = teacherService.findTeacherByStaffId(id, university);
+            loginResponse.setUsername(teacher.getName());
+            loginResponse.setPermission(teacher.getPermission());
+        }
+        loginResponse.setUserType(userType);
+        loginResponse.setLoggedIn(true);
+        loginResponse.setUserId(id);
+
+        return Result.success(loginResponse);
+    }
+
+    @GetMapping("/user/logout")
+    public Result<LoginResponse> logout(){
+        //创建登录响应实体
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setUserType(0);
+        loginResponse.setLoggedIn(false);
+        loginResponse.setUserId(-1);
+        loginResponse.setPermission(0);
+        loginResponse.setUsername("");
+
+        return Result.success(loginResponse);
     }
 }

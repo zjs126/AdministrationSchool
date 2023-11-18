@@ -1,13 +1,15 @@
 package com.example.service.Impl;
 
+import com.example.mapper.CourseMapper;
 import com.example.mapper.StudentMapper;
 import com.example.mapper.TeacherMapper;
-import com.example.pojo.SC;
-import com.example.pojo.Student;
-import com.example.pojo.Teacher;
+import com.example.pojo.*;
 import com.example.service.TeacherService;
 import com.example.utils.BCryptPasswordUtils;
 import com.example.utils.ExcelRead;
+import com.example.utils.ScheduleUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class TeacherServiceImpl implements TeacherService {
     private TeacherMapper teacherMapper;
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Override
     public Teacher findTeacherByStaffId(Integer staffId, String university) {
@@ -88,5 +92,55 @@ public class TeacherServiceImpl implements TeacherService {
     public Integer findClassNumber(Integer id, String university) {
         return teacherMapper.findClassNumber(id, university);
     }
+
+    @Override
+    public PageBean findSelectedStudent(Integer page, Integer pageSize, String courseName, String studentName, Integer staffId, String university) {
+        //根据courseName获取courseIds集合
+        List<Integer> courseIds = courseMapper.findCourseByNameAndStaffIds(courseName, staffId, university);
+
+        //根据studentName获取stuIds集合
+        List<Integer> stuIds = studentMapper.findStudentByNameIds(studentName, university);
+
+        //设置分页参数
+        PageHelper.startPage(page, pageSize);
+
+        //执行查询
+        List<Score> empList = teacherMapper.findSelectedStudent(courseIds, stuIds, university);
+
+        //查询每条数据对应的学生名字和课程名字
+        for (Score score : empList) {
+            String couName = courseMapper.findCourseById(score.getCourseId(), university).getCourseName();
+            String stuName = studentMapper.findStudentByStuId(score.getStuId(), university).getName();
+            score.setCourseName(couName);
+            score.setStudentName(stuName);
+        }
+
+        Page<Score> p = (Page<Score>) empList;
+
+        //计算总页数
+        Integer pageCount = (int)p.getTotal() % pageSize == 0 ? (int)p.getTotal() / pageSize : (int)p.getTotal() / pageSize + 1;
+
+        //封装pageBean对象
+        PageBean pageBean = new PageBean((int)p.getTotal(), p.getResult(), pageCount);
+        return pageBean;
+    }
+
+    @Override
+    public SC scoreInfo(Integer courseId, Integer stuId, String university) {
+
+        return teacherMapper.scoreInfo(courseId, stuId, university);
+    }
+
+    @Override
+    public List<Schedule> scheduleResult(Integer teacherId, String university) {
+        List<Schedule> schedules = teacherMapper.scheduleResult(teacherId, university);
+        for (Schedule schedule : schedules) {
+            String teacherName = teacherMapper.findTeacherById(teacherId, university).getName();
+            schedule.setTeacherName(teacherName);
+            schedule.setSchedule(ScheduleUtils.scheduleTable(schedule.getDate(), schedule.getTime()));
+        }
+        return schedules;
+    }
+
 
 }

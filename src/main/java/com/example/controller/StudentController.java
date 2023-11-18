@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,6 +29,19 @@ public class StudentController {
     private TeacherService teacherService;
     @Autowired
     private RedisCache redisCache;
+
+    @GetMapping
+    public Result<Student> findStudentByStuId(){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        Integer stuId = (Integer) map.get("id");
+
+        Student student = studentService.findStudentByStuId(stuId, university);
+        Integer classNumber = studentService.findClassNumber(stuId, university);
+        student.setClassName(classNumber);
+
+        return Result.success(student);
+    }
 
     /**
      * 更新学生账号密码
@@ -97,7 +111,7 @@ public class StudentController {
      * @param grand     年级
      * @return 学生信息列表
      */
-    @GetMapping
+    @GetMapping("/page")
     public Result<PageBean> page(@RequestParam(defaultValue = "1") Integer page,
                                  @RequestParam(defaultValue = "10") Integer pageSize,
                                  Integer stuId, String name, String major, String college,
@@ -160,20 +174,6 @@ public class StudentController {
         return Result.success(pageBean);
     }
 
-//     使用CourseController中的方法查询课程
-//    /**
-//     * 获取课程信息列表
-//     */
-//    @GetMapping("/getCourses")
-//    public Result<ArrayList<Course>> getCourses() {
-//        log.info("学生获取选课列表");
-//        Map<String, Object> map = ThreadLocalUtil.get();
-//        String university = (String) map.get("university");
-//        ArrayList<Course> courses;
-//        courses = studentService.getCourses(university);
-//        return Result.success(courses);
-//    }
-
     /**
      * 选择课，更新课表
      *
@@ -227,5 +227,31 @@ public class StudentController {
         String university = (String) map.get("university");
         studentService.deleteCourse(courseId, id, university);
         return Result.success();
+    }
+
+    /**
+     * 学生查询课程分数
+     * @return 分数封装信息
+     */
+    @GetMapping("/searchScore")
+    public Result<List<Score>> searchScore(){
+        log.info("学生查询课程分数");
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer stuId = (Integer) map.get("id");
+        String university = (String) map.get("university");
+
+        List<Score> scores = studentService.findScore(stuId, university);
+        return Result.success(scores);
+    }
+
+    @GetMapping("/schedule")
+    public Result schedule(){
+        log.info("学生获取课表信息");
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer stuId = (Integer) map.get("id");
+        String university = (String) map.get("university");
+        List<Schedule> schedules = studentService.scheduleResult(stuId, university);
+        return Result.success(schedules);
     }
 }

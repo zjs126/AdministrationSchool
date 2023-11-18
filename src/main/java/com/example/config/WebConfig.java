@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -23,47 +22,19 @@ public class WebConfig implements WebMvcConfigurer {
     private LoginCheckInterceptor loginCheckInterceptor;
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        // 设置允许跨域的路径
-        registry.addMapping("/**")
-                // 设置允许跨域请求的域名
-                .allowedOriginPatterns("*")
-                // 是否允许cookie
-                .allowCredentials(true)
-                // 设置允许的请求方式
-                .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH")
-                // 设置允许的header属性
-                .allowedHeaders("*")
-                // 跨域允许时间
-                .maxAge(3600);
-    }
-
-    @Bean//使用@Bean注入fastJsonHttpMessageConvert
-    public HttpMessageConverter fastJsonHttpMessageConverters() {
-        //1.需要定义一个Convert转换消息的对象
-        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
-        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        SerializeConfig.globalInstance.put(Long.class, ToStringSerializer.instance);
-
-        fastJsonConfig.setSerializeConfig(SerializeConfig.globalInstance);
-        fastConverter.setFastJsonConfig(fastJsonConfig);
-        HttpMessageConverter<?> converter = fastConverter;
-        return converter;
-    }
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(fastJsonHttpMessageConverters());
-    }
-
-    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/**")
-                .excludePathPatterns("/login")
-                .excludePathPatterns("/stuRegister")
-                .excludePathPatterns("/teaRegister");
+                .excludePathPatterns("/login", "/stuRegister", "/teaRegister");
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        // 配置跨域
+        registry.addMapping("/**")
+                .allowCredentials(true) // 允许发送Cookie
+                .allowedHeaders("*") // 允许的头信息
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许的方法
+                .allowedOriginPatterns("*") // 允许所有域
+                .maxAge(3600); // 预检请求的有效期，单位秒
     }
 }

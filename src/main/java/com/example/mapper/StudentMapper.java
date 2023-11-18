@@ -2,6 +2,7 @@ package com.example.mapper;
 
 import com.example.pojo.Course;
 import com.example.pojo.SC;
+import com.example.pojo.Score;
 import com.example.pojo.Student;
 import org.apache.ibatis.annotations.*;
 
@@ -73,7 +74,7 @@ public interface StudentMapper {
      * @param name 学生名字
      * @param major 专业
      * @param college 学院
-     * @param university 学校（管理员专有）
+     * @param university 学校
      * @param className 班级
      * @param grand 年级
      * @return 学生信息列表
@@ -89,4 +90,13 @@ public interface StudentMapper {
 
     @Select("select COUNT(*) from selection where university=#{university} and course_id=#{courseId}")
     Integer findSelected(Integer courseId, String university);
+
+    @Select("select class from student where stu_id=#{stuId} and university=#{university}")
+    Integer findClassNumber(Integer stuId, String university);
+
+    @Select("select ordinary, ending, score, course_id from selection where stu_id=#{stuId} and university=#{university} and score is not null")
+    List<Score> findScore(Integer stuId, String university);
+
+    @Select("select stu_id from student where name like concat('%',#{studentName},'%') and university=#{university}")
+    List<Integer> findStudentByNameIds(String studentName, String university);
 }

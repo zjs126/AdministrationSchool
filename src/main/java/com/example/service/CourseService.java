@@ -29,4 +29,13 @@ public interface CourseService{
     Course findCourseById(Integer courseId, String university);
 
     List<Integer> findTeacherByNameIds(String courseName, String university);
+
+    /**
+     * 根据老师编号寻找课程
+     *
+     * @param university 学校
+     * @param teacherId  老师编号
+     * @return
+     */
+    List<Course> findTeacherCourse(String university, Integer teacherId);
 }
