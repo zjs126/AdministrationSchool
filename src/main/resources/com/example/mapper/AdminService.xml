@@ -11,9 +11,6 @@
             <if test="time != null and time != ''">
                 time=#{time},
             </if>
-            <if test="college != null and college != ''">
-                college=#{college},
-            </if>
             <if test="date != null and date != ''">
                 date=#{date},
             </if>
@@ -21,7 +18,7 @@
                 volume=#{volume},
             </if>
         </set>
-        where courseId=#{courseId}
+        where courseId=#{courseId} and university=#{university}
     </update>
 
 </mapper>

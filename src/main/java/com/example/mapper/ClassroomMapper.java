@@ -11,11 +11,11 @@ import java.util.ArrayList;
 @Mapper
 public interface ClassroomMapper {
 
-    @Insert("insert into classroom(classroom, type, situation, university) values (#{classroom},#{type},#{situation},#{university})")
+    @Insert("insert into classroom(classroom, type, university) values (#{classroom},#{type},#{university})")
     void addClassroom(Classroom classroom);
 
     @Select("select * from classroom where classroom=#{classroom} and university=#{university}")
-    Classroom findClassroom(Integer classroom, String university);
+    Classroom findClassroom(String classroom, String university);
 
     void updateClassroom(Classroom classroom);
 

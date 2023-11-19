@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Classroom {
-    private Integer classroom;
+    private String classroom;
     private String type;//教室类型
-    private String situation;//教室状态
     private String university;//学校
 }

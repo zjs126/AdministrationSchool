@@ -58,7 +58,7 @@ public class AdminController {
      * @param info
      * @return
      */
-    @PostMapping("/addClassToStu")
+        @PostMapping("/addClassToStu")
     public Result addClassToStu(@RequestBody Map<String,Object> info){
         log.info("给学生加课");
         Integer stuId =(Integer) info.get("stuId");

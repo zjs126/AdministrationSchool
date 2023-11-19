@@ -38,7 +38,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         classroomMapper.deleteClassroom(classroom);
     }
 
-    public int findClassroom(Integer classroom,String university){
+    public int findClassroom(String classroom,String university){
         Classroom classroom1=classroomMapper.findClassroom(classroom,university);
         if(classroom1!=null){
             return 0;
