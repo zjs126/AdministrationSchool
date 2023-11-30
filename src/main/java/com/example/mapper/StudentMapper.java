@@ -46,7 +46,7 @@ public interface StudentMapper {
     /**
      * 向选课表中插入选择的课
      */
-    @Insert("insert into selection(stu_id, course_id,university) values (#{stuID},#{courseID},#{university})")
+    @Insert("insert into selection(stu_id, course_id,university) values (#{stuId},#{courseId},#{university})")
     void selectCourse(SC sc);
 
     /**

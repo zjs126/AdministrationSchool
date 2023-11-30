@@ -52,18 +52,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Integer selectCourse(SC sc) {
-        Integer courseID = sc.getCourseId();
-        Integer stuID = sc.getStuId();
+        Integer courseId = sc.getCourseId();
+        Integer stuId = sc.getStuId();
         String university = sc.getUniversity();
 
-        ArrayList<Course> hasChoosed = getMyCourses(stuID, university);
-        Course thisCourse = getOneCourse(courseID, university);
+        ArrayList<Course> hasChosen = getMyCourses(stuId, university);
+        Course thisCourse = getOneCourse(courseId, university);
 
-        int number=studentMapper.findSelected(courseID,university);//查询选课的数量，对比课程容量
+        int number=studentMapper.findSelected(courseId,university);//查询选课的数量，对比课程容量
         if(number==thisCourse.getVolume()){
             return -1;
         }
-        for (Course course : hasChoosed) {
+        for (Course course : hasChosen) {
             //遍历已经选的课程，对比选课时间，有冲突返回0
             if (course.getDate().equals(thisCourse.getDate()) && course.getTime().equals(thisCourse.getTime())) {
                 return 0;

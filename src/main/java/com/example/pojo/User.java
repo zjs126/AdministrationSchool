@@ -1,5 +1,6 @@
 package com.example.pojo;
 
+import com.example.controller.LoginController;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends LoginController {
     @NotNull
     private Integer id;
     @NotEmpty

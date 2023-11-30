@@ -25,16 +25,17 @@ public class ForumController {
 
     /**
      * 用户发送评论
+     *
      * @param comment
      * @return
      */
     @PostMapping("/postcomment")
-    public Result postcomment(@RequestBody Comment comment){
+    public Result postcomment(@RequestBody Comment comment) {
         log.info("发表帖子");
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         Integer userType = (Integer) map.get("userType");
-        String university=(String)map.get("university");
+        String university = (String) map.get("university");
         comment.setId(id);
         comment.setUserType(userType);
         comment.setUniversity(university);
@@ -44,10 +45,10 @@ public class ForumController {
     }
 
     @GetMapping("/findAllComment")
-    public Result findAllComment(){
+    public Result findAllComment() {
         log.info("获取帖子");
-        ArrayList<Comment> comments=new ArrayList<>();
-        comments=forumService.findAllComment();
+        ArrayList<Comment> comments = new ArrayList<>();
+        comments = forumService.findAllComment();
         return Result.success();
     }
 }
