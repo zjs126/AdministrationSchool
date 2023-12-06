@@ -39,7 +39,7 @@ public class LoginController {
      * @param student 学生信息
      */
     @PostMapping("/stuRegister")
-    public Result<Student> register(@RequestBody @Validated Student student){
+    public Result<Student> register(@RequestBody Student student){
 
         log.info("学生注册信息：{}",student);
         Integer stuId = student.getStuId();
@@ -61,7 +61,7 @@ public class LoginController {
      * @param teacher 教职工信息
      */
     @PostMapping("/teaRegister")
-    public Result<Teacher> register(@RequestBody @Validated Teacher teacher) {
+    public Result<Teacher> register(@RequestBody Teacher teacher) {
         log.info("教职工注册信息：{}",teacher);
         Integer staffId = teacher.getStaffId();
         String university = teacher.getUniversity();
