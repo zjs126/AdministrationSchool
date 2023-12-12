@@ -107,42 +107,42 @@ SideBarItem.items = [
     index: "/admin/class",
     title: "班级管理",
     userType: UserType.admin,
-    permission: Permission.class
+    permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-user",
     index: "/admin/student",
     title: "学生管理",
     userType: UserType.admin,
-    permission: Permission.student
+    permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-user-plus",
     index: "/admin/teacher",
     title: "教师管理",
     userType: UserType.admin,
-    permission: Permission.teacher
+    permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-book",
     index: "/admin/course",
     title: "课程管理",
     userType: UserType.admin,
-    permission: Permission.course
+    permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-edit",
     index: "/admin/student/course",
     title: "选课修改",
     userType: UserType.admin,
-    permission: Permission.studentCourse
+    permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-id-badge",
     index: "/admin/admin",
     title: "管理员管理",
     userType: UserType.admin,
-    permission: Permission.admin
+    permission: Permission.department
   }
 ];
 
