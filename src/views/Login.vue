@@ -19,7 +19,7 @@
           <el-radio-group v-model="formData.userType">
             <el-radio label="1">学生</el-radio>
             <el-radio label="2">教师</el-radio>
-            <el-radio label="3">教务管理员</el-radio>
+            <el-radio label="4">教务管理员</el-radio>
           </el-radio-group>
         </el-form-item>
 
