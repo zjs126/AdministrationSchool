@@ -71,6 +71,7 @@ public class TeacherController {
 
     /**
      * 更新教职工信息
+     *
      * @param teacher 教职工信息
      */
     @PostMapping("/update")
@@ -102,8 +103,8 @@ public class TeacherController {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
-        int permission=teacherService.GetPermission(id,university);
-        if (permission!=6){
+        int permission = teacherService.GetPermission(id, university);
+        if (permission != 5) {
             return Result.error("权限不够");
         }
 
@@ -120,6 +121,7 @@ public class TeacherController {
 
     /**
      * 老师信息的批量导入
+     *
      * @param excel 表格信息
      */
     @PostMapping("/TeaExcel")
@@ -135,8 +137,8 @@ public class TeacherController {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
-        int permission=teacherService.GetPermission(id,university);
-        if (permission!=6){
+        int permission = teacherService.GetPermission(id, university);
+        if (permission != 5) {
             return Result.error("权限不够");
         }
 
@@ -152,16 +154,17 @@ public class TeacherController {
 
     /**
      * 老师打分
+     *
      * @param request 请求参数体
-     * -stuId 学号
-     * -university 学校
-     * -courseId 课程编号
-     * -ordinary 平时分
-     * -ending 期末分
-     * -score 总成绩
+     *                -stuId 学号
+     *                -university 学校
+     *                -courseId 课程编号
+     *                -ordinary 平时分
+     *                -ending 期末分
+     *                -score 总成绩
      */
     @PatchMapping("/scoring")
-    public Result scoring(@RequestBody Map<String, Object> request){
+    public Result scoring(@RequestBody Map<String, Object> request) {
 
         //从request中获取分数信息
         Integer ordinary = (Integer) request.get("ordinary");
@@ -171,7 +174,7 @@ public class TeacherController {
         Integer stuId = (Integer) request.get("stuId");
 
         //验证参数是否有空
-        if (ordinary == null || ending == null || score == null || courseId == null){
+        if (ordinary == null || ending == null || score == null || courseId == null) {
             return Result.error("必须参数有空");
         }
 
@@ -181,28 +184,29 @@ public class TeacherController {
         Integer userType = (Integer) map.get("userType");
 
         //判断用户身份是否为老师
-        if (userType == 1){
+        if (userType == 1) {
             return Result.error("学生用户没有权限");
         }
 
         //检查是否已经打过分
         Integer status = teacherService.checkScored(stuId, university, courseId);
-        if (status == 1){
+        if (status == 1) {
             return Result.error("已经打过分，无法重复打分");
         }
 
-        teacherService.scoring(stuId, university, courseId,  ordinary, ending, score);
+        teacherService.scoring(stuId, university, courseId, ordinary, ending, score);
         return Result.success();
     }
 
     /**
      * 获取选自己课学生记录
+     *
      * @return
      */
     @GetMapping("/grade")
     public Result<PageBean> grade(@RequestParam(defaultValue = "1") Integer page,
                                   @RequestParam(defaultValue = "10") Integer pageSize,
-                                  String courseName, String studentName){
+                                  String courseName, String studentName) {
         log.info("老师获取选自己课程学生的信息,参数：{}，{}，{}，{}", page, pageSize, courseName, studentName);
 
         Map<String, Object> map = ThreadLocalUtil.get();
@@ -214,7 +218,7 @@ public class TeacherController {
     }
 
     @GetMapping("scoreInfo/{courseId}/{stuId}")
-    public Result<SC> scoreInfo(@PathVariable Integer courseId, @PathVariable Integer stuId){
+    public Result<SC> scoreInfo(@PathVariable Integer courseId, @PathVariable Integer stuId) {
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
         SC sc = teacherService.scoreInfo(courseId, stuId, university);
@@ -222,7 +226,7 @@ public class TeacherController {
     }
 
     @GetMapping("/schedule")
-    public Result<List<Schedule>> scheduleResult(){
+    public Result<List<Schedule>> scheduleResult() {
         log.info("老师获取课表信息");
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
