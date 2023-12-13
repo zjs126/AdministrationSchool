@@ -1,25 +1,23 @@
 import * as ajax from "../../common/ajax";
 
-export const get = id => ajax.get("/admin/course/" + id);
+export const get = id => ajax.get("/course/" + id);
 
-export const create = entity => ajax.post("/admin/course", entity);
+export const create = entity => ajax.post("/course", entity);
 
 export const deleteItem = id => ajax.pureDelete("/admin/course/" + id);
 
-export const update = entity => ajax.put("/admin/course", entity);
+export const update = entity => ajax.put("/admin/resetClass", entity);
 
-export const getPageCount = (departmentName, majorName, name) =>
-  ajax.get("/admin/course/page/count", {
-    departmentName: departmentName,
-    majorName: majorName,
-    name: name
-  });
+export const getPageCount = () =>
+  ajax.get("/course");
 
-export const getPage = (index, departmentName, majorName, name) =>
-  ajax.get("/admin/course/page/" + index, {
-    departmentName: departmentName,
-    majorName: majorName,
-    name: name
+export const getPage = (index, courseName, teacherName, college, type) =>
+  ajax.get("/course", {
+    page: index,
+    courseName: courseName,
+    teacherName: teacherName,
+    college: college,
+    type: type
   });
 
 export const listName = () => ajax.pureGet("/admin/course/names");

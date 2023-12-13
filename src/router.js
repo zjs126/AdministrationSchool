@@ -8,6 +8,7 @@ import StudentInfo from "./views/student/StudentInfo";
 import StudentTimeTable from "./views/student/StudentTimeTable";
 import StudentExam from "./views/student/StudentExam";
 import StudentScore from "./views/student/StudentScore";
+import StudentDeferred from './views/student/StudentDeferred'
 import TeacherCourse from "./views/teacher/TeacherCourse";
 import TeacherTimetable from "./views/teacher/TeacherTimetable";
 import TeacherGrade from "./views/teacher/TeacherGrade";
@@ -63,6 +64,11 @@ const routes = [
         path: "/student/info",
         name: "student-info",
         component: StudentInfo
+      },
+      {
+        path: "/student/apply",
+        name: "student-apply",
+        component: StudentDeferred
       },
       {
         path: "/teacher",

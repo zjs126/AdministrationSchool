@@ -16,7 +16,7 @@
                 }}
                 </el-menu-item>
               </el-submenu>
-              <el-menu-item :index="subItem.index" :key="subItem.index" v-else>{{ subItem.title }}
+              <el-menu-item :index="subItem.index" :key="subItem.title" v-else>{{ subItem.title }}
               </el-menu-item>
             </template>
           </el-submenu>

@@ -7,7 +7,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     status: {
-      university: "",
       loggedIn: false,
       userId: -1,
       username: "",

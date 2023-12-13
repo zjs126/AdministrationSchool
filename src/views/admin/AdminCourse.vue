@@ -14,73 +14,47 @@
           <el-col :span="2">
             <el-button @click="create" icon="el-icon-plus">创建</el-button>
           </el-col>
-          <el-col :offset="10" :span="3">
-            <el-input
-              @keyup.enter.native="query"
-              placeholder="课程名"
-              v-model="queryForm.name"
-            />
+          <el-col :offset="10" :span="2">
+            <el-input @keyup.enter.native="query" placeholder="课程名" v-model="queryForm.courseName" />
+          </el-col>
+          <el-col :span="2">
+            <el-input @keyup.enter.native="query" placeholder="教师名" v-model="queryForm.teacherName" />
+          </el-col>
+          <el-col :span="2">
+            <el-input @keyup.enter.native="query" placeholder="学院名" v-model="queryForm.college" />
           </el-col>
           <el-col :span="3">
-            <el-input
-              @keyup.enter.native="query"
-              placeholder="教师名"
-              v-model="queryForm.teacherName"
-            />
+            <el-input @keyup.enter.native="query" placeholder="课程性质" v-model="queryForm.type" />
           </el-col>
           <el-col :span="3">
-            <el-input
-              @keyup.enter.native="query"
-              placeholder="系名"
-              v-model="queryForm.departmentName"
-            />
-          </el-col>
-          <el-col :span="3">
-            <el-button @click="query" icon="el-icon-search" type="primary"
-              >搜索
+            <el-button @click="query" icon="el-icon-search" type="primary">搜索
             </el-button>
           </el-col>
         </el-row>
       </div>
 
       <el-row justify="center" type="flex">
-        <el-pagination
-          :current-page.sync="pageIndex"
-          :page-size="pageSize"
-          :total="pageSize * pageCount"
-          @current-change="getPage"
-          background
-          layout="prev, pager, next"
-        >
+        <el-pagination :current-page.sync="pageIndex" :page-size="pageSize" :total="total" @current-change="getPage"
+          background layout="prev, pager, next">
         </el-pagination>
       </el-row>
 
       <div class="table">
         <el-table :data="tableData" stripe>
-          <el-table-column label="课程Id" prop="id" />
-          <el-table-column label="课程名" prop="name" width="200px" />
+          <el-table-column label="课程Id" prop="courseId" />
+          <el-table-column label="课程名" prop="courseName" />
           <el-table-column label="教师" prop="teacherName" />
-          <el-table-column label="所属系" prop="departmentName" />
-          <el-table-column label="年级" prop="grade" />
+          <el-table-column label="所属学院" prop="college" />
+          <el-table-column label="课程性质" prop="type" />
           <el-table-column label="学分" prop="credit" />
-          <el-table-column
-            align="center"
-            label="上课时间"
-            prop="time"
-            width="130px"
-          />
-          <el-table-column label="已选人数" prop="selectedCount" />
-          <el-table-column label="最大容量" prop="maxSize" />
+          <el-table-column align="center" label="上课时间" prop="schedule" width="150px" />
+          <el-table-column label="已选人数" prop="selected" />
+          <el-table-column label="最大容量" prop="volume" />
           <el-table-column align="center" label="操作" width="200px">
             <template slot-scope="scope">
-              <el-button @click="edit(scope.row.id)" size="mini" type="success"
-                >编辑
+              <el-button @click="edit(scope.row.courseId)" size="mini" type="success">编辑
               </el-button>
-              <el-button
-                @click="deleteItem(scope.row.id)"
-                size="mini"
-                type="danger"
-                >删除
+              <el-button @click="deleteItem(scope.row.courseId)" size="mini" type="danger">删除
               </el-button>
             </template>
           </el-table-column>
@@ -89,66 +63,67 @@
 
       <el-dialog :visible.sync="editing" title="编辑" width="30%">
         <el-form :model="entityForm" label-width="70px" ref="form">
+          <el-form-item label="课程id">
+            <el-input type="number" v-model="entityForm.courseId"></el-input>
+          </el-form-item>
           <el-form-item label="课程名">
-            <el-input v-model="entityForm.name"></el-input>
+            <el-input v-model="entityForm.courseName"></el-input>
           </el-form-item>
-          <el-form-item label="授课教师">
+          <!-- <el-form-item label="授课教师">
             <el-select placeholder="请选择教师" v-model="entityForm.teacherId">
-              <el-option
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-                v-for="(item, index) in teachers"
-              />
+              <el-option :key="index" :label="item.name" :value="item.id" v-for="(item, index) in teachers" />
             </el-select>
+          </el-form-item> -->
+          <el-form-item label="授课教师">
+            <el-input type="number" v-model="entityForm.teacherId"></el-input>
           </el-form-item>
-          <el-form-item label="年级">
+          <!-- <el-form-item label="年级">
             <el-input type="number" v-model="entityForm.grade"></el-input>
-          </el-form-item>
+          </el-form-item> -->
+
           <el-form-item label="上课时间">
-            <el-select v-model="courseDay">
-              <el-option
-                :key="index"
-                :label="item"
-                :value="index"
-                v-for="(item, index) in days"
-              >
+            <el-select v-model="entityForm.date">
+              <el-option :key="index" :label="item.name" :value="item.id" v-for="(item, index) in days">
               </el-option>
             </el-select>
-            <el-select v-model="courseTime">
-              <el-option
-                :key="index"
-                :label="item"
-                :value="index"
-                v-for="(item, index) in times"
-              >
+            <el-select v-model="entityForm.time">
+              <el-option :key="index" :label="item.name" :value="item.id" v-for="(item, index) in times">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="时长(节)">
+          <!-- <el-form-item label="时长(节)">
             <el-input type="number" v-model="courseLength"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="上课地点">
-            <el-input v-model="entityForm.location"></el-input>
+            <el-input v-model="entityForm.classroom"></el-input>
+          </el-form-item>
+          <el-form-item label="课程性质">
+            <el-input v-model="entityForm.type"></el-input>
+          </el-form-item>
+          <el-form-item label="开课学院">
+            <el-input v-model="entityForm.college"></el-input>
           </el-form-item>
           <el-form-item label="学分">
             <el-input type="number" v-model="entityForm.credit"></el-input>
           </el-form-item>
           <el-form-item label="最大容量">
-            <el-input type="number" v-model="entityForm.maxSize"></el-input>
+            <el-input type="number" v-model="entityForm.volume"></el-input>
+          </el-form-item>
+          <el-form-item label="课程描述">
+            <el-input type="textarea" v-model="entityForm.description"></el-input>
           </el-form-item>
           <!--<el-form-item label="考试时间">-->
-            <!--<el-date-picker-->
-              <!--format="yyyy-MM-dd HH:mm"-->
-              <!--type="datetime"-->
-              <!--v-model="entityForm.examDate"-->
-              <!--value-format="yyyy-MM-dd HH:mm"-->
-            <!--&gt;-->
-            <!--</el-date-picker>-->
+          <!--<el-date-picker-->
+          <!--format="yyyy-MM-dd HH:mm"-->
+          <!--type="datetime"-->
+          <!--v-model="entityForm.examDate"-->
+          <!--value-format="yyyy-MM-dd HH:mm"-->
+          <!--&gt;-->
+          <!--</el-date-picker>-->
           <!--</el-form-item>-->
-          <el-form-item label="考试地点">
+          <!-- <el-form-item label="考试地点">
             <el-input v-model="entityForm.examLocation"></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
         <span class="dialog-footer" slot="footer">
           <el-button @click="save" type="primary">确 定</el-button>
@@ -168,9 +143,10 @@ export default {
   data() {
     return {
       queryForm: {
-        departmentName: "",
+        courseName: "",
         teacherName: "",
-        name: ""
+        college: "",
+        type: ""
       },
       entityForm: {},
       tableData: [],
@@ -182,87 +158,100 @@ export default {
       courseDay: "",
       courseTime: "",
       courseLength: 0,
+      total: 0,
       days: [
-        "星期一",
-        "星期二",
-        "星期三",
-        "星期四",
-        "星期五",
-        "星期六",
-        "星期日"
+        {
+          id: 1,
+          name: "星期一"
+        },
+        {
+          id: 2,
+          name: "星期二",
+        },
+        {
+          id: 3,
+          name: "星期三",
+        },
+        {
+          id: 4,
+          name: "星期四",
+        },
+        {
+          id: 5,
+          name: "星期五",
+        }
       ],
       times: [
-        "第一节",
-        "第二节",
-        "第三节",
-        "第四节",
-        "第五节",
-        "第六节",
-        "第七节",
-        "第八节",
-        "第九节"
+        {
+          id: 1,
+          name: "第一、二节",
+        },
+        {
+          id: 2,
+          name: "第三、四节"
+        },
+        {
+          id: 3,
+          name: "第五、六节"
+        },
+        {
+          id: 4,
+          name: "第七、八节",
+        }
       ]
     };
   },
   methods: {
     query() {
       api
-        .getPageCount(
-          this.queryForm.departmentName,
-          this.queryForm.teacherName,
-          this.queryForm.name
-        )
+        .getPageCount()
         .then(res => {
-          this.pageCount = res;
-          this.pageIndex = 1;
-          this.getPage(1);
+          this.pageCount = res.pageCount;
+          this.getPage(this.pageIndex);
         });
     },
     getPage(pageIndex) {
       api
         .getPage(
           pageIndex,
-          this.queryForm.departmentName,
+          this.queryForm.courseName,
           this.queryForm.teacherName,
-          this.queryForm.name
+          this.queryForm.college,
+          this.queryForm.type
         )
         .then(res => {
-          this.tableData = res;
+          console.log(res);
+          this.tableData = res.rows;
+          this.total = res.total;
         });
     },
     create() {
       this.entityForm = {
         id: -1,
+        courseId: 0,
+        courseName: "",
+        type: "",
         teacherId: null,
-        name: "",
-        grade: 2019,
+        date: "",
         time: "",
-        location: "",
-        credit: 2,
-        maxSize: 50,
-        examDate: null,
-        examLocation: null
+        classroom: "",
+        college: "",
+        credit: 0,
+        volume: 0,
+        description: ""
       };
-      this.courseDay = 1;
-      this.courseTime = 1;
+      // this.courseDay = 1;
+      // this.courseTime = 1;
       this.courseLength = 2;
       this.editing = true;
     },
     edit(id) {
       api.get(id).then(res => {
-        let split = res.time.split("-");
-        this.courseDay = parseInt(split[0]) - 1;
-        this.courseTime = parseInt(split[1]) - 1;
-        this.courseLength = parseInt(split[2]);
         this.entityForm = res;
         this.editing = true;
       });
     },
     save() {
-      let day = this.courseDay + 1;
-      let time = this.courseTime + 1;
-      this.entityForm.time = day + "-" + time + "-" + this.courseLength;
-
       if (this.entityForm.id === -1) {
         api.create(this.entityForm).then(() => {
           this.finishSave();
@@ -292,7 +281,7 @@ export default {
   },
   created() {
     this.query();
-    this.getTeachers();
+    // this.getTeachers();
   }
 };
 </script>

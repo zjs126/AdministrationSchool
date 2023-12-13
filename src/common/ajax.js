@@ -68,7 +68,7 @@ axiosInstance.interceptors.response.use(
     let data = error.response.data.data;
     subtractRequestCount();
 
-    if (code === -1) {
+    if (code === 401) {
       innerMessage("info", "需要登录");
       setTimeout(() => (window.location.href = "/login"), 250);
       return Promise.reject(new Error("NO_LOGIN"));
@@ -129,10 +129,10 @@ const innerPut = function () {
   return axiosInstance.put.apply(this, arguments).then(dataHandle);
 };
 
-const innerPatch = function () {
-  addRequestCount();
-  return axiosInstance.patch.apply(this, arguments).then(dataHandle);
-};
+// const innerPatch = function () {
+//   addRequestCount();
+//   return axiosInstance.patch.apply(this, arguments).then(dataHandle);
+// };
 
 export const pureGet = function (url) {
   return innerGet(url);
@@ -170,10 +170,10 @@ export const put = function (url, data) {
   });
 };
 
-export const patch = function (url, data) {
-  return innerPatch(url, data, {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-};
+// export const patch = function (url, data) {
+//   return innerPatch(url, data, {
+//     headers: {
+//       "Content-Type": "application/json"
+//     }
+//   });
+// };

@@ -93,14 +93,14 @@ SideBarItem.items = [
     index: "/admin/department",
     title: "系管理",
     userType: UserType.admin,
-    permission: Permission.department
+    // permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-graduation-cap",
     index: "/admin/major",
     title: "专业管理",
     userType: UserType.admin,
-    permission: Permission.major
+    permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-group",
@@ -142,7 +142,7 @@ SideBarItem.items = [
     index: "/admin/admin",
     title: "管理员管理",
     userType: UserType.admin,
-    permission: Permission.department
+    // permission: Permission.department
   }
 ];
 

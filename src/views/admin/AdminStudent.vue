@@ -15,69 +15,41 @@
             <el-button @click="create" icon="el-icon-plus">创建</el-button>
           </el-col>
           <el-col :offset="10" :span="3">
-            <el-input
-              @keyup.enter.native="query"
-              placeholder="学生姓名"
-              v-model="queryForm.name"
-            />
+            <el-input @keyup.enter.native="query" placeholder="学生姓名" v-model="queryForm.name" />
           </el-col>
           <el-col :span="3">
-            <el-input
-              @keyup.enter.native="query"
-              placeholder="专业名"
-              v-model="queryForm.majorName"
-            />
+            <el-input @keyup.enter.native="query" placeholder="专业名" v-model="queryForm.major" />
           </el-col>
           <el-col :span="3">
-            <el-input
-              @keyup.enter.native="query"
-              placeholder="班级名"
-              v-model="queryForm.className"
-            />
+            <el-input @keyup.enter.native="query" placeholder="班级名" v-model="queryForm.className" />
           </el-col>
           <el-col :span="3">
-            <el-button @click="query" icon="el-icon-search" type="primary"
-              >搜索
+            <el-button @click="query" icon="el-icon-search" type="primary">搜索
             </el-button>
           </el-col>
         </el-row>
       </div>
 
       <el-row justify="center" type="flex">
-        <el-pagination
-          :current-page.sync="pageIndex"
-          :page-size="pageSize"
-          :total="pageSize * pageCount"
-          @current-change="getPage"
-          background
-          layout="prev, pager, next"
-        >
+        <el-pagination :current-page.sync="pageIndex" :page-size="pageSize" :total="total" @current-change="getPage"
+          background layout="prev, pager, next">
         </el-pagination>
       </el-row>
 
       <div class="table">
         <el-table :data="tableData" stripe>
-          <el-table-column label="学生Id" prop="id" width="80px" />
-          <el-table-column label="学号" prop="number" />
+          <el-table-column label="学号" prop="stuId" />
           <el-table-column label="姓名" prop="name" />
           <el-table-column label="班级" prop="className" />
-          <el-table-column label="专业" min-width="150px" prop="majorName" />
-          <el-table-column label="性别" prop="sex" width="80px" />
-          <el-table-column
-            label="上次登录"
-            prop="lastLoginTime"
-            width="130px"
-          />
+          <el-table-column label="学院" min-width="100px" prop="college" />
+          <el-table-column label="专业" min-width="100px" prop="major" />
+          <!-- <el-table-column label="性别" prop="sex" width="80px" /> -->
+          <el-table-column label="上次登录" prop="loginTime" width="180px" />
           <el-table-column align="center" label="操作" width="200px">
             <template slot-scope="scope">
-              <el-button @click="edit(scope.row.id)" size="mini" type="success"
-                >编辑
+              <el-button @click="edit(scope.row.stuId)" size="mini" type="success">编辑
               </el-button>
-              <el-button
-                @click="deleteItem(scope.row.id)"
-                size="mini"
-                type="danger"
-                >删除
+              <el-button @click="deleteItem(scope.row.stuId)" size="mini" type="danger">删除
               </el-button>
             </template>
           </el-table-column>
@@ -90,39 +62,35 @@
             <el-input v-model="entityForm.name"></el-input>
           </el-form-item>
           <el-form-item label="学号">
-            <el-input type="number" v-model="entityForm.number"></el-input>
+            <el-input type="number" v-model="entityForm.stuId"></el-input>
           </el-form-item>
-          <el-form-item label="所属班级">
+          <!-- <el-form-item label="所属班级">
             <el-select placeholder="请选择班级" v-model="entityForm.classId">
-              <el-option
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-                v-for="(item, index) in classes"
-              />
+              <el-option :key="index" :label="item.name" :value="item.id" v-for="(item, index) in classes" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="密码">
             <el-input type="password" v-model="entityForm.password"></el-input>
           </el-form-item>
-          <el-form-item label="邮箱">
-            <el-input v-model="entityForm.email"></el-input>
+          <el-form-item label="班级">
+            <el-input v-model="entityForm.className"></el-input>
           </el-form-item>
-          <el-form-item label="生日">
-            <el-date-picker
-              format="yyyy-MM-dd"
-              placeholder="选择生日"
-              type="date"
-              v-model="entityForm.birthday"
-            >
+          <el-form-item label="专业">
+            <el-input v-model="entityForm.major"></el-input>
+          </el-form-item>
+          <el-form-item label="学院">
+            <el-input v-model="entityForm.college"></el-input>
+          </el-form-item>
+          <!-- <el-form-item label="生日">
+            <el-date-picker format="yyyy-MM-dd" placeholder="选择生日" type="date" v-model="entityForm.birthday">
             </el-date-picker>
-          </el-form-item>
-          <el-form-item label="性别">
+          </el-form-item> -->
+          <!-- <el-form-item label="性别">
             <el-radio-group v-model="entityForm.sex">
               <el-radio :label="1">男</el-radio>
               <el-radio :label="0">女</el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
         <span class="dialog-footer" slot="footer">
           <el-button @click="save" type="primary">确 定</el-button>
@@ -142,7 +110,7 @@ export default {
   data() {
     return {
       queryForm: {
-        majorName: "",
+        major: "",
         className: "",
         name: ""
       },
@@ -152,48 +120,46 @@ export default {
       pageCount: 1,
       pageIndex: 1,
       editing: false,
-      classes: []
+      classes: [],
+      total: 0
     };
   },
   methods: {
     query() {
       api
-        .getPageCount(
-          this.queryForm.majorName,
-          this.queryForm.className,
-          this.queryForm.name
-        )
+        .getPageCount()
         .then(res => {
-          this.pageCount = res;
-          this.pageIndex = 1;
-          this.getPage(1);
+          this.pageCount = res.pageCount;
+          this.getPage(this.pageIndex);
         });
     },
     getPage(pageIndex) {
       api
         .getPage(
           pageIndex,
-          this.queryForm.majorName,
-          this.queryForm.className,
-          this.queryForm.name
+          this.queryForm.name,
+          this.queryForm.major,
+          this.queryForm.className
         )
         .then(res => {
-          for (let i = 0; i < res.length; i++) {
-            res[i].sex = res[i].sex === 1 ? "男" : "女";
-          }
-          this.tableData = res;
+          // for (let i = 0; i < res.length; i++) {
+          //   res[i].sex = res[i].sex === 1 ? "男" : "女";
+          // }
+          console.log(res);
+          this.tableData = res.rows;
+          this.total = res.total
         });
     },
     create() {
       this.entityForm = {
         id: -1,
-        number: "",
+        stuId: 0,
         name: "",
-        classId: "",
-        password: "",
-        email: null,
-        birthday: null,
-        sex: 0
+        password: "123456",
+        className: "",
+        major: "",
+        college: "",
+        university: "华中师范大学"
       };
       this.editing = true;
     },
@@ -233,7 +199,7 @@ export default {
   },
   created() {
     this.query();
-    this.getClasses();
+    // this.getClasses();
   }
 };
 </script>

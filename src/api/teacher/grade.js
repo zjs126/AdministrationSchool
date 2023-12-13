@@ -2,7 +2,7 @@ import * as ajax from "../../common/ajax";
 
 export const get = (courseId, stuId) => ajax.pureGet(`/teacher/scoreInfo/${courseId}/${stuId}`);
 
-export const update = entity => ajax.patch("/teacher/scoring", entity);
+export const update = entity => ajax.put("/teacher/scoring", entity);
 
 export const getPageCount = (courseName, studentName) =>
   ajax.get("/teacher/grade", {
