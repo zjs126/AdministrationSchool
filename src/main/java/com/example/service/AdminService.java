@@ -26,4 +26,18 @@ public interface AdminService {
      * @param course
      */
     void resetClass(Course course);
+
+    /**
+     * 删除学生信息
+     * @param stuId 学号
+     * @param university 学校
+     */
+    void deleteStudent(Integer stuId, String university);
+
+    /**
+     * 删除老师信息
+     * @param staffId 工号
+     * @param university 学校
+     */
+    void deleteTeacher(Integer staffId, String university);
 }

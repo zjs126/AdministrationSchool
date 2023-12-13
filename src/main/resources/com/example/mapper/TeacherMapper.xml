@@ -7,6 +7,11 @@
         from selection
     </sql>
 
+    <sql id="common">
+        select staff_id, name,  class className, university, college, password
+        from teacher
+    </sql>
+
     <update id="update">
         update teacher
         <set>
@@ -46,5 +51,23 @@
             </if>
         </where>
         order by stu_id desc
+    </select>
+    <select id="pageList" resultType="com.example.pojo.Vo.TeacherAdmin">
+        <include refid="common" />
+        <where>
+            <if test="name !=null and name != ''">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="college != null and college != ''">
+                and college like concat('%',#{college},'%')
+            </if>
+            <if test="staffId !=null">
+                and staff_id like concat('%',#{staffId},'%')
+            </if>
+            <if test="university != null and university != ''">
+                and university=#{university}
+            </if>
+        </where>
+        order by staff_id desc
     </select>
 </mapper>

@@ -42,6 +42,10 @@ public class CourseServiceImpl implements CourseService {
             Integer staffId = course.getTeacherId();
             String teacherName = teacherService.findTeacherByStaffId(staffId, university).getName();
             course.setTeacherName(teacherName);
+
+            //计算每个course的映射时间
+            String schedule = ScheduleUtils.schedule(course.getDate(), course.getTime());
+            course.setSchedule(schedule);
         }
         Page<Course> p = (Page<Course>) courseList;
 

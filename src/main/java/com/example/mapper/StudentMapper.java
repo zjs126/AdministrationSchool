@@ -4,6 +4,7 @@ import com.example.pojo.Course;
 import com.example.pojo.SC;
 import com.example.pojo.Score;
 import com.example.pojo.Student;
+import com.example.pojo.Vo.StudentAdmin;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
@@ -27,7 +28,8 @@ public interface StudentMapper {
      * @param stuId 学号
      * @return 返回学生信息
      */
-    @Select("select * from student where stu_id=#{stuId} and university=#{university}")
+    @Select("select stu_id, name, major, college, university, class className, password, grand" +
+            " from student where stu_id=#{stuId} and university=#{university}")
     Student findStudentByStuId(Integer stuId, String university);
 
     /**
@@ -79,7 +81,7 @@ public interface StudentMapper {
      * @param grand 年级
      * @return 学生信息列表
      */
-    List<Student> pageList(Integer stuId, String name, String major, String college, String university, Integer className, Integer grand);
+    List<StudentAdmin> pageList(Integer stuId, String name, String major, String college, String university, Integer className, Integer grand);
 
     /**
      * 通过文件批量导入学生信息

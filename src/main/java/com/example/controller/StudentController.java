@@ -245,6 +245,10 @@ public class StudentController {
         return Result.success(scores);
     }
 
+    /**
+     * 学生课表查询
+     * @return
+     */
     @GetMapping("/schedule")
     public Result schedule(){
         log.info("学生获取课表信息");
@@ -254,4 +258,20 @@ public class StudentController {
         List<Schedule> schedules = studentService.scheduleResult(stuId, university);
         return Result.success(schedules);
     }
+
+    /**
+     * 根据stuId获取学生信息
+     */
+    @GetMapping("/{id}")
+    public Result<Student> getByStuId(@PathVariable(value = "id") Integer stuId){
+        log.info("根据学生id查询学生信息：{}",stuId);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        Student student = studentService.findStudentByStuId(stuId, university);
+
+        return Result.success(student);
+    }
+
 }

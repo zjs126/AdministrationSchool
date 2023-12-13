@@ -5,7 +5,6 @@ spring:
     url: jdbc:mysql://localhost:3306/administration?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: lxy3.1415926353
-
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:

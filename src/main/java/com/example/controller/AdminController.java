@@ -24,10 +24,10 @@ public class AdminController {
     /**
      * 重置分数
      *
-     * @param request
+     * @param request 请求体
      * @return
      */
-    @PatchMapping("/resetScore")
+    @PutMapping("/resetScore")
     public Result resetScore(@RequestBody Map<String, Object> request) {
 
         //从request中获取信息
@@ -102,6 +102,33 @@ public class AdminController {
         }
 
         adminService.resetClass(course);
+
+        return Result.success();
+    }
+
+    /**
+     * 删除学生信息
+     */
+    @DeleteMapping("/student/{stuId}")
+    public Result deleteStudent(@PathVariable(value = "stuId") Integer stuId){
+        log.info("管理员删除学生信息:{}",stuId);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        adminService.deleteStudent(stuId, university);
+
+        return Result.success();
+    }
+
+    @DeleteMapping("/teacher/{id}")
+    public Result<Object> deleteTeacher(@PathVariable(value = "id") Integer staffId){
+        log.info("管理员删除老师信息：{}", staffId);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        adminService.deleteTeacher(staffId, university);
 
         return Result.success();
     }

@@ -3,7 +3,7 @@
 <mapper namespace="com.example.mapper.StudentMapper">
     
     <sql id="commonSelect">
-        select stu_id, name, major, college, university, class, grand
+        select stu_id, name, major, college, university, class className, grand
         from student
     </sql>
 
@@ -29,23 +29,23 @@
         where stu_id=#{stuId} and university=#{university}
     </update>
 
-    <select id="pageList" resultType="com.example.pojo.Student">
+    <select id="pageList" resultType="com.example.pojo.Vo.StudentAdmin">
         <include refid="commonSelect" />
         <where>
             <if test="name !=null and name != ''">
                 name like concat('%',#{name},'%')
             </if>
             <if test="major != null and major != ''">
-                and major=#{major}
+                and major like concat('%', #{major}, '%')
             </if>
             <if test="college != null and college != ''">
-                and college=#{college}
+                and college like concat('%',#{college},'%')
             </if>
             <if test="className != null">
-                and class=#{className}
+                and class like concat('%', #{className}, '%')
             </if>
             <if test="grand != null">
-                and grand=#{grand}
+                and grand like concat('%', #{grand}, '%')
             </if>
             <if test="university != null and university != ''">
                 and university=#{university}

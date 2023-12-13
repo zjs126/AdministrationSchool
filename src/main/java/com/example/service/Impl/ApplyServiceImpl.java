@@ -68,8 +68,8 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public void changeSubmit(Integer courseId, String year, Integer submit, Integer stuId, String university) {
-        applyMapper.changeSubmit(courseId, year, submit, stuId, university);
+    public void changeSubmit(Integer courseId, String year, Integer stuId, String university) {
+        applyMapper.changeSubmit(courseId, year, stuId, university);
     }
 
     @Override

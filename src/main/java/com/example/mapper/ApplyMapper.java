@@ -49,7 +49,7 @@ public interface ApplyMapper {
      * 更新缓考申请表
      * @param apply 申请表信息
      */
-    @Update("update apply set reason=#{reason}, administrator=#{administrator}, update_time=#{updateTime} " +
+    @Update("update apply set submit=1, reason=#{reason}, administrator=#{administrator}, update_time=#{updateTime} " +
             "where stu_id=#{stuId} and course_id=#{courseId} and university=#{university} and year=#{year}")
     void updateApply(Apply apply);
 
@@ -69,10 +69,9 @@ public interface ApplyMapper {
      * @param year 学年
      * @param stuId 学号
      * @param university 学校
-     * @param submit 提交信号
      */
-    @Update("update apply set submit=#{submit} where stu_id=#{stuId} and course_id=#{courseId} and year=#{year} and university=#{university}")
-    void changeSubmit(Integer courseId, String year, Integer submit, Integer stuId, String university);
+    @Update("update apply set submit=0 where stu_id=#{stuId} and course_id=#{courseId} and year=#{year} and university=#{university}")
+    void changeSubmit(Integer courseId, String year, Integer stuId, String university);
 
     /**
      * 审核缓考申请表

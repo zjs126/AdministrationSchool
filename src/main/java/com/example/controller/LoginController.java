@@ -1,6 +1,7 @@
 package com.example.controller;
 
 
+import com.example.anno.Log;
 import com.example.pojo.*;
 import com.example.service.StudentService;
 import com.example.service.TeacherService;
@@ -64,7 +65,11 @@ public class LoginController {
     public Result<Teacher> register(@RequestBody Teacher teacher) {
         log.info("教职工注册信息：{}",teacher);
         Integer staffId = teacher.getStaffId();
-        String university = teacher.getUniversity();
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        teacher.setUniversity(university);
+
         //查询用户
         Teacher user = teacherService.findTeacherByStaffId(staffId, university);
         if(user == null){
@@ -81,6 +86,7 @@ public class LoginController {
      * 用户登录
      * @param user 用户登录信息
      */
+    @Log
     @PostMapping("/login")
     public Result<LoginResponse> login(@RequestBody User user){
         log.info("用户登录：{}", user);
@@ -127,6 +133,10 @@ public class LoginController {
         }
     }
 
+    /**
+     * 登录状态确认接口
+     * @return LoginResponse对象
+     */
     @GetMapping("/login/status")
     public Result<LoginResponse> getLoginStatus(){
         Map<String, Object> map = ThreadLocalUtil.get();
@@ -154,6 +164,11 @@ public class LoginController {
         return Result.success(loginResponse);
     }
 
+    /**
+     * 登出
+     * @return LoginResponse对象
+     */
+    @Log
     @GetMapping("/user/logout")
     public Result<LoginResponse> logout(){
         //创建登录响应实体

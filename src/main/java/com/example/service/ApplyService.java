@@ -63,9 +63,8 @@ public interface ApplyService {
      * @param year 学年
      * @param stuId 学号
      * @param university 学校
-     * @param submit 提交信号
      */
-    void changeSubmit(Integer courseId, String year, Integer submit, Integer stuId, String university);
+    void changeSubmit(Integer courseId, String year, Integer stuId, String university);
 
     /**
      * 审核缓考申请表

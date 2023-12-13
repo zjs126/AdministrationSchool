@@ -74,7 +74,7 @@ public class TeacherController {
      *
      * @param teacher 教职工信息
      */
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Result update(@RequestBody @Validated Teacher teacher) {
         Map<String, Object> map = ThreadLocalUtil.get();
         teacher.setUniversity((String) map.get("university"));
@@ -163,7 +163,7 @@ public class TeacherController {
      *                -ending 期末分
      *                -score 总成绩
      */
-    @PatchMapping("/scoring")
+    @PutMapping("/scoring")
     public Result scoring(@RequestBody Map<String, Object> request) {
 
         //从request中获取分数信息
@@ -234,4 +234,53 @@ public class TeacherController {
         List<Schedule> schedules = teacherService.scheduleResult(teacherId, university);
         return Result.success(schedules);
     }
+
+    /**
+     * 教职工信息分页条件查询
+     *
+     * @param page      第几页
+     * @param pageSize  每页展示数量
+     * @param name      老师名字
+     * @param college   学院
+     * @return 学生信息列表
+     */
+    @GetMapping("/page")
+    public Result<PageBean> page(@RequestParam(defaultValue = "1") Integer page,
+                                 @RequestParam(defaultValue = "10") Integer pageSize,
+                                 Integer staffId, String name, String college) {
+        log.info("分页查询：参数：{},{},{},{},{}", page, pageSize, name, college, staffId);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        String university = (String) map.get("university");
+        Integer userType = (Integer) map.get("userType");
+
+        //判断用户是否为学生
+        if (userType == 1) {
+            return Result.error("学生用户权限不够");
+        }
+
+        Teacher teacher = teacherService.findTeacherByStaffId(id, university);
+
+        //用户为教秘（固定学院,学院下的年级和班级任选）
+        if (teacher.getPermission() != 5 && teacher.getPermission() != 2) {
+            return Result.error("不是管理员，不能查询教师");
+        }
+        log.info("管理员查询学生信息");
+
+        PageBean pageBean = teacherService.page(page, pageSize, name, college, university, staffId);
+        return Result.success(pageBean);
+    }
+
+    @GetMapping("/{id}")
+    public Result<Teacher> getTeacherByStaffId(@PathVariable(value = "id") Integer staffId){
+        log.info("根据工号查询老师信息：{}", staffId);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        Teacher teacher = teacherService.findTeacherByStaffId(staffId, university);
+        return Result.success(teacher);
+    }
+
 }

@@ -1,9 +1,11 @@
 package com.example.service.Impl;
 
 import com.example.mapper.CourseMapper;
+import com.example.mapper.LogMapper;
 import com.example.mapper.StudentMapper;
 import com.example.mapper.TeacherMapper;
 import com.example.pojo.*;
+import com.example.pojo.Vo.StudentAdmin;
 import com.example.service.StudentService;
 import com.example.utils.BCryptPasswordUtils;
 import com.example.utils.ScheduleUtils;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,8 @@ public class StudentServiceImpl implements StudentService {
     private TeacherMapper teacherMapper;
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private LogMapper logMapper;
 
     @Override
     public void updatePassword(Integer stuId, String password, String university) {
@@ -94,8 +99,13 @@ public class StudentServiceImpl implements StudentService {
         PageHelper.startPage(page, pageSize);
 
         //执行查询
-        List<Student> empList = studentMapper.pageList(stuId, name, major, college, university, className, grand);
-        Page<Student> p = (Page<Student>) empList;
+        List<StudentAdmin> empList = studentMapper.pageList(stuId, name, major, college, university, className, grand);
+
+        for (StudentAdmin student : empList) {
+            LocalDateTime loginTime = logMapper.getLoginTime(student.getStuId());
+            student.setLoginTime(loginTime);
+        }
+        Page<StudentAdmin> p = (Page<StudentAdmin>) empList;
 
         //计算总页数
         Integer pageCount = (int)p.getTotal() % pageSize == 0 ? (int)p.getTotal() / pageSize : (int)p.getTotal() / pageSize + 1;

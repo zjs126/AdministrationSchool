@@ -113,4 +113,17 @@ public interface TeacherService {
      * @return 课程表信息
      */
     List<Schedule> scheduleResult(Integer teacherId, String university);
+
+    /**
+     * 分页查询老师信息
+     *
+     * @param page
+     * @param pageSize
+     * @param name
+     * @param college
+     * @param university
+     * @param staffId
+     * @return
+     */
+    PageBean page(Integer page, Integer pageSize, String name, String college, String university, Integer staffId);
 }

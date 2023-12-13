@@ -36,7 +36,7 @@ public class AdminServiceImpl implements AdminService {
         return 1;
     }
 
-//    这个函数是用来查询教秘指定课程信息
+    //这个函数是用来查询教秘指定课程信息
     public Course getOneCourse(Integer id, String university) {
         return studentMapper.getOneCourse(id, university);
     }
@@ -49,5 +49,17 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void resetClass(Course course) {
         adminMapper.resetClass(course);
+    }
+
+    @Override
+    public void deleteStudent(Integer stuId, String university) {
+        adminMapper.deleteStuInApply(stuId, university);
+        adminMapper.deleteStuInSelection(stuId, university);
+        adminMapper.deleteStu(stuId, university);
+    }
+
+    @Override
+    public void deleteTeacher(Integer staffId, String university) {
+        adminMapper.deleteTea(staffId, university);
     }
 }

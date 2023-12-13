@@ -4,6 +4,7 @@ import com.example.pojo.SC;
 import com.example.pojo.Schedule;
 import com.example.pojo.Score;
 import com.example.pojo.Teacher;
+import com.example.pojo.Vo.TeacherAdmin;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -19,7 +20,8 @@ public interface TeacherMapper {
      * @param staffId 教职工编号
      * @return 教职工信息
      */
-    @Select("select * from teacher where staff_id=#{staffId} and university=#{university}")
+    @Select("select staff_id, name, class className, permission, password, university, college" +
+            " from teacher where staff_id=#{staffId} and university=#{university}")
     Teacher findTeacherById(Integer staffId, String university);
 
     /**
@@ -86,4 +88,6 @@ public interface TeacherMapper {
      */
     @Select("select course_name, classroom, date, time from course where teacher_id=#{teacherId} and university=#{university}")
     List<Schedule> scheduleResult(Integer teacherId, String university);
+
+    List<TeacherAdmin> pageList(String name, String college, String university, Integer staffId);
 }

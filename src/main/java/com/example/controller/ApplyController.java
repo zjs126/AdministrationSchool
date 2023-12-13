@@ -152,22 +152,20 @@ public class ApplyController {
     }
 
     /**
-     * 撤销或重新提交缓考申请表
+     * 撤销缓考申请表
      * @param requestPayload
      * -courseId 课程编号
      * -year 学年
-     * -submit 提交信号
      */
     @PatchMapping("/revoke")
     public Result changeSubmit(@RequestBody Map<String, Object> requestPayload){
 
         // 从requestPayload中获取 courseId 和 year
-        Integer courseId = (Integer) requestPayload.get("courseId");
         String year = (String) requestPayload.get("year");
-        Integer submit = (Integer) requestPayload.get("submit");
+        Integer courseId = (Integer) requestPayload.get("courseId");
 
         //判断数据是否为空
-        if (courseId == null || year == null || submit == null) {
+        if (courseId == null || year == null) {
             return Result.error("必须的参数有空的数据");
         }
 
@@ -175,7 +173,7 @@ public class ApplyController {
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
         Integer stuId = (Integer) map.get("id");
-        log.info("撤销缓考申请表：{}，{}，{}，{}，{}", courseId, year, submit, university, stuId);
+        log.info("撤销缓考申请表：{}，{}，{}，{}", courseId, year, university, stuId);
 
         //申请表是否已审核
         Apply applyById = applyService.findApplyById(stuId, courseId, university, year);
@@ -183,7 +181,7 @@ public class ApplyController {
             return Result.error("申请表已审核，无法撤销");
         }
 
-        applyService.changeSubmit(courseId, year, submit, stuId, university);
+        applyService.changeSubmit(courseId, year, stuId, university);
         return Result.success();
     }
 

@@ -1,9 +1,11 @@
 package com.example.service.Impl;
 
 import com.example.mapper.CourseMapper;
+import com.example.mapper.LogMapper;
 import com.example.mapper.StudentMapper;
 import com.example.mapper.TeacherMapper;
 import com.example.pojo.*;
+import com.example.pojo.Vo.TeacherAdmin;
 import com.example.service.TeacherService;
 import com.example.utils.BCryptPasswordUtils;
 import com.example.utils.ExcelRead;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,8 @@ public class TeacherServiceImpl implements TeacherService {
     private StudentMapper studentMapper;
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private LogMapper logMapper;
 
     @Override
     public Teacher findTeacherByStaffId(Integer staffId, String university) {
@@ -140,6 +145,28 @@ public class TeacherServiceImpl implements TeacherService {
             schedule.setSchedule(ScheduleUtils.scheduleTable(schedule.getDate(), schedule.getTime()));
         }
         return schedules;
+    }
+
+    @Override
+    public PageBean page(Integer page, Integer pageSize, String name, String college, String university, Integer staffId) {
+        //设置分页参数
+        PageHelper.startPage(page, pageSize);
+
+        //执行查询
+        List<TeacherAdmin> empList = teacherMapper.pageList(name, college, university,staffId);
+
+        for (TeacherAdmin teacher : empList) {
+            LocalDateTime loginTime = logMapper.getLoginTime(teacher.getStaffId());
+            teacher.setLoginTime(loginTime);
+        }
+        Page<TeacherAdmin> p = (Page<TeacherAdmin>) empList;
+
+        //计算总页数
+        Integer pageCount = (int)p.getTotal() % pageSize == 0 ? (int)p.getTotal() / pageSize : (int)p.getTotal() / pageSize + 1;
+
+        //封装pageBean对象
+        PageBean pageBean = new PageBean((int)p.getTotal(), p.getResult(), pageCount);
+        return pageBean;
     }
 
 
