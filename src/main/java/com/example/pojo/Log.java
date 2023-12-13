@@ -15,4 +15,5 @@ public class Log {
     private Integer userType;
     private Long costTime;
     private String loginStatus;
+    private String university;
 }

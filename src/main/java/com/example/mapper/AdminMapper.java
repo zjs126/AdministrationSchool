@@ -34,12 +34,6 @@ public interface AdminMapper {
      */
     void resetClass(Course course);
 
-    @Delete("delete from apply where stu_id=#{stuId} and university=#{university}")
-    void deleteStuInApply(Integer stuId, String university);
-
-    @Delete("delete from selection where stu_id=#{stuId} and university=#{university}")
-    void deleteStuInSelection(Integer stuId, String university);
-
     @Delete("delete from student where stu_id=#{stuId} and university=#{university}")
     void deleteStu(Integer stuId, String university);
 

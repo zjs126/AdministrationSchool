@@ -79,4 +79,14 @@ public class CourseController {
         List<Course> course = courseService.findTeacherCourse(university, teacherId);
         return Result.success(course);
     }
+
+    @GetMapping("/{id}")
+    public Result<Course> getCourseById(@PathVariable(value = "id") Integer courseId){
+        log.info("管理员根据id获取课程信息：{}",courseId);
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        Course course = courseService.findCourseById(courseId, university);
+
+        return Result.success(course);
+    }
 }

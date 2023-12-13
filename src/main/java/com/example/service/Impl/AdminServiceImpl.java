@@ -53,13 +53,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteStudent(Integer stuId, String university) {
-        adminMapper.deleteStuInApply(stuId, university);
-        adminMapper.deleteStuInSelection(stuId, university);
         adminMapper.deleteStu(stuId, university);
     }
 
     @Override
     public void deleteTeacher(Integer staffId, String university) {
         adminMapper.deleteTea(staffId, university);
+    }
+
+    @Override
+    public void deleteCourse(Integer courseId, String university) {
+
     }
 }

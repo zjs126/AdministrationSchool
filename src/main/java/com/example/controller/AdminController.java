@@ -88,13 +88,15 @@ public class AdminController {
      * @param course
      * @return
      */
-    @PostMapping("/resetClass")
+    @PutMapping("/resetClass")
     public Result resetClass(@RequestBody Course course) {
         log.info("修改课程信息");
 
         //从ThreadLocal中获取信息
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer userType = (Integer) map.get("userType");
+        String university = (String) map.get("university");
+        course.setUniversity(university);
 
         //判断用户是否为管理员
         if (userType != 4) {
@@ -121,6 +123,11 @@ public class AdminController {
         return Result.success();
     }
 
+    /**
+     * 删除老师信息
+     * @param staffId
+     * @return
+     */
     @DeleteMapping("/teacher/{id}")
     public Result<Object> deleteTeacher(@PathVariable(value = "id") Integer staffId){
         log.info("管理员删除老师信息：{}", staffId);
@@ -129,6 +136,18 @@ public class AdminController {
         String university = (String) map.get("university");
 
         adminService.deleteTeacher(staffId, university);
+
+        return Result.success();
+    }
+
+    @DeleteMapping("/course/{id}")
+    public Result<Object> deleteCourse(@PathVariable(value = "id") Integer courseId){
+        log.info("管理员删除课程信息：{}", courseId);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        adminService.deleteCourse(courseId, university);
 
         return Result.success();
     }

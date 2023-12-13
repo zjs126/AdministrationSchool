@@ -2,9 +2,10 @@ package com.example.aop;
 
 import com.example.mapper.LogMapper;
 import com.example.pojo.Log;
+import com.example.pojo.LoginResponse;
+import com.example.pojo.Result;
 import com.example.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,29 +18,19 @@ import java.time.LocalDateTime;
 @Slf4j
 @Component
 @Aspect
-public class LogAspect {
-
-    @Autowired
-    private HttpServletRequest request;
+public class LoginAspect {
 
     @Autowired
     private LogMapper logMapper;
 
-    @Around("@annotation(com.example.anno.Logout)")
-    public Object RecordLog(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("@annotation(com.example.anno.Login)")
+    public Object RecordLogin(ProceedingJoinPoint joinPoint) throws Throwable {
 
         //登录时间
         LocalDateTime loginTime = LocalDateTime.now();
 
         //原始方法开始时间
         Long begin = System.currentTimeMillis();
-
-        //登录人的id
-        String jwt = request.getHeader("token");
-        Claims claims = JwtUtils.parseJWT(jwt);
-        Integer loginUser = (Integer) claims.get("id");
-        Integer userType = (Integer) claims.get("userType");
-        String university = (String) claims.get("university");
 
         //目标方法名
         String loginStatus = joinPoint.getSignature().getName();
@@ -49,6 +40,23 @@ public class LogAspect {
 
         //原始方法结束时间
         Long end = System.currentTimeMillis();
+
+        String token = "";
+        // 判断返回值类型
+        if (result instanceof Result<?>) {
+            Result<LoginResponse> myResponse = (Result<LoginResponse>) result;
+
+            // 获取 UserData 对象
+            LoginResponse userData = myResponse.getData();
+
+            // 获取 token
+            token = userData.getToken();
+        }
+
+        Claims claims = JwtUtils.parseJWT(token);
+        Integer loginUser = (Integer) claims.get("id");
+        Integer userType = (Integer) claims.get("userType");
+        String university = (String) claims.get("university");
 
         //耗时
         Long costTime = end - begin;

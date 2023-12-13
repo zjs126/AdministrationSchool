@@ -40,4 +40,11 @@ public interface AdminService {
      * @param university 学校
      */
     void deleteTeacher(Integer staffId, String university);
+
+    /**
+     * 删除课程信息
+     * @param courseId 课程id
+     * @param university 学校
+     */
+    void deleteCourse(Integer courseId, String university);
 }

@@ -1,7 +1,8 @@
 package com.example.controller;
 
 
-import com.example.anno.Log;
+import com.example.anno.Login;
+import com.example.anno.Logout;
 import com.example.pojo.*;
 import com.example.service.StudentService;
 import com.example.service.TeacherService;
@@ -11,7 +12,6 @@ import com.example.utils.RedisCache;
 import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,7 +86,7 @@ public class LoginController {
      * 用户登录
      * @param user 用户登录信息
      */
-    @Log
+    @Login
     @PostMapping("/login")
     public Result<LoginResponse> login(@RequestBody User user){
         log.info("用户登录：{}", user);
@@ -168,7 +168,7 @@ public class LoginController {
      * 登出
      * @return LoginResponse对象
      */
-    @Log
+    @Logout
     @GetMapping("/user/logout")
     public Result<LoginResponse> logout(){
         //创建登录响应实体
