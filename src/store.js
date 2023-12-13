@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     status: {
+      university: "",
       loggedIn: false,
       userId: -1,
       username: "",
@@ -23,6 +24,7 @@ export default new Vuex.Store({
       state.status.username = res.username;
       state.status.userType = res.userType;
       state.status.permission = res.permission;
+      state.status.university = res.university;
 
       let items = [];
       for (let i = 0; i < SideBarItem.items.length; i++) {
