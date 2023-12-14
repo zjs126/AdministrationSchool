@@ -82,11 +82,11 @@ SideBarItem.items = [
     permission: Permission.no
   },
   {
-    icon:"el-icon-s-claim",
-    index:"/teacher/borrowClass",
-    title:"教室申请",
+    icon: "el-icon-s-claim",
+    index: "/teacher/borrowClass",
+    title: "教室申请",
     userType: UserType.teacher,
-    permission:Permission.no
+    permission: Permission.no
   },
   {
     icon: "el-icon-fa fa-bar-chart",
@@ -150,6 +150,13 @@ SideBarItem.items = [
     title: "管理员管理",
     userType: UserType.admin,
     // permission: Permission.department
+  },
+  {
+    icon: "el-icon-fa fa-id-badge",
+    index: "/admin/confirm",
+    title: "变更教室管理",
+    userType: UserType.admin,
+    permission: Permission.department
   }
 ];
 
