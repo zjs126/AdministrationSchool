@@ -7,11 +7,7 @@
     <div class="head-right">
       <div class="head-user-con">
         <div @click="handleFullScreen" class="btn-fullscreen">
-          <el-tooltip
-            :content="fullscreen ? `退出全屏` : `全屏`"
-            effect="dark"
-            placement="bottom"
-          >
+          <el-tooltip :content="fullscreen ? `退出全屏` : `全屏`" effect="dark" placement="bottom">
             <i class="el-icon-rank"></i>
           </el-tooltip>
         </div>
@@ -52,6 +48,7 @@ export default {
     handleCommand(command) {
       if (command === "logout") {
         logout().then(() => {
+          localStorage.removeItem('token');
           this.$store.commit("logout");
           this.$message.success("注销成功");
           this.$router.push("/login");

@@ -1,16 +1,16 @@
-import { pureGet, put } from "../common/ajax";
+import { patch, pureGet } from "../common/ajax";
 
 export const getAllowStudentSelect = () =>
   pureGet("/option/allowStudentSelect");
 
 export const setAllowStudentSelect = option =>
-  put("/option/allowStudentSelect", {
-    option: option
+  patch("/admin/course/state", {
+    state: option
   });
 
 export const getAllowTeacherGrade = () => pureGet("/option/allowTeacherGrade");
 
 export const setAllowTeacherGrade = option =>
-  put("/option/allowTeacherGrade", {
-    option: option
+  patch("/admin/selection/status", {
+    status: option
   });

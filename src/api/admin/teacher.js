@@ -6,7 +6,7 @@ export const create = entity => ajax.post("/teaRegister", entity);
 
 export const deleteItem = id => ajax.pureDelete("/admin/teacher/" + id);
 
-export const update = entity => ajax.put("/teacher/update", entity);
+export const update = entity => ajax.patch("/teacher/update", entity);
 
 export const getPageCount = () =>
   ajax.get("/teacher/page", {

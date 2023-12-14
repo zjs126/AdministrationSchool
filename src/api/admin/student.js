@@ -14,12 +14,12 @@ export const getPageCount = () =>
 export const getPage = (index, name, major, className) =>
   ajax.get("/student/page", {
     page: index,
-    pageSize: 2,
+    pageSize: 10,
     name: name,
     major: major,
     className: className
   });
 
-export const listName = () => ajax.pureGet("/admin/student/names");
+export const listName = () => ajax.pureGet("/student/page");
 
-export const pageSize = 2;
+export const pageSize = 10;

@@ -20,6 +20,6 @@ export const getPage = (index, courseName, teacherName, college, type) =>
     type: type
   });
 
-export const listName = () => ajax.pureGet("/admin/course/names");
+export const listName = () => ajax.pureGet("/course/list");
 
 export const pageSize = 20;

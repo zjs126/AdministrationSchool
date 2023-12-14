@@ -75,6 +75,9 @@
           <el-form-item label="班级">
             <el-input v-model="entityForm.className"></el-input>
           </el-form-item>
+          <el-form-item label="年级">
+            <el-input v-model="entityForm.grand"></el-input>
+          </el-form-item>
           <el-form-item label="专业">
             <el-input v-model="entityForm.major"></el-input>
           </el-form-item>
@@ -158,6 +161,7 @@ export default {
         password: "123456",
         className: "",
         major: "",
+        grand: null,
         college: "",
         university: "华中师范大学"
       };

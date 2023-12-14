@@ -9,6 +9,7 @@ import StudentTimeTable from "./views/student/StudentTimeTable";
 import StudentExam from "./views/student/StudentExam";
 import StudentScore from "./views/student/StudentScore";
 import StudentDeferred from './views/student/StudentDeferred'
+import GradeAnalysis from './views/student/GradeAnalysis'
 import TeacherCourse from "./views/teacher/TeacherCourse";
 import TeacherTimetable from "./views/teacher/TeacherTimetable";
 import TeacherGrade from "./views/teacher/TeacherGrade";
@@ -71,6 +72,11 @@ const routes = [
         path: "/student/apply",
         name: "student-apply",
         component: StudentDeferred
+      },
+      {
+        path: "/student/analysis",
+        name: "student-analysis",
+        component: GradeAnalysis
       },
       {
         path: "/teacher",
