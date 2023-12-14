@@ -24,7 +24,7 @@
                       <el-input v-model="form.classroom"></el-input>
                     </el-form-item>
                     <el-form-item label="课程ID号">
-                      <el-input v-model="form.teacherId"></el-input>
+                      <el-input v-model="form.courseID"></el-input>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
@@ -52,7 +52,7 @@ export default {
       dialogVisible: false,
       form: {
         classroom: undefined,
-        course: undefined
+        courseID: undefined
       }
     };
   },
@@ -66,13 +66,15 @@ export default {
 
       axios
         .post("http://localhost:8085/classroom/change", {
+          classroom,
+          courseID
+        }, {
           headers: {
             token: localStorage.getItem("token")
           },
-          classroom,
-          courseID
         })
         .then(() => {
+          this.$message.success("提交申请成功，请等待审核")
           console.log("提交成功");
         })
         .catch(error => {
@@ -86,7 +88,7 @@ export default {
         .get("http://localhost:8085/classroom/find", {
           headers: {
             token: localStorage.getItem("token")
-          }
+          },
         })
         .then(response => {
           console.log(response.data);
