@@ -52,4 +52,6 @@ public interface AdminService {
     void deleteCourse(Integer courseId, String university);
 
     ArrayList<ClassroomApply> classroomApply();
+
+    void classroomApplyconfirm(Integer id);
 }

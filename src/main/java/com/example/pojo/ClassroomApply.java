@@ -11,6 +11,7 @@ public class ClassroomApply {
     private int id;
     private String classroom;
     private Integer courseID;
-    private Integer staff_id;
+    private Integer staffId;
+    private String staffName;
     private String university;
 }

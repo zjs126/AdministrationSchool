@@ -162,4 +162,12 @@ public class AdminController {
 
         return Result.success(classroomApplies);
     }
+
+    @PostMapping("/classroomApplyconfirm")
+    public Result<Object> classroomApplyconfirm(@RequestBody Map<String,Integer> params){
+        Integer id=params.get("applicationId");
+        adminService.classroomApplyconfirm(id);
+
+        return Result.success();
+    }
 }

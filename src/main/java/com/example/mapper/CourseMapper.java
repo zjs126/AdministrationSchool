@@ -4,6 +4,7 @@ import com.example.pojo.Course;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -62,4 +63,7 @@ public interface CourseMapper {
      */
     @Select("select * from course where university=#{university} and teacher_id=#{teacherId}")
     List<Course> findTeacherCourse(String university, Integer teacherId);
+
+    @Update("update course set classroom=#{classroom} where course_id=#{courseID}")
+    void updateCourse(String classroom, Integer courseID);
 }

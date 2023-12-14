@@ -1,10 +1,9 @@
 package com.example.service.Impl;
 
-import com.example.mapper.AdminMapper;
-import com.example.mapper.ClassroomApplyMapper;
-import com.example.mapper.StudentMapper;
+import com.example.mapper.*;
 import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
+import com.example.pojo.Teacher;
 import com.example.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,10 @@ public class AdminServiceImpl implements AdminService {
     private StudentMapper studentMapper;
     @Autowired
     private ClassroomApplyMapper classroomApplyMapper;
+    @Autowired
+    private TeacherMapper teacherMapper;
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Override
     public void resetScore(Integer stuId, Integer courseId, String university) {
@@ -72,6 +75,22 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ArrayList<ClassroomApply> classroomApply() {
-        return classroomApplyMapper.classroomApply();
+        ArrayList<ClassroomApply>classroomApplies=classroomApplyMapper.classroomApply();
+
+        for (ClassroomApply classroomApply:classroomApplies) {
+            Teacher teacher = teacherMapper.findTeacherById(classroomApply.getStaffId(),classroomApply.getUniversity());
+            classroomApply.setStaffName(teacher.getName());
+        }
+        return classroomApplies;
+    }
+
+    @Override
+    public void classroomApplyconfirm(Integer id) {
+        classroomApplyMapper.classroomApplyconfirm(id);
+        ClassroomApply classroomApply=classroomApplyMapper.selectClassroomApply(id);
+        String classroom=classroomApply.getClassroom();
+        Integer courseID=classroomApply.getCourseID();
+
+        courseMapper.updateCourse(classroom,courseID);
     }
 }
