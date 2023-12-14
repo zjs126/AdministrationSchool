@@ -9,16 +9,18 @@ public interface CourseService{
 
     /**
      * 分页查询课表信息
+     *
      * @param courseName 课程名称
      * @param teacherIds 课程老师id列表
-     * @param time 1为早八 2为早十 3为下二 4为下四
-     * @param date 周一到周五
-     * @param type 必修课，选修课
+     * @param time       1为早八 2为早十 3为下二 4为下四
+     * @param date       周一到周五
+     * @param type       必修课，选修课
      * @param university 学校
+     * @param state
      * @return 课程列表信息
      */
     PageBean page(Integer page, Integer pageSize, String courseName, List<Integer> teacherIds, Integer time,
-                  Integer date, String type, String university, String college);
+                  Integer date, String type, String university, String college, Integer state);
 
     /**
      * 导入课程（教秘的功能）

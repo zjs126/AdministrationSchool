@@ -41,13 +41,20 @@ public class CourseController {
         log.info("课表分页查询，参数：{}，{}，{}，{}，{}，{}，{}, {}", page, pageSize, courseName, teacherName, time, date, type, college);
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
+        Integer id = (Integer) map.get("id");
+        Integer userType = (Integer) map.get("userType");
+
+        Integer state = 1;
+        if (userType == 4){
+            state = null;
+        }
 
         //根据teacherName模糊匹配老师的id列表
         List<Integer> teacherIds = null;
         if (teacherName != null){
             teacherIds = teacherService.findTeacherByNameIds(teacherName, university);
         }
-        PageBean pageBean = courseService.page(page, pageSize, courseName, teacherIds, time, date, type, university, college);
+        PageBean pageBean = courseService.page(page, pageSize, courseName, teacherIds, time, date, type, university, college, state);
         return Result.success(pageBean);
     }
 

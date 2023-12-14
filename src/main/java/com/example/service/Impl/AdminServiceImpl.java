@@ -70,7 +70,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteCourse(Integer courseId, String university) {
-
+        adminMapper.deleteCourse(courseId, university);
     }
 
     @Override

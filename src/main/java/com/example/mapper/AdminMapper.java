@@ -39,4 +39,7 @@ public interface AdminMapper {
 
     @Delete("delete from teacher where staff_id=#{staffId} and university=#{university}")
     void deleteTea(Integer staffId, String university);
+
+    @Delete("delete from course where course_id=#{courseId} and university=#{university}")
+    void deleteCourse(Integer courseId, String university);
 }

@@ -34,7 +34,9 @@
                     #{teacherId}
                 </foreach>
             </if>
-                and state = 1
+            <if test="state != null">
+                and state = #{state}
+            </if>
         </where>
         order by course_id desc
     </select>
