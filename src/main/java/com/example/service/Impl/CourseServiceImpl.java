@@ -31,7 +31,7 @@ public class CourseServiceImpl implements CourseService {
         PageHelper.startPage(page, pageSize);
 
         //执行查询
-        List<Course> courseList = courseMapper.pageList(courseName, teacherIds, time, date, type, university, college, state);
+        List<Course> courseList = courseMapper.pageList(courseName, teacherIds, time, date, type, university, college,state);
         for (Course course : courseList) {
             //找到课程编号对应的课程名称
             Integer courseId = course.getCourseId();

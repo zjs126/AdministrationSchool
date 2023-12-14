@@ -3,7 +3,6 @@ package com.example.controller;
 import com.example.pojo.Course;
 import com.example.pojo.PageBean;
 import com.example.pojo.Result;
-import com.example.pojo.Schedule;
 import com.example.service.CourseService;
 import com.example.service.TeacherService;
 import com.example.utils.ThreadLocalUtil;

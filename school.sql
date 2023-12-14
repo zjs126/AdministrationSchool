@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_3306
+ Source Server         : mybatis
  Source Server Type    : MySQL
- Source Server Version : 80032
+ Source Server Version : 80031
  Source Host           : localhost:3306
  Source Schema         : administration
 
  Target Server Type    : MySQL
- Target Server Version : 80032
+ Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 13/12/2023 14:49:37
+ Date: 14/12/2023 18:52:54
 */
 
 SET NAMES utf8mb4;
@@ -55,10 +55,37 @@ CREATE TABLE `classroom`  (
 -- ----------------------------
 -- Records of classroom
 -- ----------------------------
+INSERT INTO `classroom` VALUES ('N108', '普通教室', '华中师范大学');
 INSERT INTO `classroom` VALUES ('N201', '普通教室', '华中师范大学');
+INSERT INTO `classroom` VALUES ('N213', '普通教室', '华中师范大学');
 INSERT INTO `classroom` VALUES ('N520', '实验室', '华中师范大学');
 INSERT INTO `classroom` VALUES ('N522', '实验室', '华中师范大学');
 INSERT INTO `classroom` VALUES ('N524', '实验室', '华中师范大学');
+
+-- ----------------------------
+-- Table structure for classroomapply
+-- ----------------------------
+DROP TABLE IF EXISTS `classroomapply`;
+CREATE TABLE `classroomapply`  (
+  `courseID` int(0) NOT NULL,
+  `classroom` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `staff_id` int(0) NOT NULL,
+  `university` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `state` int(0) NOT NULL DEFAULT 0 COMMENT '审核状态',
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `staffaafaef`(`staff_id`) USING BTREE,
+  INDEX `classroomgsgrwg`(`classroom`) USING BTREE,
+  INDEX `courseID`(`courseID`) USING BTREE,
+  CONSTRAINT `classroomgsgrwg` FOREIGN KEY (`classroom`) REFERENCES `classroom` (`classroom`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `courseID` FOREIGN KEY (`courseID`) REFERENCES `course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `staffaafaef` FOREIGN KEY (`staff_id`) REFERENCES `teacher` (`staff_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of classroomapply
+-- ----------------------------
+INSERT INTO `classroomapply` VALUES (1, 'N201', 3, '华中师范大学', 1, 1);
 
 -- ----------------------------
 -- Table structure for course
@@ -73,7 +100,7 @@ CREATE TABLE `course`  (
   `date` int(0) NOT NULL COMMENT '周一到周五',
   `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `state` int(0) NULL DEFAULT 1 COMMENT '1为开设',
+  `state` int(0) NOT NULL DEFAULT 1 COMMENT '1为开设',
   `university` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `college` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `credit` int(0) NOT NULL COMMENT '学分',
@@ -89,7 +116,10 @@ CREATE TABLE `course`  (
 -- ----------------------------
 -- Records of course
 -- ----------------------------
-INSERT INTO `course` VALUES (1, '云计算', 3, 'N522', 1, 3, '个性发展课', '有关云计算方面的知识，熟悉云端开发', 1, '华中师范大学', '计算机学院', 2, 40);
+INSERT INTO `course` VALUES (1, '云计算', 3, 'N201', 1, 3, '个性发展课', '有关云计算方面的知识，熟悉云端开发', 1, '华中师范大学', '计算机学院', 2, 40);
+INSERT INTO `course` VALUES (2, '算法', 2, 'N520', 2, 2, '专业必修课', '必修课', 1, '华中师范大学', '计算机学院', 2, 50);
+INSERT INTO `course` VALUES (3, 'web程序设计', 3, 'N524', 2, 3, '个性发展课', '学习css html js php', 1, '华中师范大学', '计算机学院', 2, 50);
+INSERT INTO `course` VALUES (4, '操作系统原理', 3, 'N522', 4, 3, '专业必修课', '很重要，考研要考', 1, '华中师范大学', '计算机学院', 2, 60);
 
 -- ----------------------------
 -- Table structure for forum
@@ -129,7 +159,7 @@ CREATE TABLE `log`  (
   `login_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '登录还是登出',
   `university` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of log
@@ -146,6 +176,41 @@ INSERT INTO `log` VALUES (9, '2023-12-13 14:46:37', 202102, 1, 5, 'logout', '华
 INSERT INTO `log` VALUES (10, '2023-12-13 14:46:55', 202103, 1, 76, 'login', '华中师范大学');
 INSERT INTO `log` VALUES (11, '2023-12-13 14:47:07', 202103, 1, 4, 'logout', '华中师范大学');
 INSERT INTO `log` VALUES (12, '2023-12-13 14:47:19', 1, 4, 353, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (13, '2023-12-13 21:13:58', 202101, 1, 383, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (14, '2023-12-13 21:14:36', 202101, 1, 1, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (15, '2023-12-13 21:14:55', 1, 4, 90, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (16, '2023-12-13 21:29:02', 1, 4, 1, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (17, '2023-12-13 21:32:37', 3, 2, 87, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (18, '2023-12-13 21:32:58', 3, 2, 0, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (19, '2023-12-13 21:33:05', 202101, 1, 89, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (20, '2023-12-13 21:33:13', 202101, 1, 0, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (21, '2023-12-13 21:35:47', 6, 2, 88, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (22, '2023-12-13 21:35:54', 6, 2, 0, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (23, '2023-12-13 21:36:15', 5, 3, 85, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (24, '2023-12-13 21:36:22', 4, 4, 85, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (25, '2023-12-13 21:36:25', 4, 4, 0, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (26, '2023-12-14 10:22:13', 3, 2, 479, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (27, '2023-12-14 13:58:45', 3, 2, 2, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (28, '2023-12-14 13:59:05', 1, 4, 127, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (29, '2023-12-14 14:00:20', 1, 4, 1, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (30, '2023-12-14 14:00:35', 202101, 1, 88, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (31, '2023-12-14 14:01:05', 202101, 1, 1, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (32, '2023-12-14 14:01:24', 3, 2, 88, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (33, '2023-12-14 14:21:20', 3, 2, 0, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (34, '2023-12-14 14:21:31', 3, 2, 89, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (35, '2023-12-14 14:29:46', 3, 2, 0, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (36, '2023-12-14 14:30:06', 202101, 1, 86, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (37, '2023-12-14 14:30:22', 202101, 1, 0, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (38, '2023-12-14 14:30:27', 3, 2, 87, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (39, '2023-12-14 15:20:08', 3, 2, 3, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (40, '2023-12-14 15:20:15', 1, 4, 125, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (41, '2023-12-14 15:36:20', 1, 4, 2, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (42, '2023-12-14 15:36:28', 3, 2, 116, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (43, '2023-12-14 16:18:53', 3, 2, 128, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (44, '2023-12-14 16:29:51', 3, 2, 1, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (45, '2023-12-14 16:29:56', 1, 4, 101, 'login', '华中师范大学');
+INSERT INTO `log` VALUES (46, '2023-12-14 18:31:13', 1, 4, 3, 'logout', '华中师范大学');
+INSERT INTO `log` VALUES (47, '2023-12-14 18:31:20', 1, 4, 117, 'login', '华中师范大学');
 
 -- ----------------------------
 -- Table structure for selection
@@ -168,6 +233,11 @@ CREATE TABLE `selection`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of selection
+-- ----------------------------
+INSERT INTO `selection` VALUES (202101, 1, 90, '2021-2022', 1, '华中师范大学', 85, 96, 1);
+
+-- ----------------------------
 -- Table structure for student
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
@@ -187,7 +257,7 @@ CREATE TABLE `student`  (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (202101, '学生1', '计算机科学与技术', '计算机学院', '华中师范大学', 2104, '$2a$10$Mf8SZS416QvQm9TdwOcSve/h7e8D9WdzSBOkqAdFHmGUKuCSk1iq.', NULL);
+INSERT INTO `student` VALUES (202101, '学生1', '计算机科学与技术', '计算机学院', '华中师范大学', 2104, '$2a$10$Mf8SZS416QvQm9TdwOcSve/h7e8D9WdzSBOkqAdFHmGUKuCSk1iq.', 2021);
 INSERT INTO `student` VALUES (202102, '学生2', '计算机科学与技术', '计算机学院', '华中师范大学', 2104, '$2a$10$rM/zd7Ko9oHSuKY/zSTL8OLbO6RXKXVPLVNPEM21eY0kWN4Xfe8eu', NULL);
 INSERT INTO `student` VALUES (202103, '学生3', '软件工程', '计算机学院', '华中师范大学', 2104, '$2a$10$OaQdxNa42UpSEnuKAEgct.Z/IELfBCsi10ydOOt/JYLO3McR7Sf4e', NULL);
 INSERT INTO `student` VALUES (202104, '学生4', '信息安全', '计算机学院', '华中师范大学', 2103, '$2a$10$h.Z4UAjuKd0OrNUU3BDYRuvgMUPp.uKJQGxsou89RPKehhjuTd/MG', NULL);
@@ -204,7 +274,7 @@ CREATE TABLE `teacher`  (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `class` int(0) NULL DEFAULT NULL COMMENT '管理的班级号',
   `permission` int(0) NOT NULL COMMENT '权限 1为教师 2为教秘 4为班主任 3为辅导员 5为管理员',
-  `password` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge',
+  `password` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '$2a$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge',
   `university` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `college` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`staff_id`, `university`) USING BTREE,
@@ -215,10 +285,10 @@ CREATE TABLE `teacher`  (
 -- Records of teacher
 -- ----------------------------
 INSERT INTO `teacher` VALUES (1, 'admin', NULL, 5, '$2a$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
-INSERT INTO `teacher` VALUES (2, '班主任', 2104, 4, '$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
-INSERT INTO `teacher` VALUES (3, '老师', NULL, 1, '$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
-INSERT INTO `teacher` VALUES (4, '教秘', 21, 2, '$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
-INSERT INTO `teacher` VALUES (5, '辅导员', 21, 3, '$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
-INSERT INTO `teacher` VALUES (6, '老师2', NULL, 1, '$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '信息管理学院');
+INSERT INTO `teacher` VALUES (2, '班主任', 2104, 4, '$2a$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
+INSERT INTO `teacher` VALUES (3, '老师', NULL, 1, '$2a$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
+INSERT INTO `teacher` VALUES (4, '教秘', 21, 2, '$2a$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
+INSERT INTO `teacher` VALUES (5, '辅导员', 21, 3, '$2a$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '计算机学院');
+INSERT INTO `teacher` VALUES (6, '老师2', NULL, 1, '$2a$10$.BOadyrJ3GxS/03bQXO7demaUGw/tEQSNOh6y7PEzbmt6vYiAdOge', '华中师范大学', '信息管理学院');
 
 SET FOREIGN_KEY_CHECKS = 1;
