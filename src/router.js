@@ -21,6 +21,7 @@ import AdminCourse from "./views/admin/AdminCourse";
 import AdminStudentCourse from "./views/admin/AdminStudentCourse";
 import AdminAdmin from "./views/admin/AdminAdmin";
 import Home from "./views/Home";
+import TeacherBorrowClass from "./views/teacher/TeacherBorrowClass.vue"
 
 Vue.use(VueRouter);
 
@@ -89,6 +90,11 @@ const routes = [
         path: "/teacher/grade",
         name: "teacher-grade",
         component: TeacherGrade
+      },
+      {
+        path:"/teacher/borrowClass",
+        name:"teacher-borrowClass",
+        component: TeacherBorrowClass
       },
       {
         path: "/admin",
