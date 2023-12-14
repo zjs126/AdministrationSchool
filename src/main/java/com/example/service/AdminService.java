@@ -1,6 +1,9 @@
 package com.example.service;
 
+import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
+
+import java.util.ArrayList;
 
 public interface AdminService {
     /**
@@ -47,4 +50,6 @@ public interface AdminService {
      * @param university 学校
      */
     void deleteCourse(Integer courseId, String university);
+
+    ArrayList<ClassroomApply> classroomApply();
 }

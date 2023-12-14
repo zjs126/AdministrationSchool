@@ -3,12 +3,13 @@ package com.example.controller;
 import com.example.pojo.Classroom;
 import com.example.pojo.Result;
 import com.example.service.ClassroomService;
+import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -51,6 +52,20 @@ public class ClassroomController {
     public Result deleteClassroom(@RequestBody Classroom classroom) {
         log.info("查询指定教室");
         classroomService.deleteClassroom(classroom);
+        return Result.success();
+    }
+
+    @PostMapping("/change")
+    public Result changeClassroom(@RequestBody Map<String, String> params){
+        log.info("老师申请更换教室");
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        String university = (String) map.get("university");
+        Integer courseID= Integer.valueOf(params.get("courseID"));
+        String classroom= params.get("classroom");
+
+        classroomService.applyChange(id,university,courseID,classroom);
+
         return Result.success();
     }
 }

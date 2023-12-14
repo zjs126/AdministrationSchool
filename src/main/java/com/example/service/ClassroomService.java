@@ -14,4 +14,6 @@ public interface ClassroomService {
     ArrayList<Classroom> SelectAllClassroom();
 
     void deleteClassroom(Classroom classroom);
+
+    void applyChange(Integer id, String university, Integer courseID, String classroom);
 }

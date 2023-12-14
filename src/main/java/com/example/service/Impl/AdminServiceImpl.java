@@ -1,7 +1,9 @@
 package com.example.service.Impl;
 
 import com.example.mapper.AdminMapper;
+import com.example.mapper.ClassroomApplyMapper;
 import com.example.mapper.StudentMapper;
+import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
 import com.example.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ public class AdminServiceImpl implements AdminService {
     private AdminMapper adminMapper;
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private ClassroomApplyMapper classroomApplyMapper;
 
     @Override
     public void resetScore(Integer stuId, Integer courseId, String university) {
@@ -64,5 +68,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteCourse(Integer courseId, String university) {
 
+    }
+
+    @Override
+    public ArrayList<ClassroomApply> classroomApply() {
+        return classroomApplyMapper.classroomApply();
     }
 }

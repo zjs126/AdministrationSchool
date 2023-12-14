@@ -1,5 +1,6 @@
 package com.example.service.Impl;
 
+import com.example.mapper.ClassroomApplyMapper;
 import com.example.mapper.ClassroomMapper;
 import com.example.pojo.Classroom;
 import com.example.service.ClassroomService;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 public class ClassroomServiceImpl implements ClassroomService {
     @Autowired
     private ClassroomMapper classroomMapper;
+    @Autowired
+    private ClassroomApplyMapper classroomApplyMapper;
 
     @Override
     public int addClassroom(Classroom classroom) {
@@ -36,6 +39,11 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public void deleteClassroom(Classroom classroom) {
         classroomMapper.deleteClassroom(classroom);
+    }
+
+    @Override
+    public void applyChange(Integer id, String university, Integer courseID, String classroom) {
+        classroomApplyMapper.applyChange(id,university,courseID,classroom);
     }
 
     public int findClassroom(String classroom,String university){

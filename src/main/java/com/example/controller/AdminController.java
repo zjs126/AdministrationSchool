@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
 import com.example.pojo.Result;
 import com.example.service.AdminService;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -112,8 +114,8 @@ public class AdminController {
      * 删除学生信息
      */
     @DeleteMapping("/student/{stuId}")
-    public Result deleteStudent(@PathVariable(value = "stuId") Integer stuId){
-        log.info("管理员删除学生信息:{}",stuId);
+    public Result deleteStudent(@PathVariable(value = "stuId") Integer stuId) {
+        log.info("管理员删除学生信息:{}", stuId);
 
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
@@ -125,11 +127,12 @@ public class AdminController {
 
     /**
      * 删除老师信息
+     *
      * @param staffId
      * @return
      */
     @DeleteMapping("/teacher/{id}")
-    public Result<Object> deleteTeacher(@PathVariable(value = "id") Integer staffId){
+    public Result<Object> deleteTeacher(@PathVariable(value = "id") Integer staffId) {
         log.info("管理员删除老师信息：{}", staffId);
 
         Map<String, Object> map = ThreadLocalUtil.get();
@@ -141,7 +144,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/course/{id}")
-    public Result<Object> deleteCourse(@PathVariable(value = "id") Integer courseId){
+    public Result<Object> deleteCourse(@PathVariable(value = "id") Integer courseId) {
         log.info("管理员删除课程信息：{}", courseId);
 
         Map<String, Object> map = ThreadLocalUtil.get();
@@ -150,5 +153,13 @@ public class AdminController {
         adminService.deleteCourse(courseId, university);
 
         return Result.success();
+    }
+
+    @GetMapping("/classroomApply")
+    public Result<Object> classroomApply() {
+        log.info("获取变更教室的申请");
+        ArrayList<ClassroomApply>classroomApplies=adminService.classroomApply();
+
+        return Result.success(classroomApplies);
     }
 }
