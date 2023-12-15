@@ -1,10 +1,12 @@
 package com.example.mapper;
 
+import com.example.pojo.Apply;
 import com.example.pojo.Grade;
 import com.example.pojo.Score;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -14,4 +16,7 @@ public interface SelectionMapper {
 
     @Select("SELECT AVG(score) AS averageScore, ROUND(AVG(CASE WHEN score >= 60 THEN 1.0 ELSE 0 END) * 100) AS passRate FROM selection WHERE university = #{university} AND course_id = #{courseID} GROUP BY year ORDER BY year ASC;")
     List<Grade> gradeAnalysis(Integer courseID, String university);
+
+    @Select("select stu_id,course_id,year,trimesters,university from selection where stu_id=#{id} and university=#{university}")
+    ArrayList<Apply> mySelection(Integer id,String university);
 }

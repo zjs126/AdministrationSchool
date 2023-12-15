@@ -4,6 +4,7 @@ import com.example.pojo.Apply;
 import com.example.pojo.PageBean;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ApplyService {
@@ -75,4 +76,6 @@ public interface ApplyService {
      * @param situation 审核信号量
      */
     void audit(Integer courseId, String year, Integer situation, String university, Integer stuId);
+
+    ArrayList<Apply> getMyApply(Integer stuId, String university);
 }

@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class ApplyController {
      * 提交缓考申请表
      * @param apply 申请表信息
      */
-    @PostMapping
+    @PostMapping("/addApply")
     public Result addApply(@RequestBody Apply apply) {
         log.info("学生填写缓考申请表：{}", apply);
         Map<String, Object> map = ThreadLocalUtil.get();
@@ -56,7 +57,7 @@ public class ApplyController {
      * @param trimesters 学期
      * @return 页面封装数据
      */
-    @GetMapping
+    @GetMapping("/findApplyPage")
     public Result<PageBean> findApplyPage(@RequestParam(defaultValue = "1") Integer page,
                                           @RequestParam(defaultValue = "10") Integer pageSize,
                                           @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime begin,
@@ -85,7 +86,7 @@ public class ApplyController {
      * 更新缓考申请表
      * @param apply 申请表信息
      */
-    @PutMapping
+    @PutMapping("/updateApply")
     public Result updateApply(@RequestBody Apply apply) {
 
         //判断必要参数是否为空
@@ -123,7 +124,7 @@ public class ApplyController {
      * 删除缓考申请表
      * @param requestPayload 请求数据
      */
-    @DeleteMapping
+    @DeleteMapping("/deleteApply")
     public Result deleteApply(@RequestBody  Map<String, Object> requestPayload) {
 
         // 从requestPayload中获取 courseId 和 year
@@ -218,4 +219,16 @@ public class ApplyController {
         return Result.success();
     }
 
+    /**
+     * 学生获取自己提交的缓考申请，展示给学生，通过或没通过的或还未审核的状态
+     */
+    @GetMapping("/getMyApply")
+    public Result getMyApply(){
+        //从线程获取学号和学校
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        Integer stuId = (Integer) map.get("id");
+        ArrayList<Apply> applies=applyService.getMyApply(stuId,university);
+        return Result.success(applies);
+    }
 }

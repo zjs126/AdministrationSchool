@@ -3,6 +3,7 @@ package com.example.service.Impl;
 import com.example.mapper.ApplyMapper;
 import com.example.mapper.CourseMapper;
 import com.example.pojo.Apply;
+import com.example.pojo.Course;
 import com.example.pojo.PageBean;
 import com.example.service.ApplyService;
 import com.github.pagehelper.Page;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,6 +33,7 @@ public class ApplyServiceImpl implements ApplyService {
         apply.setCreateTime(LocalDateTime.now());
         apply.setUpdateTime(LocalDateTime.now());
         apply.setSituation(2);
+        apply.setSubmit(2);
         applyMapper.addApply(apply);
     }
 
@@ -75,6 +78,16 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     public void audit(Integer courseId, String year, Integer situation, String university, Integer stuId) {
         applyMapper.audit(courseId, year, situation, university, stuId);
+    }
+
+    @Override
+    public ArrayList<Apply> getMyApply(Integer stuId, String university) {
+        ArrayList<Apply>applies= applyMapper.getMyApply(stuId,university);
+        for(Apply apply:applies){
+            Course course=courseMapper.findCourseById(apply.getCourseId(),apply.getUniversity());
+            apply.setCourseName(course.getCourseName());
+        }
+        return applies;
     }
 
 }

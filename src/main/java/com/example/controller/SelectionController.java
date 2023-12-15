@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.pojo.Apply;
 import com.example.pojo.PageBean;
 import com.example.pojo.Result;
 import com.example.service.SelectionService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
@@ -32,5 +34,18 @@ public class SelectionController {
 
         PageBean pageBean = selectionService.page(page,pageSize,courseName,studentName,className,university);
         return Result.success(pageBean);
+    }
+
+    /**
+     * 学生查询自己全部选课
+     */
+    @GetMapping("/mySelection")
+    public Result<Object> mySelection(){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        Integer id = (Integer) map.get("id");
+
+        ArrayList<Apply> applies=selectionService.mySelection(id,university);
+        return Result.success(applies);
     }
 }

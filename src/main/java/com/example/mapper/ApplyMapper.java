@@ -4,6 +4,7 @@ import com.example.pojo.Apply;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -83,4 +84,7 @@ public interface ApplyMapper {
      */
     @Update("update apply set situation=#{situation} where stu_id=#{stuId} and course_id=#{courseId} and year=#{year} and university=#{university}")
     void audit(Integer courseId, String year, Integer situation, String university, Integer stuId);
+
+    @Select("select * from apply where stu_id=#{stuId} and university=#{university}")
+    ArrayList<Apply> getMyApply(Integer stuId, String university);
 }

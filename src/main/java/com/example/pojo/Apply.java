@@ -20,7 +20,7 @@ public class Apply {
     @NotNull
     private Integer courseId;          //课程编号
     private String courseName;         //课程姓名
-    private Integer situation;         //1为批准 0为不批准 2为审核中
+    private Integer situation;         //1为批准  2不通过
     @NotNull
     private Integer administrator;     //审核人id
     private String reason;             //申请原因
@@ -31,5 +31,5 @@ public class Apply {
     private Integer trimesters;        //学期
     private LocalDateTime createTime;  //创建时间
     private LocalDateTime updateTime;  //修改时间
-    private Integer submit;            //0为未提交状态，1为提交状态
+    private Integer submit;            //2为未提交状态，1为提交状态/记录审核人有没有审核
 }

@@ -3,15 +3,14 @@ package com.example.service.Impl;
 import com.example.mapper.CourseMapper;
 import com.example.mapper.SelectionMapper;
 import com.example.mapper.StudentMapper;
-import com.example.pojo.PageBean;
-import com.example.pojo.Score;
-import com.example.pojo.Student;
+import com.example.pojo.*;
 import com.example.service.SelectionService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,5 +49,15 @@ public class SelectionServiceImpl implements SelectionService {
         //封装pageBean对象
         PageBean pageBean = new PageBean((int) p.getTotal(), p.getResult(), pageCount);
         return pageBean;
+    }
+
+    @Override
+    public ArrayList<Apply> mySelection(Integer id,String university) {
+        ArrayList<Apply> applies=selectionMapper.mySelection(id,university);
+        for(Apply apply:applies){
+            Course course=courseMapper.findCourseById(apply.getCourseId(),apply.getUniversity());
+            apply.setCourseName(course.getCourseName());
+        }
+        return applies;
     }
 }
