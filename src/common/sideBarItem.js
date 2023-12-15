@@ -54,6 +54,13 @@ SideBarItem.items = [
     permission: Permission.no
   },
   {
+    icon: "el-icon-s-marketing",
+    index: "/student/analysis",
+    title: "成绩分析",
+    userType: UserType.student,
+    permission: Permission.no
+  },
+  {
     icon: "el-icon-fa fa-bar-chart",
     index: "/teacher",
     title: "教师首页",
