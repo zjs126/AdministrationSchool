@@ -40,6 +40,13 @@ SideBarItem.items = [
   //   permission: Permission.no
   // },
   {
+    icon: "el-icon-s-promotion",
+    index: "/student/apply",
+    title: "缓考申请",
+    userType: UserType.student,
+    permission: Permission.no
+  },
+  {
     icon: "el-icon-fa fa-newspaper-o",
     index: "/student/score",
     title: "成绩查询",

@@ -1,142 +1,217 @@
 <template>
-  <div class="grade-wrap">
+  <div class="apply-container">
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-fa fa-edit"></i> 申请缓考
+          <i class="el-icon-s-promotion"></i> 缓考申请
+        </el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+
+    <div class="course-list">
+      <el-card v-for="course in courses" :key="course.courseId" class="course-card">
+        <div class="course-info">
+          <div class="info-item">
+            <strong>课程号:</strong> {{ course.courseId }}
+          </div>
+          <div class="info-item">
+            <strong>课程名称:</strong> {{ course.courseName }}
+          </div>
+          <div class="info-item">
+            <strong>学年:</strong> {{ course.year }}
+          </div>
+          <div class="info-item">
+            <strong>学期:</strong> {{ course.trimesters }}
+          </div>
+          <div class="info-item">
+            <strong>学校:</strong> {{ course.university }}
+          </div>
+        </div>
+        <el-button type="primary" @click="applyDeferredExam(course)" size="mini">
+          申请缓考
+        </el-button>
+      </el-card>
+    </div>
+
+    <el-dialog title="填写缓考申请" :visible.sync="applyDialogVisible">
+      <el-form :model="applyForm" :rules="applyRules" ref="applyForm" label-width="80px">
+        <el-form-item label="申请原因" prop="reason">
+          <el-input type="textarea" v-model="applyForm.reason" :rows="4" placeholder="请输入申请原因"></el-input>
+        </el-form-item>
+        <input type="hidden" v-for="(value, key) in applyForm.course" :key="key" :name="key" :value="value">
+        <el-form-item>
+          <el-button type="primary" @click="submitApplyForm">提交申请</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>
+          <i class="el-icon-message-solid"></i> 申请状态
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 
     <div class="container">
-      <div class="query-form">
-        <el-row :gutter="20">
-          <el-col :offset="15" :span="3">
-            <el-input @keyup.enter.native="query" placeholder="课程号" v-model="queryForm.courseId" />
-          </el-col>
-          <el-col :span="3">
-            <el-input @keyup.enter.native="query" placeholder="学生号" v-model="queryForm.studentId" />
-          </el-col>
-          <el-col :span="3">
-            <el-button @click="query" icon="el-icon-search" type="primary">搜索
-            </el-button>
-          </el-col>
-        </el-row>
-      </div>
-
-      <el-row justify="center" type="flex">
-        <el-pagination :current-page.sync="pageIndex" :page-size="pageSize" :total="total" @current-change="getPage"
-                       background layout="prev, pager, next">
-        </el-pagination>
-      </el-row>
-
-      <div class="table">
-        <el-table :data="tableData" stripe>
-          <el-table-column label="选课Id" prop="courseId" />
-          <el-table-column label="学号" prop="stuId" />
-          <el-table-column label="审核人" prop="administrator" />
-          <el-table-column label="学年" prop="year" />
-          <el-table-column label="学期" prop="trimesters" />
-          <el-table-column label="原因" prop="reason" />
-          <el-table-column align="center" label="提交" prop="submit" width="200px">
-            <template slot-scope="scope">
-              <el-button @click="edit(scope.row.courseId, scope.row.stuId)" size="mini" type="success">申请缓考
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-
-      <el-dialog :visible.sync="editing" title="编辑" width="30%">
-        <el-form :model="entityForm" label-width="70px" ref="form">
-          <el-form-item label="选课Id">
-            <el-input disabled type="Integer" v-model="entityForm.courseId"></el-input>
-          </el-form-item>
-          <el-form-item label="审核人">
-            <el-input type="Integer" v-model="entityForm.administrator" ></el-input>
-          </el-form-item>
-          <el-form-item label="学年">
-            <el-input type="String" v-model="entityForm.year" ></el-input>
-          </el-form-item>
-          <el-form-item label="学期">
-            <el-input type="Integer" v-model="entityForm.trimesters" ></el-input>
-          </el-form-item>
-          <el-form-item label="原因">
-            <el-input type="String" v-model="entityForm.reason" ></el-input>
-          </el-form-item>
-        </el-form>
-        <span class="dialog-footer" slot="footer">
-          <el-button @click="save" type="primary">确 定</el-button>
-          <el-button @click="editing = false">取 消</el-button>
-        </span>
-      </el-dialog>
+      <el-table :data="myApplies" stripe>
+        <el-table-column label="课程名称" prop="courseName" />
+        <el-table-column label="课程号" prop="courseId" />
+        <el-table-column label="学校" prop="university" />
+        <el-table-column label="学年" prop="year" />
+        <el-table-column label="学期" prop="trimesters" />
+        <el-table-column label="申请时间" prop="createTime" />
+        <el-table-column label="审核状态" prop="situation">
+          <template slot-scope="scope">
+            {{ scope.row.submit === 2 ? '未审核' : (scope.row.situation === 1 ? '审核通过' : '审核不通过') }}
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
+
   </div>
 </template>
 
 <script>
-import * as api from "../../api/student/de-exam";
-
+import axios from 'axios';
 export default {
-  name: "StudentDeferred",
   data() {
     return {
-      queryForm: {
-        courseId: "",
-        studentId: ""
+      courses: [],
+      myApplies: [],
+      applyDialogVisible: false,
+      applyForm: {
+        course: {},
+        reason: ''
       },
-      entityForm: {},
-      tableData: [],
-      pageSize: api.pageSize,
-      pageCount: 1,
-      total: 1,
-      pageIndex: 1,
-      editing: false
+      applyRules: {
+        reason: [
+          { required: true, message: '请输入申请原因', trigger: 'blur' },
+          { min: 5, max: 200, message: '长度在 5 到 200 个字符', trigger: 'blur' }
+        ]
+      }
     };
   },
-  methods: {
-    query() {
-      api
-        .getPageCount(this.queryForm.courseId, this.queryForm.studentId)
-        .then(res => {
-          this.pageCount = res.pageCount;
-          this.total = res.total;
-          this.getPage(this.pageIndex);
-        });
-    },
-    getPage(pageIndex) {
-      api
-        .getPage(
-          pageIndex,
-          this.queryForm.courseId,
-          this.queryForm.studentId
-        )
-        .then(res => {
-          this.tableData = res.rows;
-        });
-    },
-    edit(courseId, stuId) {
-      api.get(courseId, stuId).then(res => {
-        this.entityForm = res;
-        this.editing = true;
-      });
-    },
-    save() {
-      api.update(this.entityForm).then(() => {
-        this.$message.success("成功");
-        this.getPage(this.pageIndex);
-        this.editing = false;
-      });
-    },
-    // handleNumberInput(field) {
-    //   // 使用Number()函数将输入的字符串转换为数字
-    //   //this.entityForm[field] = Number(this.entityForm[field]);
-    // },
+  mounted() {
+    this.fetchStudentSchedule();
+    this.fetchMyApplyStatus();
   },
-  created() {
-    this.query();
+  methods: {
+    fetchStudentSchedule() {
+      axios.get('http://localhost:8085/selection/mySelection', {
+        headers: {
+          token: localStorage.getItem("token")
+        },
+      })
+        .then(response => {
+          console.log(response.data)
+          this.courses = response.data.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+    fetchMyApplyStatus() {
+      axios.get('http://localhost:8085/apply/getMyApply', {
+        headers: {
+          token: localStorage.getItem("token")
+        },
+      })
+        .then(response => {
+          console.log(response.data)
+          this.myApplies = response.data.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+    applyDeferredExam(course) {
+      this.applyForm.course = course;
+      this.applyDialogVisible = true;
+    },
+
+    submitApplyForm() {
+      this.$refs.applyForm.validate((valid) => {
+        this.applyForm.course.reason = this.applyForm.reason;
+        if (valid) {
+          axios.post('http://localhost:8085/apply/addApply', this.applyForm.course, {
+            headers: {
+              token: localStorage.getItem("token")
+            },
+          })
+            .then(response => {
+              console.log(response.data);
+              this.applyDialogVisible = false;
+              this.$message.success('申请成功');
+              this.fetchMyApplyStatus();
+            })
+            .catch(error => {
+              console.error(error);
+              this.$message.error('申请失败，请稍后重试');
+            });
+        }
+      });
+    }
+
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.apply-container {
+  margin: 20px;
+}
+
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.course-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.info-item {
+  margin-bottom: 5px;
+}
+
+.course-card {
+  text-align: center;
+  width: 400px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.el-dialog {
+  width: 30%;
+}
+
+.el-button {
+  margin-top: 5px;
+}
+
+.apply-status {
+  margin-top: 20px;
+}
+
+.apply-card {
+  width: 400px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.apply-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+</style>
