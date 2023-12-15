@@ -1,9 +1,6 @@
 package com.example.service.Impl;
 
-import com.example.mapper.CourseMapper;
-import com.example.mapper.LogMapper;
-import com.example.mapper.StudentMapper;
-import com.example.mapper.TeacherMapper;
+import com.example.mapper.*;
 import com.example.pojo.*;
 import com.example.pojo.Vo.StudentAdmin;
 import com.example.service.StudentService;
@@ -32,6 +29,8 @@ public class StudentServiceImpl implements StudentService {
     private CourseMapper courseMapper;
     @Autowired
     private LogMapper logMapper;
+    @Autowired
+    private SelectionMapper selectionMapper;
 
     @Override
     public void updatePassword(Integer stuId, String password, String university) {
@@ -147,6 +146,11 @@ public class StudentServiceImpl implements StudentService {
             schedules.add(schedule);
         }
         return schedules;
+    }
+
+    @Override
+    public List<Grade> gradeAnalysis(Integer courseID, String university) {
+        return selectionMapper.gradeAnalysis(courseID,university);
     }
 
 }

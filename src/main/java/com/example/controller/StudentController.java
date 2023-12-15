@@ -8,12 +8,10 @@ import com.example.utils.RedisCache;
 import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -272,6 +270,17 @@ public class StudentController {
         Student student = studentService.findStudentByStuId(stuId, university);
 
         return Result.success(student);
+    }
+
+    @GetMapping("/gradeAnalysis")
+    public Result<Object> gradeAnalysis(@RequestParam Integer courseId){
+        log.info("成绩分析");
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        List<Grade>grades=studentService.gradeAnalysis(courseId,university);
+        return Result.success(grades);
     }
 
 }

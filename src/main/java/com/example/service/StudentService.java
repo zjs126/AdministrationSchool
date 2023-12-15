@@ -80,4 +80,6 @@ public interface StudentService {
      * @return 课表信息
      */
     List<Schedule> scheduleResult(Integer stuId, String university);
+
+    List<Grade> gradeAnalysis(Integer courseID, String university);
 }
