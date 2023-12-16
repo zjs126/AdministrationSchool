@@ -3,6 +3,7 @@ package com.example.service.Impl;
 import com.example.mapper.CourseMapper;
 import com.example.mapper.StudentMapper;
 import com.example.pojo.Course;
+import com.example.pojo.NameId;
 import com.example.pojo.PageBean;
 import com.example.service.CourseService;
 import com.example.service.TeacherService;
@@ -86,5 +87,10 @@ public class CourseServiceImpl implements CourseService {
             course.setSchedule(schedule);
         }
         return courses;
+    }
+
+    @Override
+    public List<NameId> getCourseAndIds(String university) {
+        return courseMapper.getCourseIds(university);
     }
 }

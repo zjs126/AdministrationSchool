@@ -54,4 +54,12 @@ public interface AdminService {
     ArrayList<ClassroomApply> classroomApply();
 
     void classroomApplyconfirm(Integer id);
+
+    void changeState(Integer state, String university);
+
+    void changeStatus(Integer status, String university);
+
+    Boolean allowStudentSelect(String university);
+
+    Boolean allowTeacherGrade(String university);
 }

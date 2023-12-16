@@ -1,8 +1,6 @@
 package com.example.controller;
 
-import com.example.pojo.Course;
-import com.example.pojo.PageBean;
-import com.example.pojo.Result;
+import com.example.pojo.*;
 import com.example.service.CourseService;
 import com.example.service.TeacherService;
 import com.example.utils.ThreadLocalUtil;
@@ -94,5 +92,17 @@ public class CourseController {
         Course course = courseService.findCourseById(courseId, university);
 
         return Result.success(course);
+    }
+
+    @GetMapping("/list")
+    public Result<List<NameId>> getCourseList(){
+        log.info("获取所有课程名字");
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        List<NameId> nameIds = courseService.getCourseAndIds(university);
+
+        return Result.success(nameIds);
     }
 }

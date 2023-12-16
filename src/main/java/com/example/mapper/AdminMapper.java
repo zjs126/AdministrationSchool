@@ -1,10 +1,7 @@
 package com.example.mapper;
 
 import com.example.pojo.Course;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface AdminMapper {
@@ -42,4 +39,19 @@ public interface AdminMapper {
 
     @Delete("delete from course where course_id=#{courseId} and university=#{university}")
     void deleteCourse(Integer courseId, String university);
+
+    @Update("update course set state=#{state} where university=#{university}")
+    void changState(Integer state, String university);
+
+    @Update("update selection set status=#{status} where university=#{university}")
+    void changStatus(Integer status, String university);
+
+    @Select("select COUNT(*) from course where state=1 and university=#{university}")
+    Integer findTotalOne(String university);
+
+    @Select("select COUNT(*) from selection where status=1 and university=#{university}")
+    Integer findTotalOnes(String university);
+
+    @Select("select COUNT(*) from selection where university=#{university}")
+    Integer findTotalTwos(String university);
 }

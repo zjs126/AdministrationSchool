@@ -93,7 +93,7 @@ public interface StudentMapper {
     @Select("select class from student where stu_id=#{stuId} and university=#{university}")
     Integer findClassNumber(Integer stuId, String university);
 
-    @Select("select ordinary, ending, score, course_id from selection where stu_id=#{stuId} and university=#{university} and score is not null")
+    @Select("select ordinary, ending, score, course_id from selection where stu_id=#{stuId} and university=#{university}")
     List<Score> findScore(Integer stuId, String university);
 
     @Select("select stu_id from student where name like concat('%',#{studentName},'%') and university=#{university}")

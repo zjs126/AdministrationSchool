@@ -21,4 +21,6 @@ public class Score {
     private Integer score;      //总成绩
     private Integer ordinary;   //平时成绩
     private Integer ending;     //期末成绩
+    private String university;
+    private Integer status;
 }

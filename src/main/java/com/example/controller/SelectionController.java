@@ -3,14 +3,12 @@ package com.example.controller;
 import com.example.pojo.Apply;
 import com.example.pojo.PageBean;
 import com.example.pojo.Result;
+import com.example.pojo.Score;
 import com.example.service.SelectionService;
 import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -30,7 +28,6 @@ public class SelectionController {
         log.info("学生选课分页查询：{}，{}，{}，{}，{}",page,pageSize,courseName,studentName,className);
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
-        Integer id = (Integer) map.get("id");
 
         PageBean pageBean = selectionService.page(page,pageSize,courseName,studentName,className,university);
         return Result.success(pageBean);
@@ -47,5 +44,42 @@ public class SelectionController {
 
         ArrayList<Apply> applies=selectionService.mySelection(id,university);
         return Result.success(applies);
+    }
+
+    @GetMapping("/{courseId}/{stuId}")
+    public Result<Score> getSelection(@PathVariable(value = "courseId") Integer courseId,
+                                      @PathVariable(value = "stuId") Integer stuId){
+        log.info("根据课程id和学号查询选课记录：{}，{}",courseId, stuId);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        Score score = selectionService.getSelection(courseId, stuId, university);
+        return Result.success(score);
+    }
+
+    @DeleteMapping("/{courseId}/{stuId}")
+    public Result<Object> delete(@PathVariable(value = "courseId") Integer courseId,
+                                 @PathVariable(value = "stuId") Integer stuId){
+        log.info("管理员删除选课记录");
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        selectionService.delete(courseId, stuId, university);
+
+        return Result.success();
+    }
+
+    @PutMapping
+    public Result<Object> update(@RequestBody Score score){
+        log.info("管理员更新选课记录:{}",score);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+        score.setUniversity(university);
+
+        selectionService.update(score);
+        return Result.success();
     }
 }

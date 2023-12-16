@@ -163,7 +163,7 @@ public class TeacherController {
      *                -ending 期末分
      *                -score 总成绩
      */
-    @PutMapping("/scoring")
+    @PatchMapping("/scoring")
     public Result scoring(@RequestBody Map<String, Object> request) {
 
         //从request中获取分数信息

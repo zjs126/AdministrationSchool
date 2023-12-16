@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.pojo.Course;
+import com.example.pojo.NameId;
 import com.example.pojo.PageBean;
 
 import java.util.List;
@@ -40,4 +41,11 @@ public interface CourseService{
      * @return
      */
     List<Course> findTeacherCourse(String university, Integer teacherId);
+
+    /**
+     * 找寻这个学校所有课程名字
+     * @param university 学校
+     * @return
+     */
+    List<NameId> getCourseAndIds(String university);
 }

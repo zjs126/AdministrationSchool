@@ -7,6 +7,9 @@
             <if test="classroom != null and classroom != ''">
                 classroom=#{classroom},
             </if>
+            <if test="courseName != null and courseName != ''">
+                course_name=#{courseName},
+            </if>
             <if test="time != null">
                 time=#{time},
             </if>
@@ -14,7 +17,10 @@
                 date=#{date},
             </if>
             <if test="volume != null">
-                volume=#{volume}
+                volume=#{volume},
+            </if>
+            <if test="credit != null">
+                credit=#{credit}
             </if>
         </set>
         where course_id=#{courseId} and university=#{university}

@@ -33,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowCredentials(true) // 允许发送Cookie
                 .allowedHeaders("*") // 允许的头信息
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许的方法
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // 允许的方法
                 .allowedOriginPatterns("*") // 允许所有域
                 .maxAge(3600); // 预检请求的有效期，单位秒
     }

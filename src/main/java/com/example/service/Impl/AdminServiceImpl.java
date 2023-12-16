@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -92,5 +93,28 @@ public class AdminServiceImpl implements AdminService {
         Integer courseID=classroomApply.getCourseID();
 
         courseMapper.updateCourse(classroom,courseID);
+    }
+
+    @Override
+    public void changeState(Integer state, String university) {
+        adminMapper.changState(state, university);
+    }
+
+    @Override
+    public void changeStatus(Integer status, String university) {
+        adminMapper.changStatus(status, university);
+    }
+
+    @Override
+    public Boolean allowStudentSelect(String university) {
+        Integer total = adminMapper.findTotalOne(university);
+        return total != 0;
+    }
+
+    @Override
+    public Boolean allowTeacherGrade(String university) {
+        Integer totalOne = adminMapper.findTotalOnes(university);
+        Integer totalTwo = adminMapper.findTotalTwos(university);
+        return !Objects.equals(totalOne, totalTwo);
     }
 }

@@ -215,14 +215,15 @@ public class StudentController {
 
     /**
      * 退课
-     *
-     * @param courseId 课程id
      */
-    @DeleteMapping("/deleteCourse")
-    public Result deleteCourse(@RequestBody Integer courseId) {
+    @DeleteMapping("/deleteCourse/{id}")
+    public Result deleteCourse(@PathVariable(value = "id") Integer courseId) {
+        log.info("学生退选课程：{}", courseId);
+
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         String university = (String) map.get("university");
+
         studentService.deleteCourse(courseId, id, university);
         return Result.success();
     }

@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.example.pojo.Course;
+import com.example.pojo.NameId;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -66,4 +67,7 @@ public interface CourseMapper {
 
     @Update("update course set classroom=#{classroom} where course_id=#{courseID}")
     void updateCourse(String classroom, Integer courseID);
+
+    @Select("select course_name name, course_id id from course where university=#{university}")
+    List<NameId> getCourseIds(String university);
 }

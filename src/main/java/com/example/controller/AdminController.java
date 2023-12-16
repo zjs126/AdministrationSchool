@@ -59,19 +59,21 @@ public class AdminController {
     /**
      * 教秘给学生加课
      *
-     * @param info
+     * @param requset
      * @return
      */
     @PostMapping("/addClassToStu")
-    public Result addClassToStu(@RequestBody Map<String, Object> info) {
-        log.info("给学生加课");
-        Integer stuId = (Integer) info.get("stuId");
-        Integer courseId = (Integer) info.get("courseId");
-        String university = (String) info.get("university");
+    public Result addClassToStu(@RequestBody Map<String, Object> requset) {
+
+        Integer stuId =Integer.parseInt((String) requset.get("stuId"));
+        Integer courseId=(Integer) requset.get("courseId");
+
+        log.info("给学生加课:{},{}",stuId, courseId);
 
         //从ThreadLocal中获取信息
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer userType = (Integer) map.get("userType");
+        String university = (String) map.get("university");
 
         if (userType != 4) {
             return Result.error("此操作需要教秘以上权限");
@@ -171,5 +173,50 @@ public class AdminController {
         return Result.success();
     }
 
+    @PatchMapping("/course/state")
+    public Result<Object> changeState(@RequestBody Map<String, Object> request){
+        log.info("管理员修改状态");
 
+        Integer state = (Integer) request.get("state");
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        adminService.changeState(state, university);
+        return Result.success();
+    }
+
+    @PatchMapping("/selection/status")
+    public Result<Object> changeStatus(@RequestBody Map<String, Object> request){
+        log.info("管理员修改老师打分状态");
+
+        Integer status = (Integer) request.get("status");
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        adminService.changeStatus(status, university);
+        return Result.success();
+    }
+
+    @GetMapping("/allowStudentSelect")
+    public Result<Boolean> allowStudentSelect(){
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        Boolean bool = adminService.allowStudentSelect(university);
+
+        return Result.success(bool);
+    }
+
+    @GetMapping("/allowTeacherGrade")
+    public Result<Boolean> allowTeacherGrade(){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String university = (String) map.get("university");
+
+        Boolean bool = adminService.allowTeacherGrade(university);
+
+        return Result.success(bool);
+    }
 }

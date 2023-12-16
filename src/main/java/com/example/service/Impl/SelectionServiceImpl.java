@@ -60,4 +60,19 @@ public class SelectionServiceImpl implements SelectionService {
         }
         return applies;
     }
+
+    @Override
+    public Score getSelection(Integer courseId, Integer stuId, String university) {
+        return selectionMapper.getSelection(courseId, stuId, university);
+    }
+
+    @Override
+    public void delete(Integer courseId, Integer stuId, String university) {
+        selectionMapper.delete(courseId, stuId, university);
+    }
+
+    @Override
+    public void update(Score score) {
+        selectionMapper.update(score);
+    }
 }
