@@ -156,10 +156,12 @@ export const post = function (url, data) {
   });
 };
 
-export const del = function (url, params) {
-  return innerDelete(url, {
-    params: params
-  });
+export const del = function (url, data) {
+  return innerDelete(url, data, {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
 };
 
 export const put = function (url, data) {

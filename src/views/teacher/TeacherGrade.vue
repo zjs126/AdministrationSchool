@@ -41,7 +41,8 @@
           <el-table-column label="成绩" prop="score" />
           <el-table-column align="center" label="操作" width="200px">
             <template slot-scope="scope">
-              <el-button @click="edit(scope.row.courseId, scope.row.stuId)" size="mini" type="success">打分
+              <el-button v-show="scope.row.status === 0" @click="edit(scope.row.courseId, scope.row.stuId)" size="mini"
+                type="success">打分
               </el-button>
             </template>
           </el-table-column>
@@ -110,6 +111,7 @@ export default {
           this.queryForm.studentName
         )
         .then(res => {
+          console.log(res);
           this.tableData = res.rows;
         });
     },
@@ -129,7 +131,7 @@ export default {
     handleNumberInput(field) {
       // 使用Number()函数将输入的字符串转换为数字
       this.entityForm[field] = Number(this.entityForm[field]);
-    },
+    }
   },
   created() {
     this.query();

@@ -217,7 +217,7 @@ export default {
   created() {
     this.query();
     this.getCoursesAndStudents();
-    // this.getSelectAndGradeStatus();
+    this.getSelectAndGradeStatus();
   }
 };
 </script>

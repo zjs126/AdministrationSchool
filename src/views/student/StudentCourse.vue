@@ -43,11 +43,12 @@ export default {
   methods: {
     getList() {
       api.list().then(res => {
+        console.log(res);
         this.tableData = res;
       });
     },
-    deleteItem(studentCourseId) {
-      api.deleteItem(studentCourseId).then(() => {
+    deleteItem(courseId) {
+      api.deleteItem(courseId).then(() => {
         this.$message.success("退选成功!");
         this.getList();
       });
