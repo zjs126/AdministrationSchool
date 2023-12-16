@@ -47,9 +47,8 @@ public class ForumController {
     @GetMapping("/findAllComment")
     public Result findAllComment() {
         log.info("获取帖子");
-        ArrayList<Comment> comments = new ArrayList<>();
-        comments = forumService.findAllComment();
-        return Result.success();
+        ArrayList<Comment> comments = forumService.findAllComment();
+        return Result.success(comments);
     }
 }
 
