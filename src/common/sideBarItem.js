@@ -68,6 +68,14 @@ SideBarItem.items = [
     permission: Permission.no
   },
   {
+    icon: "el-icon-chat-line-round",
+    index: "/forum",
+    title: "校园论坛",
+    userType: UserType.student,
+    permission: Permission.no
+  },
+
+  {
     icon: "el-icon-fa fa-bar-chart",
     index: "/teacher",
     title: "教师首页",
@@ -102,6 +110,14 @@ SideBarItem.items = [
     userType: UserType.teacher,
     permission: Permission.no
   },
+  {
+    icon: "el-icon-chat-line-round",
+    index: "/forum",
+    title: "校园论坛",
+    userType: UserType.teacher,
+    permission: Permission.no
+  },
+
   {
     icon: "el-icon-fa fa-bar-chart",
     index: "/admin",
@@ -171,6 +187,13 @@ SideBarItem.items = [
     title: "变更教室管理",
     userType: UserType.admin,
     permission: Permission.department
+  },
+  {
+    icon: "el-icon-chat-line-round",
+    index: "/forum",
+    title: "校园论坛",
+    userType:UserType.admin,
+    permission: Permission.no
   }
 ];
 

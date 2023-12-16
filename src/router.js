@@ -24,6 +24,7 @@ import AdminAdmin from "./views/admin/AdminAdmin";
 import Home from "./views/Home";
 import TeacherBorrowClass from "./views/teacher/TeacherBorrowClass.vue"
 import AdminConfirm from "./views/admin/AdminConfirm.vue"
+import Forum from "./views/forum.vue"
 
 Vue.use(VueRouter);
 
@@ -152,6 +153,11 @@ const routes = [
         path:'/admin/confirm',
         name:'admin-confirm',
         component:AdminConfirm
+      },
+      {
+        path: '/forum',
+        name: 'forum',
+        component: Forum
       }
     ]
   },
