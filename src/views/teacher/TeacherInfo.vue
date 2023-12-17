@@ -10,8 +10,8 @@
 
     <div class="container">
       <el-form :model="entityForm" class="info-form" label-width="80px">
-        <el-form-item label="学号">
-          <el-input disabled v-model="entityForm.stuId"></el-input>
+        <el-form-item label="工号">
+          <el-input disabled v-model="entityForm.staffId"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
           <el-input disabled v-model="entityForm.name"></el-input>
@@ -22,13 +22,13 @@
         <el-form-item label="学院">
           <el-input disabled v-model="entityForm.college"></el-input>
         </el-form-item>
-        <el-form-item label="专业">
-          <el-input disabled v-model="entityForm.major"></el-input>
+        <el-form-item label="职务">
+          <el-input disabled v-model="entityForm.permission"></el-input>
         </el-form-item>
-        <el-form-item label="班级">
+        <el-form-item v-if="entityForm.permission === '班主任'" label="管理班级">
           <el-input disabled v-model="entityForm.className"></el-input>
         </el-form-item>
-        <el-form-item label="年级">
+        <el-form-item v-if="entityForm.permission === '辅导员'" label="管理年级">
           <el-input disabled v-model="entityForm.grand"></el-input>
         </el-form-item>
         <el-form-item label="操作">
@@ -58,10 +58,10 @@
 </template>
 
 <script>
-import * as api from "../../api/student/info";
+import * as api from "../../api/teacher/info";
 
 export default {
-  name: "StudentInfo",
+  name: "TeacherInfo",
   data() {
     return {
       entityForm: {
@@ -88,7 +88,9 @@ export default {
     },
     get() {
       api.get().then(res => {
-        console.log(res);
+        if (res.permission === 4) res.permission = "班主任";
+        if (res.permission === 1) res.permission = "普通教师";
+        if (res.permission === 3) res.permission = "辅导员";
         this.entityForm = res;
       });
     },

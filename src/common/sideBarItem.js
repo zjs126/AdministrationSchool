@@ -117,6 +117,13 @@ SideBarItem.items = [
     userType: UserType.teacher,
     permission: Permission.no
   },
+  {
+    icon: "el-icon-fa fa-id-badge",
+    index: "/teacher/info",
+    title: "信息维护",
+    userType: UserType.teacher,
+    permission: Permission.no
+  },
 
   {
     icon: "el-icon-fa fa-bar-chart",
@@ -144,7 +151,7 @@ SideBarItem.items = [
     index: "/admin/class",
     title: "班级管理",
     userType: UserType.admin,
-    permission: Permission.department
+    // permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-user",
@@ -189,12 +196,26 @@ SideBarItem.items = [
     permission: Permission.department
   },
   {
+    icon: "el-icon-fa fa-bell",
+    index: "/admin/apply",
+    title: "缓考申请审核",
+    userType: UserType.admin,
+    permission: Permission.department
+  },
+  {
     icon: "el-icon-chat-line-round",
     index: "/forum",
     title: "校园论坛",
-    userType:UserType.admin,
+    userType: UserType.admin,
     permission: Permission.no
-  }
+  },
+  {
+    icon: "el-icon-fa fa-id-badge",
+    index: "/admin/info",
+    title: "信息维护",
+    userType: UserType.admin,
+    permission: Permission.department
+  },
 ];
 
 export default SideBarItem;

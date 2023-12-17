@@ -13,6 +13,7 @@ import GradeAnalysis from './views/student/GradeAnalysis'
 import TeacherCourse from "./views/teacher/TeacherCourse";
 import TeacherTimetable from "./views/teacher/TeacherTimetable";
 import TeacherGrade from "./views/teacher/TeacherGrade";
+import TeacherInfo from "./views/teacher/TeacherInfo"
 import AdminDepartment from "./views/admin/AdminDepartment";
 import AdminMajor from "./views/admin/AdminMajor";
 import AdminClass from "./views/admin/AdminClass";
@@ -21,6 +22,8 @@ import AdminTeacher from "./views/admin/AdminTeacher";
 import AdminCourse from "./views/admin/AdminCourse";
 import AdminStudentCourse from "./views/admin/AdminStudentCourse";
 import AdminAdmin from "./views/admin/AdminAdmin";
+import AdminApply from "./views/admin/AdminApply"
+import AdminInfo from "./views/admin/AdminInfo"
 import Home from "./views/Home";
 import TeacherBorrowClass from "./views/teacher/TeacherBorrowClass.vue"
 import AdminConfirm from "./views/admin/AdminConfirm.vue"
@@ -100,9 +103,14 @@ const routes = [
         component: TeacherGrade
       },
       {
-        path:"/teacher/borrowClass",
-        name:"teacher-borrowClass",
+        path: "/teacher/borrowClass",
+        name: "teacher-borrowClass",
         component: TeacherBorrowClass
+      },
+      {
+        path: "/teacher/info",
+        name: "teacher-info",
+        component: TeacherInfo
       },
       {
         path: "/admin",
@@ -150,9 +158,19 @@ const routes = [
         component: AdminAdmin
       },
       {
-        path:'/admin/confirm',
-        name:'admin-confirm',
-        component:AdminConfirm
+        path: '/admin/confirm',
+        name: 'admin-confirm',
+        component: AdminConfirm
+      },
+      {
+        path: '/admin/apply',
+        name: 'admin-apply',
+        component: AdminApply
+      },
+      {
+        path: '/admin/info',
+        name: 'admin-info',
+        component: AdminInfo
       },
       {
         path: '/forum',

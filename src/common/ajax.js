@@ -58,7 +58,9 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => {
-    let data = response.data.data;
+    let data = null;
+    console.log(response.data);
+    response.data.code === 401 ? innerMessage("warning", response.data.msg) : data = response.data.data
     subtractRequestCount();
     return data;
   },
