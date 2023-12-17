@@ -14,4 +14,6 @@ public interface SelectionService {
     void delete(Integer courseId, Integer stuId, String university);
 
     void update(Score score);
+
+    ArrayList<Apply> mySelection(Integer id, String university);
 }
