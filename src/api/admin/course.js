@@ -8,6 +8,8 @@ export const deleteItem = id => ajax.pureDelete("/admin/course/" + id);
 
 export const update = entity => ajax.put("/admin/resetClass", entity);
 
+export const upload = formData => ajax.postExcel("/admin/courseExcel", formData);
+
 export const getPageCount = () =>
   ajax.get("/course");
 

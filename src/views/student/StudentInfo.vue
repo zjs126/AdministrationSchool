@@ -93,10 +93,12 @@ export default {
       });
     },
     update() {
-      api.update(this.entityForm).then(() => {
-        this.$message.success("更新信息成功,请重新登录");
-        this.$router.push('/Login');
-        localStorage.removeItem('token');
+      api.update(this.entityForm).then((res) => {
+        if (res === null) {
+          this.$message.success("更新信息成功,请重新登录");
+          this.$router.push('/Login');
+          localStorage.removeItem('token');
+        }
       });
     },
     open() {

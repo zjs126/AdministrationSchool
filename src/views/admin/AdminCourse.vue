@@ -14,6 +14,13 @@
           <el-col :span="2">
             <el-button @click="create" icon="el-icon-plus">创建</el-button>
           </el-col>
+
+          <el-col :span="2">
+            <el-upload :before-upload="beforeUpload" :show-file-list="false" :on-success="handleUploadSuccess">
+              <el-button icon="el-icon-upload">上传Excel</el-button>
+            </el-upload>
+          </el-col>
+
           <el-col :offset="10" :span="2">
             <el-input @keyup.enter.native="query" placeholder="课程名" v-model="queryForm.courseName" />
           </el-col>
@@ -23,10 +30,10 @@
           <el-col :span="2">
             <el-input @keyup.enter.native="query" placeholder="学院名" v-model="queryForm.college" />
           </el-col>
-          <el-col :span="3">
+          <el-col :span="2">
             <el-input @keyup.enter.native="query" placeholder="课程性质" v-model="queryForm.type" />
           </el-col>
-          <el-col :span="3">
+          <el-col :span="2">
             <el-button @click="query" icon="el-icon-search" type="primary">搜索
             </el-button>
           </el-col>
@@ -277,7 +284,28 @@ export default {
       teacherApi.listName().then(res => {
         this.teachers = res;
       });
-    }
+    },
+    beforeUpload(file) {
+      // 创建一个FormData对象，用于上传文件
+      const formData = new FormData();
+      formData.append("file", file);
+
+      api.upload(formData).then((res) => {
+        // 处理成功的响应
+        this.handleUploadSuccess(res);
+      }).catch(error => {
+        // 处理请求失败
+        console.error("上传文件失败:", error);
+      });
+
+      return false;
+    },
+    handleUploadSuccess(response) {
+      if (response === null) {
+        this.$message.success("文件上传成功");
+        this.getPage(this.pageIndex);
+      }
+    },
   },
   created() {
     this.query();

@@ -58,7 +58,7 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => {
-    let data = null;
+    let data = false;
     console.log(response.data);
     response.data.code === 401 ? innerMessage("warning", response.data.msg) : data = response.data.data
     subtractRequestCount();
@@ -154,6 +154,14 @@ export const post = function (url, data) {
   return innerPost(url, data, {
     headers: {
       "Content-Type": "application/json"
+    }
+  });
+};
+
+export const postExcel = function (url, data) {
+  return innerPost(url, data, {
+    headers: {
+      "Content-Type": "multipart/form-data", // 设置Content-Type
     }
   });
 };
