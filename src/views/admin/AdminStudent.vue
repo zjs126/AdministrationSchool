@@ -148,7 +148,6 @@ export default {
           // for (let i = 0; i < res.length; i++) {
           //   res[i].sex = res[i].sex === 1 ? "男" : "女";
           // }
-          console.log(res);
           this.tableData = res.rows;
           this.total = res.total
         });

@@ -40,7 +40,19 @@
         </el-form-item>
         <input type="hidden" v-for="(value, key) in applyForm.course" :key="key" :name="key" :value="value">
         <el-form-item>
-          <el-button type="primary" @click="submitApplyForm">提交申请</el-button>
+          <el-button type="primary" @click="submitApplyForm">保存草稿</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog title="编辑缓考申请" :visible.sync="editDialogVisible">
+      <el-form :model="editForm" :rules="applyRules" ref="editForm" label-width="80px">
+        <el-form-item label="申请原因" prop="reason">
+          <el-input type="textarea" v-model="editForm.reason" :rows="4" placeholder="请输入申请原因"></el-input>
+        </el-form-item>
+        <input type="hidden" v-for="(value, key) in editForm.course" :key="key" :name="key" :value="value">
+        <el-form-item>
+          <el-button type="primary" @click="edit">重新提交</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -60,10 +72,20 @@
         <el-table-column label="学校" prop="university" />
         <el-table-column label="学年" prop="year" />
         <el-table-column label="学期" prop="trimesters" />
-        <el-table-column label="申请时间" prop="createTime" />
+        <el-table-column label="申请时间" prop="createTime" width="150px" />
         <el-table-column label="审核状态" prop="situation">
           <template slot-scope="scope">
-            {{ scope.row.submit === 2 ? '未审核' : (scope.row.situation === 1 ? '审核通过' : '审核不通过') }}
+            {{ scope.row.situation === 2 ? '未审核' : (scope.row.situation === 1 ? '审核通过' : '审核不通过') }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="200px">
+          <template slot-scope="scope">
+            <el-button :disabled="scope.row.submit === 1" type="text" @click="submit(scope.row)">提交</el-button>
+            <el-button :disabled="scope.row.submit === 0 || scope.row.situation !== 2" type="text"
+              @click="revoke(scope.row)">撤销</el-button>
+            <el-button :disabled="scope.row.submit === 1" type="text"
+              @click="open(scope.row.reason, scope.row)">编辑</el-button>
+            <el-button :disabled="scope.row.submit === 1" type="text" @click="deleteItem(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -74,13 +96,20 @@
 
 <script>
 import axios from 'axios';
+import * as api from '../../api/student/deferred'
+
 export default {
   data() {
     return {
       courses: [],
       myApplies: [],
       applyDialogVisible: false,
+      editDialogVisible: false,
       applyForm: {
+        course: {},
+        reason: ''
+      },
+      editForm: {
         course: {},
         reason: ''
       },
@@ -132,6 +161,12 @@ export default {
       this.applyDialogVisible = true;
     },
 
+    open(reason, course) {
+      this.editForm.course = course;
+      this.editForm.reason = reason;
+      this.editDialogVisible = true;
+    },
+
     submitApplyForm() {
       this.$refs.applyForm.validate((valid) => {
         this.applyForm.course.reason = this.applyForm.reason;
@@ -142,9 +177,9 @@ export default {
             },
           })
             .then(response => {
-              console.log(response.data);
+              response.data.code === 401 && this.$message.warning(response.data.msg)
               this.applyDialogVisible = false;
-              this.$message.success('申请成功');
+              this.applyForm.reason = null;
               this.fetchMyApplyStatus();
             })
             .catch(error => {
@@ -153,8 +188,43 @@ export default {
             });
         }
       });
+    },
+    submit(entity) {
+      api.submit({
+        ...entity,
+        submit: 1
+      }).then(() => {
+        this.fetchMyApplyStatus();
+      }
+      )
+    },
+    revoke(entity) {
+      api.revoke({
+        ...entity,
+        submit: 0
+      }).then(() => {
+        this.fetchMyApplyStatus();
+      }
+      )
+    },
+    edit() {
+      this.editForm.course.reason = this.editForm.reason;
+      api.update(this.editForm.course).then(() => {
+        this.fetchMyApplyStatus();
+        this.editDialogVisible = false;
+      })
+    },
+    deleteItem(entity) {
+      axios.delete("http://localhost:8085/apply/deleteApply", {
+        data: entity,
+        headers: {
+          token: localStorage.getItem("token")
+        },
+      })
+        .then(() => {
+          this.fetchMyApplyStatus();
+        })
     }
-
   }
 };
 </script>
