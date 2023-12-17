@@ -137,7 +137,7 @@ SideBarItem.items = [
     index: "/admin/major",
     title: "专业管理",
     userType: UserType.admin,
-    permission: Permission.department
+    // permission: Permission.department
   },
   {
     icon: "el-icon-fa fa-group",

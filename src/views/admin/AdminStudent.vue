@@ -14,13 +14,20 @@
           <el-col :span="2">
             <el-button @click="create" icon="el-icon-plus">创建</el-button>
           </el-col>
-          <el-col :offset="10" :span="3">
+
+          <el-col :span="2">
+            <el-upload :before-upload="beforeUpload" :show-file-list="false" :on-success="handleUploadSuccess">
+              <el-button icon="el-icon-upload">上传Excel</el-button>
+            </el-upload>
+          </el-col>
+
+          <el-col :offset="10" :span="2">
             <el-input @keyup.enter.native="query" placeholder="学生姓名" v-model="queryForm.name" />
           </el-col>
-          <el-col :span="3">
+          <el-col :span="2">
             <el-input @keyup.enter.native="query" placeholder="专业名" v-model="queryForm.major" />
           </el-col>
-          <el-col :span="3">
+          <el-col :span="2">
             <el-input @keyup.enter.native="query" placeholder="班级名" v-model="queryForm.className" />
           </el-col>
           <el-col :span="3">
@@ -28,6 +35,7 @@
             </el-button>
           </el-col>
         </el-row>
+
       </div>
 
       <el-row justify="center" type="flex">
@@ -105,6 +113,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import * as api from "../../api/admin/student";
 import * as classApi from "../../api/admin/class";
 
@@ -128,6 +137,41 @@ export default {
     };
   },
   methods: {
+
+    beforeUpload(file) {
+      // 创建一个FormData对象，用于上传文件
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // 设置请求头，携带 token
+      const headers = {
+        token: localStorage.getItem("token"),
+      };
+
+      // 发起axios请求
+      axios.post("http://localhost:8085/teacher/StuExcel", formData, {
+        headers: headers,
+      })
+        .then(response => {
+          // 处理成功的响应
+          this.handleUploadSuccess(response.data);
+        })
+        .catch(error => {
+          // 处理请求失败
+          console.error("上传文件失败:", error);
+        });
+
+      // 返回false取消默认上传
+      return false;
+    },
+
+    handleUploadSuccess(response) {
+      if (response.code === 200) {
+        this.$message.success("文件上传成功");
+        this.getPage(this.pageIndex);
+      }
+    },
+
     query() {
       api
         .getPageCount()
