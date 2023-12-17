@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.pojo.Apply;
 import com.example.pojo.PageBean;
+import com.example.pojo.Vo.AuditApply;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,10 +38,11 @@ public interface ApplyService {
      * @param courseIds  课程编号集合
      * @param university 大学
      * @param staffId
+     * @param situation
      * @return 页面封装数据
      */
     PageBean page(Integer page, Integer pageSize, LocalDateTime begin, LocalDateTime end, String year, Integer trimesters,
-                  List<Integer> courseIds, String university, Integer stuId, Integer staffId);
+                  List<Integer> courseIds, String university, Integer stuId, Integer staffId, Integer situation);
 
     /**
      * 更新缓考申请表
@@ -69,13 +71,20 @@ public interface ApplyService {
 
     /**
      * 审核缓考申请表
-     * @param courseId 课程编号
-     * @param year 学年
-     * @param stuId 学号
+     *
+     * @param courseId   课程编号
+     * @param year       学年
+     * @param situation  审核信号量
      * @param university 学校
-     * @param situation 审核信号量
+     * @param stuId      学号
+     * @param trimesters
      */
-    void audit(Integer courseId, String year, Integer situation, String university, Integer stuId);
+    void audit(Integer courseId, String year, Integer situation, String university, Integer stuId, Integer trimesters);
 
-    ArrayList<Apply> getMyApply(Integer stuId, String university);
+    ArrayList<AuditApply> getMyApply(Integer stuId, String university);
+
+    /**
+     * 重新提交
+     */
+    void submit(Apply apply);
 }

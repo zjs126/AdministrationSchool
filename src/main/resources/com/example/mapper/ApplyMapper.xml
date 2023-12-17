@@ -3,11 +3,11 @@
 <mapper namespace="com.example.mapper.ApplyMapper">
 
     <sql id="commonSelect">
-        select course_id, situation, administrator, reason, university, year, trimesters, create_time, update_time, submit
+        select stu_id, course_id, situation, administrator, reason, university, year, trimesters, create_time, update_time, submit
         from apply
     </sql>
 
-    <select id="pageList" resultType="com.example.pojo.Apply">
+    <select id="pageList" resultType="com.example.pojo.Vo.AuditApply">
         <include refid="commonSelect" />
         <where>
             <if test="year != null and year != ''">
@@ -23,7 +23,7 @@
                 and create_time between #{begin} and #{end}
             </if>
             <if test="courseIds != null and !courseIds.isEmpty()">
-                and teacher_id in
+                and course_id in
                 <foreach collection="courseIds" item="courseId" separator="," open="(" close=")">
                     #{courseId}
                 </foreach>
@@ -34,6 +34,8 @@
             <if test="staffId != null">
                 and administrator=#{staffId}
             </if>
+            and situation=#{situation}
+            and submit = 1
         </where>
         order by course_id desc
     </select>

@@ -4,6 +4,7 @@ import com.example.mapper.CourseMapper;
 import com.example.mapper.SelectionMapper;
 import com.example.mapper.StudentMapper;
 import com.example.pojo.*;
+import com.example.pojo.Vo.AuditApply;
 import com.example.service.SelectionService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -52,9 +53,9 @@ public class SelectionServiceImpl implements SelectionService {
     }
 
     @Override
-    public ArrayList<Apply> mySelection(Integer id,String university) {
-        ArrayList<Apply> applies=selectionMapper.mySelection(id,university);
-        for(Apply apply:applies){
+    public ArrayList<AuditApply> mySelection(Integer id, String university) {
+        ArrayList<AuditApply> applies = selectionMapper.mySelection(id,university);
+        for(AuditApply apply:applies){
             Course course=courseMapper.findCourseById(apply.getCourseId(),apply.getUniversity());
             apply.setCourseName(course.getCourseName());
         }

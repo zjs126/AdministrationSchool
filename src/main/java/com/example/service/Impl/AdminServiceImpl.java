@@ -5,9 +5,11 @@ import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
 import com.example.pojo.Teacher;
 import com.example.service.AdminService;
+import com.example.utils.ExcelRead;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -40,7 +42,7 @@ public class AdminServiceImpl implements AdminService {
                 return 0;
             }
         }
-        adminMapper.addClassToStu(stuId,courseId,university);
+        adminMapper.addClassToStu(stuId, courseId, university);
         return 1;
     }
 
@@ -76,10 +78,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ArrayList<ClassroomApply> classroomApply() {
-        ArrayList<ClassroomApply>classroomApplies=classroomApplyMapper.classroomApply();
+        ArrayList<ClassroomApply> classroomApplies = classroomApplyMapper.classroomApply();
 
-        for (ClassroomApply classroomApply:classroomApplies) {
-            Teacher teacher = teacherMapper.findTeacherById(classroomApply.getStaffId(),classroomApply.getUniversity());
+        for (ClassroomApply classroomApply : classroomApplies) {
+            Teacher teacher = teacherMapper.findTeacherById(classroomApply.getStaffId(), classroomApply.getUniversity());
             classroomApply.setStaffName(teacher.getName());
         }
         return classroomApplies;
@@ -88,11 +90,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void classroomApplyconfirm(Integer id) {
         classroomApplyMapper.classroomApplyconfirm(id);
-        ClassroomApply classroomApply=classroomApplyMapper.selectClassroomApply(id);
-        String classroom=classroomApply.getClassroom();
-        Integer courseID=classroomApply.getCourseID();
+        ClassroomApply classroomApply = classroomApplyMapper.selectClassroomApply(id);
+        String classroom = classroomApply.getClassroom();
+        Integer courseID = classroomApply.getCourseID();
 
-        courseMapper.updateCourse(classroom,courseID);
+        courseMapper.updateCourse(classroom, courseID);
     }
 
     @Override
@@ -116,5 +118,16 @@ public class AdminServiceImpl implements AdminService {
         Integer totalOne = adminMapper.findTotalOnes(university);
         Integer totalTwo = adminMapper.findTotalTwos(university);
         return !Objects.equals(totalOne, totalTwo);
+    }
+
+    @Override
+    public void addByExcelCourse(InputStream inputStream) {
+        ArrayList<Course> excel;
+        //方法封装成utils
+        ExcelRead excelRead = new ExcelRead();
+        excel = excelRead.ReadCourse(inputStream);
+        for (Course course : excel) {
+            courseMapper.addCourse(course);
+        }
     }
 }

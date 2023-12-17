@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.pojo.Apply;
 import com.example.pojo.PageBean;
 import com.example.pojo.Result;
+import com.example.pojo.Vo.AuditApply;
 import com.example.service.ApplyService;
 import com.example.service.CourseService;
 import com.example.utils.ThreadLocalUtil;
@@ -42,6 +43,7 @@ public class ApplyController {
         if (a == null) {
             applyService.addApply(apply);
         } else {
+            log.info("请勿重复提交对同样课程的缓考申请");
             return Result.error("请勿重复提交对同样课程的缓考申请");
         }
         return Result.success();
@@ -62,13 +64,14 @@ public class ApplyController {
                                           @RequestParam(defaultValue = "10") Integer pageSize,
                                           @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime begin,
                                           @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime end,
-                                          String year, Integer trimesters, String courseName, Integer stuId, Integer staffId) {
+                                          String year, Integer trimesters, String courseName, Integer stuId, Integer situation) {
 
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
+        Integer staffId = (Integer) map.get("id");
 
-        log.info("分页查询缓考申请表参数：{}，{}，{}，{}，{}，{}，{}，{}，{}, {}",
-                page, pageSize, begin, end, year, trimesters, courseName, university, stuId, staffId);
+        log.info("分页查询缓考申请表参数：{}，{}，{}，{}，{}，{}，{}，{}，{}, {}，{}",
+                page, pageSize, begin, end, year, trimesters, courseName, university, stuId, staffId, situation);
 
         //根据courseName模糊匹配课程的id列表
         List<Integer> courseIds = null;
@@ -78,7 +81,7 @@ public class ApplyController {
         if ((stuId != null && staffId != null) || (stuId == null && staffId == null)){
             return Result.error("用户身份不明确");
         }
-        PageBean pageBean = applyService.page(page, pageSize, begin, end, year, trimesters, courseIds, university, stuId, staffId);
+        PageBean pageBean = applyService.page(page, pageSize, begin, end, year, trimesters, courseIds, university, stuId, staffId, situation);
         return Result.success(pageBean);
     }
 
@@ -95,7 +98,7 @@ public class ApplyController {
             return Result.error("必要参数有空数据");
         }
 
-        log.info("更新缓考申请表：{}，{}", apply.getReason(), apply.getAdministrator());
+        log.info("更新缓考申请表：{}", apply);
 
         //从线程获取学号和学校
         Map<String, Object> map = ThreadLocalUtil.get();
@@ -109,6 +112,8 @@ public class ApplyController {
         //各种情况下的返回结果
         if (a.getSubmit() == 0 && a.getSituation() == 2) {
             applyService.updateApply(apply);
+        } else if (a.getSubmit() == 0 && apply.getSubmit() == 1){
+            applyService.submit(apply);
         } else if (a.getSubmit() == 1 && a.getSituation() == 1) {
             return Result.error("审核已通过，无需编辑");
         } else if (a.getSubmit() == 1 && a.getSituation() == 0) {
@@ -199,12 +204,15 @@ public class ApplyController {
         //从线程获取学号和学校
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
-        Integer stuId = (Integer) map.get("id");
 
         // 从requestPayload中获取 courseId、year、situation
         Integer courseId = (Integer) requestPayload.get("courseId");
         String year = (String) requestPayload.get("year");
         Integer situation = (Integer) requestPayload.get("situation");
+        Integer stuId = (Integer) requestPayload.get("stuId");
+        Integer trimesters = (Integer) requestPayload.get("trimesters");
+
+        log.info("审核缓考申请表：{}，{}，{}，{}，{}，{}", courseId, year, situation, university, stuId, trimesters);
 
         //判断数据是否为空
         if (courseId == null || year == null || situation == null) {
@@ -213,9 +221,7 @@ public class ApplyController {
             return Result.error("审核参数不满足规定");
         }
 
-        log.info("审核缓考申请表：{}，{}，{}，{}，{}", courseId, year, situation, university, stuId);
-
-        applyService.audit(courseId, year, situation, university, stuId);
+        applyService.audit(courseId, year, situation, university, stuId, trimesters);
         return Result.success();
     }
 
@@ -228,7 +234,7 @@ public class ApplyController {
         Map<String, Object> map = ThreadLocalUtil.get();
         String university = (String) map.get("university");
         Integer stuId = (Integer) map.get("id");
-        ArrayList<Apply> applies=applyService.getMyApply(stuId,university);
+        ArrayList<AuditApply> applies=applyService.getMyApply(stuId,university);
         return Result.success(applies);
     }
 }

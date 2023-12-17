@@ -4,6 +4,7 @@ import com.example.pojo.Apply;
 import com.example.pojo.PageBean;
 import com.example.pojo.Result;
 import com.example.pojo.Score;
+import com.example.pojo.Vo.AuditApply;
 import com.example.service.SelectionService;
 import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class SelectionController {
         String university = (String) map.get("university");
         Integer id = (Integer) map.get("id");
 
-        ArrayList<Apply> applies=selectionService.mySelection(id,university);
+        ArrayList<AuditApply> applies=selectionService.mySelection(id,university);
         return Result.success(applies);
     }
 

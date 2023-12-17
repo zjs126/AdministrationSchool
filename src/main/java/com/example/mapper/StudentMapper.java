@@ -84,7 +84,8 @@ public interface StudentMapper {
      * 通过文件批量导入学生信息
      * @param student
      */
-    @Insert("insert into student(stu_id, name, major, college, university, grand) values (#{stuId},#{name},#{major},#{college},#{university},#{grand})")
+    @Insert("insert into student(stu_id, name, major, college, university, grand, class) " +
+            "values (#{stuId},#{name},#{major},#{college},#{university},#{grand},#{className})")
     void addStudent(Student student);
 
     @Select("select COUNT(*) from selection where university=#{university} and course_id=#{courseId}")

@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.example.pojo.Apply;
+import com.example.pojo.Vo.AuditApply;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -40,17 +41,17 @@ public interface ApplyMapper {
      * @param courseIds  课程编号集合
      * @param university 大学
      * @param stuId      学号
-     * @param staffId
+     * @param situation
      * @return 页面封装数据
      */
-    List<Apply> pageList(LocalDateTime begin, LocalDateTime end, String year, Integer trimesters, List<Integer> courseIds,
-                         String university, Integer stuId, Integer staffId);
+    List<AuditApply> pageList(LocalDateTime begin, LocalDateTime end, String year, Integer trimesters, List<Integer> courseIds,
+                              String university, Integer stuId, Integer staffId, Integer situation);
 
     /**
      * 更新缓考申请表
      * @param apply 申请表信息
      */
-    @Update("update apply set submit=1, reason=#{reason}, administrator=#{administrator}, update_time=#{updateTime} " +
+    @Update("update apply set submit=#{submit}, reason=#{reason}, administrator=#{administrator}, update_time=#{updateTime} " +
             "where stu_id=#{stuId} and course_id=#{courseId} and university=#{university} and year=#{year}")
     void updateApply(Apply apply);
 
@@ -76,15 +77,22 @@ public interface ApplyMapper {
 
     /**
      * 审核缓考申请表
-     * @param courseId 课程编号
-     * @param year 学年
-     * @param stuId 学号
+     *
+     * @param courseId   课程编号
+     * @param year       学年
+     * @param situation  审核信号量
      * @param university 学校
-     * @param situation 审核信号量
+     * @param stuId      学号
+     * @param trimesters
      */
-    @Update("update apply set situation=#{situation} where stu_id=#{stuId} and course_id=#{courseId} and year=#{year} and university=#{university}")
-    void audit(Integer courseId, String year, Integer situation, String university, Integer stuId);
+    @Update("update apply set situation=#{situation} where stu_id=#{stuId} and course_id=#{courseId} and year=#{year} " +
+            "and university=#{university} and trimesters=#{trimesters}")
+    void audit(Integer courseId, String year, Integer situation, String university, Integer stuId, Integer trimesters);
 
     @Select("select * from apply where stu_id=#{stuId} and university=#{university}")
-    ArrayList<Apply> getMyApply(Integer stuId, String university);
+    ArrayList<AuditApply> getMyApply(Integer stuId, String university);
+
+    @Update("update apply set submit=#{submit} where stu_id=#{stuId} and course_id=#{courseId} and year=#{year} " +
+            "and university=#{university} and trimesters=#{trimesters}")
+    void submit(Apply apply);
 }

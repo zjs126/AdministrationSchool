@@ -1,5 +1,6 @@
 package com.example.utils;
 
+import com.example.pojo.Course;
 import com.example.pojo.Student;
 import com.example.pojo.Teacher;
 import org.apache.poi.ss.usermodel.*;
@@ -64,6 +65,9 @@ public class ExcelRead {
                             break;
                         case 5:
                             student.setGrand((int) currentCell.getNumericCellValue());
+                            break;
+                        case 6:
+                            student.setClassName((int) currentCell.getNumericCellValue());
                             break;
                         default:
                             // 处理其他列...
@@ -135,6 +139,87 @@ public class ExcelRead {
 
                 // 将学生对象添加到列表
                 excel.add(teacher);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return excel;
+    }
+
+    public ArrayList<Course> ReadCourse(InputStream inputStream) {
+        ArrayList<Course> excel = new ArrayList<>();
+
+        try (Workbook workbook = new XSSFWorkbook(inputStream)) {
+            // 获取第一个Sheet
+            Sheet sheet = workbook.getSheetAt(0);
+
+            // 迭代每一行
+            Iterator<Row> iterator = sheet.iterator();
+            while (iterator.hasNext()) {
+                Row currentRow = iterator.next();
+
+                // 跳过表头行
+                if (currentRow.getRowNum() == 0) {
+                    continue;
+                }
+
+                // 创建学生对象
+                Course course = new Course();
+
+                // 迭代每一列
+                Iterator<Cell> cellIterator = currentRow.iterator();
+                while (cellIterator.hasNext()) {
+                    Cell currentCell = cellIterator.next();
+                    int columnIndex = currentCell.getColumnIndex();
+
+                    // 根据列索引设置对象的属性
+                    switch (columnIndex) {
+                        case 0:
+                            course.setCourseId((int) currentCell.getNumericCellValue());
+                            break;
+                        case 1:
+                            course.setCourseName(currentCell.getStringCellValue());
+                            break;
+                        case 2:
+                            course.setTeacherId((int)currentCell.getNumericCellValue());
+                            break;
+                        case 3:
+                            course.setClassroom(currentCell.getStringCellValue());
+                            break;
+                        case 4:
+                            course.setTime((int)currentCell.getNumericCellValue());
+                            break;
+                        case 5:
+                            course.setDate((int)currentCell.getNumericCellValue());
+                            break;
+                        case 6:
+                            course.setType(currentCell.getStringCellValue());
+                            break;
+                        case 7:
+                            course.setDescription(currentCell.getStringCellValue());
+                            break;
+                        case 8:
+                            course.setState((int) currentCell.getNumericCellValue());
+                            break;
+                        case 9:
+                            course.setUniversity(currentCell.getStringCellValue());
+                            break;
+                        case 10:
+                            course.setCollege(currentCell.getStringCellValue());
+                            break;
+                        case 11:
+                            course.setCredit((int) currentCell.getNumericCellValue());
+                            break;
+                        case 12:
+                            course.setVolume((int) currentCell.getNumericCellValue());
+                            break;
+                        default:
+                            // 处理其他列...
+                    }
+                }
+
+                // 将学生对象添加到列表
+                excel.add(course);
             }
         } catch (IOException e) {
             e.printStackTrace();

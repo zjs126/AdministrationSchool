@@ -83,6 +83,15 @@ public class TeacherController {
         return Result.success();
     }
 
+    @GetMapping
+    public Result<Teacher> getTeacherInfo(){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        String university = (String) map.get("university");
+        Teacher teacher =  teacherService.findTeacherByStaffId(id,university);
+        return Result.success(teacher);
+    }
+
 
     /**
      * 通过发送excel文件，批量导入学生信

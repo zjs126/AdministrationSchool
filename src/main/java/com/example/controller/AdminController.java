@@ -4,11 +4,15 @@ import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
 import com.example.pojo.Result;
 import com.example.service.AdminService;
+import com.example.service.TeacherService;
 import com.example.utils.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -22,6 +26,36 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private TeacherService teacherService;
+
+    @PostMapping("/courseExcel")
+    public Result courseExcel(@RequestParam("file") MultipartFile excel) throws IOException {
+        log.info("批量导入课程信息");
+
+        if (excel == null || excel.isEmpty()) {
+            log.info("获取excl文件异常");
+            throw new RuntimeException("获取excl文件异常");
+        }
+
+        //判断是否是管理员权限
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        String university = (String) map.get("university");
+        int permission = teacherService.GetPermission(id, university);
+        if (permission != 5) {
+            return Result.error("权限不够");
+        }
+
+        try {
+            InputStream inputStream = excel.getInputStream();
+            adminService.addByExcelCourse(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("文件上传异常！！！");
+        }
+        return Result.success();
+    }
 
     /**
      * 重置分数

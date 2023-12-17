@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public interface AdminService {
@@ -62,4 +63,6 @@ public interface AdminService {
     Boolean allowStudentSelect(String university);
 
     Boolean allowTeacherGrade(String university);
+
+    void addByExcelCourse(InputStream inputStream);
 }

@@ -3,6 +3,7 @@ package com.example.mapper;
 import com.example.pojo.Apply;
 import com.example.pojo.Grade;
 import com.example.pojo.Score;
+import com.example.pojo.Vo.AuditApply;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -30,5 +31,5 @@ public interface SelectionMapper {
     List<Grade> gradeAnalysis(Integer courseID, String university);
 
     @Select("select stu_id,course_id,year,trimesters,university from selection where stu_id=#{id} and university=#{university}")
-    ArrayList<Apply> mySelection(Integer id,String university);
+    ArrayList<AuditApply> mySelection(Integer id, String university);
 }
