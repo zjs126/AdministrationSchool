@@ -1,6 +1,5 @@
 package com.example.service;
 
-import com.example.pojo.Apply;
 import com.example.pojo.PageBean;
 import com.example.pojo.Score;
 import com.example.pojo.Vo.AuditApply;
@@ -17,6 +16,4 @@ public interface SelectionService {
     void delete(Integer courseId, Integer stuId, String university);
 
     void update(Score score);
-
-    ArrayList<Apply> mySelection(Integer id, String university);
 }
