@@ -206,7 +206,7 @@ export default {
       });
     },
     updateAllowSelect(val) {
-      const state = val === false ? 1 : 0;
+      const state = val === false ? 0 : 1;
       OptionApi.setAllowStudentSelect(state);
     },
     updateAllowGrade(val) {

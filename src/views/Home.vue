@@ -1,8 +1,7 @@
 <template>
   <div>
-    <h2 >欢迎使用教务管理系统</h2>
+    <h2>欢迎使用教务管理系统</h2>
   </div>
-
 </template>
 
 <script>
@@ -76,5 +75,9 @@ export default {
 .aside-content {
   font-size: 12px;
   color: #999;
+}
+
+h2 {
+  margin: 0;
 }
 </style>

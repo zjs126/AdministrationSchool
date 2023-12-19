@@ -38,6 +38,12 @@
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="applyForm.reason" :rows="4" placeholder="请输入申请原因"></el-input>
         </el-form-item>
+        <el-form-item label="审核人" prop="administrator">
+          <el-select v-model="applyForm.course.administrator">
+            <el-option :key="index" :label="item.name" :value="item.staffId" v-for="(item, index) in admin">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <input type="hidden" v-for="(value, key) in applyForm.course" :key="key" :name="key" :value="value">
         <el-form-item>
           <el-button type="primary" @click="submitApplyForm">保存草稿</el-button>
@@ -118,7 +124,13 @@ export default {
           { required: true, message: '请输入申请原因', trigger: 'blur' },
           { min: 5, max: 200, message: '长度在 5 到 200 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      admin: [
+        {
+          name: 'admin',
+          staffId: 1
+        }
+      ]
     };
   },
   mounted() {
@@ -159,6 +171,9 @@ export default {
     applyDeferredExam(course) {
       this.applyForm.course = course;
       this.applyDialogVisible = true;
+      // api.admin().then(res => {
+      //   this.admin = res;
+      // })
     },
 
     open(reason, course) {

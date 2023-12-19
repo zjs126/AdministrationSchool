@@ -72,7 +72,7 @@ SideBarItem.items = [
     index: "/forum",
     title: "校园论坛",
     userType: UserType.student,
-    permission: Permission.no
+    // permission: Permission.no
   },
 
   {
@@ -115,7 +115,7 @@ SideBarItem.items = [
     index: "/forum",
     title: "校园论坛",
     userType: UserType.teacher,
-    permission: Permission.no
+    // permission: Permission.no
   },
   {
     icon: "el-icon-fa fa-id-badge",
@@ -207,7 +207,7 @@ SideBarItem.items = [
     index: "/forum",
     title: "校园论坛",
     userType: UserType.admin,
-    permission: Permission.no
+    // permission: Permission.no
   },
   {
     icon: "el-icon-fa fa-id-badge",

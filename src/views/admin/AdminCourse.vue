@@ -297,8 +297,6 @@ export default {
         // 处理请求失败
         console.error("上传文件失败:", error);
       });
-
-      return false;
     },
     handleUploadSuccess(response) {
       if (response === null) {

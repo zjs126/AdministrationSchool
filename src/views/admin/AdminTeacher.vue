@@ -116,6 +116,10 @@ export default {
       editing: false,
       departments: [
         {
+          name: '普通讲师',
+          id: 1
+        },
+        {
           name: '教学秘书',
           id: 2
         },
@@ -195,6 +199,7 @@ export default {
     },
     create() {
       this.entityForm = {
+        id: -1,
         staffId: null,
         name: "",
         college: "",

@@ -24,14 +24,9 @@
           <el-table-column label="权限个数" prop="permission" />
           <el-table-column align="center" label="操作" width="200px">
             <template slot-scope="scope">
-              <el-button @click="edit(scope.row.id)" size="mini" type="success"
-                >编辑
+              <el-button @click="edit(scope.row.id)" size="mini" type="success">编辑
               </el-button>
-              <el-button
-                @click="deleteItem(scope.row.id)"
-                size="mini"
-                type="danger"
-                >删除
+              <el-button @click="deleteItem(scope.row.id)" size="mini" type="danger">删除
               </el-button>
             </template>
           </el-table-column>

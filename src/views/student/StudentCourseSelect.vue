@@ -93,9 +93,11 @@ export default {
     select(id) {
       api.select({
         courseId: id
-      }).then(() => {
-        this.$message.success("选修成功!");
-        this.getPage(this.pageIndex);
+      }).then((res) => {
+        if (res === null) {
+          this.$message.success("选修成功!");
+          this.getPage(this.pageIndex);
+        }
       });
     }
   },

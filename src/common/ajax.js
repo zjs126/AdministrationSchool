@@ -34,7 +34,7 @@ function innerMessage(type, message) {
 
 const axiosInstance = axios.create({
   baseURL: Config.backEndUrl,
-  timeout: 3600,
+  timeout: 36000,
   // withCredentials: true
 });
 

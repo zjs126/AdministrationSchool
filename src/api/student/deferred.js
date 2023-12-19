@@ -7,3 +7,5 @@ export const update = entity => ajax.put("/apply/updateApply", entity);
 export const submit = entity => ajax.put("/apply/updateApply", entity);
 
 export const deleteItem = entity => ajax.del("/apply/deleteApply", entity);
+
+// export const admin = () => ajax.get("/admin/administrator")

@@ -11,9 +11,9 @@ export const getPageCount = (courseName, teacherName) =>
 export const getPage = (index, courseName, teacherName) =>
   ajax.get("/course", {
     page: index,
-    pageSize: 1,
+    pageSize: 10,
     courseName: courseName ? courseName : null,
     teacherName: teacherName ? teacherName : null
   });
 
-export const pageSize = 1;
+export const pageSize = 10;
