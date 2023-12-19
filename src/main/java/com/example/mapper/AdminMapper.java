@@ -1,7 +1,10 @@
 package com.example.mapper;
 
 import com.example.pojo.Course;
+import com.example.pojo.Teacher;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface AdminMapper {
@@ -54,4 +57,7 @@ public interface AdminMapper {
 
     @Select("select COUNT(*) from selection where university=#{university}")
     Integer findTotalTwos(String university);
+
+//    @Select("select * from teacher where university=#{university} and permission=5")
+//    List<Teacher> getAdministrator(String university);
 }

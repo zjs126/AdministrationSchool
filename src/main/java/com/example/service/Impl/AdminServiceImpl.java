@@ -6,13 +6,16 @@ import com.example.pojo.Course;
 import com.example.pojo.Teacher;
 import com.example.service.AdminService;
 import com.example.utils.ExcelRead;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 public class AdminServiceImpl implements AdminService {
 
@@ -127,7 +130,13 @@ public class AdminServiceImpl implements AdminService {
         ExcelRead excelRead = new ExcelRead();
         excel = excelRead.ReadCourse(inputStream);
         for (Course course : excel) {
+            log.info(String.valueOf(course));
             courseMapper.addCourse(course);
         }
     }
+
+//    @Override
+//    public List<Teacher> getAdministrator(String university) {
+//        return adminMapper.getAdministrator(university);
+//    }
 }

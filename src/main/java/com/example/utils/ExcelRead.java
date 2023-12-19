@@ -187,10 +187,10 @@ public class ExcelRead {
                             course.setClassroom(currentCell.getStringCellValue());
                             break;
                         case 4:
-                            course.setTime((int)currentCell.getNumericCellValue());
+                            course.setDate((int)currentCell.getNumericCellValue());
                             break;
                         case 5:
-                            course.setDate((int)currentCell.getNumericCellValue());
+                            course.setTime((int)currentCell.getNumericCellValue());
                             break;
                         case 6:
                             course.setType(currentCell.getStringCellValue());

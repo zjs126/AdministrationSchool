@@ -92,13 +92,13 @@ public class ApplyController {
     @PutMapping("/updateApply")
     public Result updateApply(@RequestBody Apply apply) {
 
+        log.info("更新缓考申请表：{}", apply);
+
         //判断必要参数是否为空
         if (apply.getReason() == null || apply.getAdministrator() == null ||
                 apply.getCourseId() == null || apply.getYear() == null) {
             return Result.error("必要参数有空数据");
         }
-
-        log.info("更新缓考申请表：{}", apply);
 
         //从线程获取学号和学校
         Map<String, Object> map = ThreadLocalUtil.get();

@@ -2,9 +2,11 @@ package com.example.service;
 
 import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
+import com.example.pojo.Teacher;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface AdminService {
     /**
@@ -65,4 +67,6 @@ public interface AdminService {
     Boolean allowTeacherGrade(String university);
 
     void addByExcelCourse(InputStream inputStream);
+
+//    List<Teacher> getAdministrator(String university);
 }

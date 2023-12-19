@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.pojo.ClassroomApply;
 import com.example.pojo.Course;
 import com.example.pojo.Result;
+import com.example.pojo.Teacher;
 import com.example.service.AdminService;
 import com.example.service.TeacherService;
 import com.example.utils.ThreadLocalUtil;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +30,17 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private TeacherService teacherService;
+
+//    @GetMapping("/administrator")
+//    public Result<List<Teacher>> getAdministrator(){
+//
+//        Map<String, Object> map = ThreadLocalUtil.get();
+//        String university = (String) map.get("university");
+//
+//        List<Teacher> list = adminService.getAdministrator(university);
+//
+//        return Result.success(list);
+//    }
 
     @PostMapping("/courseExcel")
     public Result courseExcel(@RequestParam("file") MultipartFile excel) throws IOException {
